@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:provider/provider.dart';
 
-import 'mouse_move_notifier.dart';
+import 'pointer_move_notifier.dart';
 
 class AnimatedGradientBackground extends StatefulWidget {
   const AnimatedGradientBackground({super.key});
@@ -21,9 +21,12 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
   @override
   void initState() {
     super.initState();
-    context
-        .read<MouseMoveNotifier>()
-        .addListener(() => setState(() => time += 0.04));
+    final pointerMoveNotifier = context.read<PointerMoveNotifier>();
+
+    // Trigger a more dramatic effect on a touch interaction since the
+    // interaction time is usually shorter.
+    pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.16));
+    pointerMoveNotifier.addMouseListener(() => setState(() => time += 0.04));
     ticker = createTicker((_) => setState(() => time += 0.03))..start();
   }
 

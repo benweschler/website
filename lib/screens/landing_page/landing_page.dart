@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
 import 'animated_gradient_background.dart';
-import 'mouse_move_notifier.dart';
+import 'pointer_move_notifier.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -13,14 +15,25 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final mouseMoveNotifier = MouseMoveNotifier();
+  final pointerMoveNotifier = PointerMoveNotifier();
 
   @override
   Widget build(BuildContext context) {
     return InheritedProvider.value(
-      value: mouseMoveNotifier,
-      child: MouseRegion(
-        onHover: (_) => mouseMoveNotifier.notify(),
+      value: pointerMoveNotifier,
+      child: Listener(
+        onPointerMove: (event) {
+          if(event.kind != PointerDeviceKind.touch) {
+            // For some reason, onPointerMove is triggered at around half the
+            // frequency of onPointerHover when moving the pointer the
+            // equivalent distance, so trigger two updates to compensate.
+            pointerMoveNotifier.notifyMouseUpdate();
+            pointerMoveNotifier.notifyMouseUpdate();
+          } else {
+            pointerMoveNotifier.notifyTouchUpdate();
+          }
+        },
+        onPointerHover: (_) => pointerMoveNotifier.notifyMouseUpdate(),
         child: SizedBox.fromSize(
           size: Size.infinite,
           child: Stack(
