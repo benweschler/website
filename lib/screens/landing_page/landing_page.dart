@@ -75,16 +75,16 @@ class _LandingPageState extends State<LandingPage> {
           'Hey;',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 56,
+            fontSize: 36,
             letterSpacing: 2,
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 15),
         Text(
           "I'm Ben. I'm a software engineer and UI/UX designer in Los Angeles. I love creating delightful and accessible experiences that enrich people's lives.",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 36,
+            fontSize: 30,
             letterSpacing: 2,
           ),
         ),
@@ -123,7 +123,7 @@ class ScrollPromptText extends StatelessWidget {
               curve: Curves.easeOut,
               duration: 700.ms,
             )
-            .then(duration: 200.ms),
+            .then(duration: 350.ms),
       ],
     );
   }

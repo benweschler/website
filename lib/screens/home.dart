@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
                     ))
                 .toList(),
           ),
-          const Positioned(top: 30, right: 30, left: 30, child: HeaderBar()),
+          Positioned(top: 30, right: 30, left: 30, child: GlobalHeader()),
         ],
       ),
     );
