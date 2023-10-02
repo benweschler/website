@@ -29,7 +29,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - 'assets/images/github-text-logo.png'
     - 'assets/resume.pdf'
 
   shaders:

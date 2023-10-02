@@ -4,6 +4,10 @@
 
 uniform float iTime;
 uniform vec2 iSize;
+uniform vec4 upperLeftColor;
+uniform vec4 upperRightColor;
+uniform vec4 bottomLeftColor;
+uniform vec4 bottomRightColor;
 
 out vec4 fragColor;
 
@@ -52,19 +56,15 @@ void main() {
     tuv.x += sin(tuv.y*frequency+speed)/amplitude;
     tuv.y += sin(tuv.x*frequency*1.5+speed)/(amplitude*.5);
 
-
     // draw the image
-    vec3 colorYellow = vec3(.957, .737, .623);
-    vec3 colorDeepBlue = vec3(.192, .384, .933);
-    vec3 colorPink = vec3(.910, .510, .8);
-    vec3 colorBlue = vec3(0.350, .71, .953);
+    vec4 colorYellow = vec4(.957, .737, .623, 1.);
+    vec4 colorDeepBlue = vec4(.192, .384, .933, 1.);
+    vec4 colorPink = vec4(.910, .510, .8, 1.);
+    vec4 colorBlue = vec4(0.350, .71, .953, 1.);
 
-    vec3 layer1 = mix(colorDeepBlue, colorBlue, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
-    vec3 layer2 = mix(colorYellow, colorPink, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+    // Paint the gradient
+    vec4 layer1 = mix(upperRightColor, upperLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+    vec4 layer2 = mix(bottomRightColor, bottomLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
 
-    vec3 finalComp = mix(layer1, layer2, smoothstep(.5, -.3, tuv.y));
-
-    vec3 col = finalComp;
-
-    fragColor = vec4(col, 1.0);
+    fragColor = mix(layer1, layer2, smoothstep(.5, -.3, tuv.y));
 }
