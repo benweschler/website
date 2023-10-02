@@ -6,6 +6,8 @@ import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
 import 'package:website/utils/navigation_utils.dart';
 
+typedef ScrollCallback = void Function(AxisDirection);
+
 class MainAppScaffold extends StatefulWidget {
   const MainAppScaffold({super.key});
 
@@ -44,17 +46,36 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               children: const [
                 LandingPage(),
                 SportVuePage(),
-              ]
-                  .map((page) => ScrollListener(onScroll: _onScroll, child: page))
-                  .toList(),
+              ].map((page) => Page(onScroll: _onScroll, child: page)).toList(),
             ),
             Positioned(
-              top: 30,
-              right: 30,
-              left: 30,
+              top: 45,
+              right: 45,
+              left: 45,
               child: GlobalHeader(),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class Page extends StatelessWidget {
+  final ScrollCallback onScroll;
+  final Widget child;
+
+  const Page({super.key, required this.onScroll, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return ScrollListener(
+      onScroll: onScroll,
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          child: child,
         ),
       ),
     );

@@ -66,33 +66,30 @@ class _LandingPageState extends State<LandingPage>
             ? notifyMouseUpdate()
             : notifyTouchUpdate(),
         onPointerHover: (_) => notifyMouseUpdate(),
-        child: SizedBox.fromSize(
-          size: Size.infinite,
-          child: Stack(
-            children: [
-              const Positioned.fill(child: AnimatedGradientBackground()),
-              // Allow the text to fill the available space for small screen
-              // sizes and constrain it to a fixed size in the center of the
-              // screen for large screen sizes.
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width > 900
-                        ? 900
-                        : double.infinity,
-                    child: _buildTextContent(),
-                  ),
+        child: Stack(
+          children: [
+            const Positioned.fill(child: AnimatedGradientBackground()),
+            // Allow the text to fill the available space for small screen
+            // sizes and constrain it to a fixed size in the center of the
+            // screen for large screen sizes.
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 900
+                      ? 900
+                      : double.infinity,
+                  child: _buildTextContent(),
                 ),
               ),
-              const Positioned(
-                left: 0,
-                right: 0,
-                bottom: 30,
-                child: ScrollPromptText(),
-              ),
-            ],
-          ),
+            ),
+            const Positioned(
+              left: 0,
+              right: 0,
+              bottom: 30,
+              child: ScrollPromptText(),
+            ),
+          ],
         ),
       ),
     );
