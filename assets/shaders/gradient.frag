@@ -4,10 +4,11 @@
 
 uniform float iTime;
 uniform vec2 iSize;
-uniform vec4 upperLeftColor;
-uniform vec4 upperRightColor;
-uniform vec4 bottomLeftColor;
-uniform vec4 bottomRightColor;
+uniform vec3 upperLeftColor;
+uniform vec3 upperRightColor;
+uniform vec3 bottomLeftColor;
+uniform vec3 bottomRightColor;
+uniform float filmGrainIntensity;
 
 out vec4 fragColor;
 
@@ -20,6 +21,10 @@ mat2 Rot(float a) {
 vec2 hash(vec2 p) {
     p = vec2(dot(p, vec2(2127.1, 81.17)), dot(p, vec2(1269.5, 283.37)));
     return fract(sin(p)*43758.5453);
+}
+
+float filmGrainNoise(in vec2 uv) {
+    return length(hash(vec2(uv.x, uv.y)));
 }
 
 float noise(in vec2 p) {
@@ -63,8 +68,13 @@ void main() {
     vec4 colorBlue = vec4(0.350, .71, .953, 1.);
 
     // Paint the gradient
-    vec4 layer1 = mix(upperRightColor, upperLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
-    vec4 layer2 = mix(bottomRightColor, bottomLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+    vec3 layer1 = mix(upperRightColor, upperLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+    vec3 layer2 = mix(bottomRightColor, bottomLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
 
-    fragColor = mix(layer1, layer2, smoothstep(.5, -.3, tuv.y));
+    vec3 color = mix(layer1, layer2, smoothstep(.5, -.3, tuv.y));
+
+    // Apply film grain
+    color = color - filmGrainNoise(uv) * filmGrainIntensity;
+
+    fragColor = vec4(color, 1.0);
 }

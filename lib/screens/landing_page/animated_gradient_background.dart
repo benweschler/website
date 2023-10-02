@@ -79,25 +79,24 @@ class GradientPainter extends CustomPainter {
     shader.setFloat(3, gradientColors.upperLeft.redNorm);
     shader.setFloat(4, gradientColors.upperLeft.greenNorm);
     shader.setFloat(5, gradientColors.upperLeft.blueNorm);
-    shader.setFloat(6, gradientColors.upperLeft.opacity);
 
     // Upper right color
-    shader.setFloat(7, gradientColors.upperRight.redNorm);
-    shader.setFloat(8, gradientColors.upperRight.greenNorm);
-    shader.setFloat(9, gradientColors.upperRight.blueNorm);
-    shader.setFloat(10, gradientColors.upperRight.opacity);
+    shader.setFloat(6, gradientColors.upperRight.redNorm);
+    shader.setFloat(7, gradientColors.upperRight.greenNorm);
+    shader.setFloat(8, gradientColors.upperRight.blueNorm);
 
     // Bottom left color
-    shader.setFloat(11, gradientColors.bottomLeft.redNorm);
-    shader.setFloat(12, gradientColors.bottomLeft.greenNorm);
-    shader.setFloat(13, gradientColors.bottomLeft.blueNorm);
-    shader.setFloat(14, gradientColors.bottomLeft.opacity);
+    shader.setFloat(9, gradientColors.bottomLeft.redNorm);
+    shader.setFloat(10, gradientColors.bottomLeft.greenNorm);
+    shader.setFloat(11, gradientColors.bottomLeft.blueNorm);
 
     // Bottom right color
-    shader.setFloat(15, gradientColors.bottomRight.redNorm);
-    shader.setFloat(16, gradientColors.bottomRight.greenNorm);
-    shader.setFloat(17, gradientColors.bottomRight.blueNorm);
-    shader.setFloat(18, gradientColors.bottomRight.opacity);
+    shader.setFloat(12, gradientColors.bottomRight.redNorm);
+    shader.setFloat(13, gradientColors.bottomRight.greenNorm);
+    shader.setFloat(14, gradientColors.bottomRight.blueNorm);
+
+    // Film grain intensity
+    shader.setFloat(15, 0.1);
 
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
