@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:website/screens/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
+import 'package:website/screens/sportvue_page.dart';
 import 'package:website/utils/navigation_utils.dart';
 
 class MainAppScaffold extends StatefulWidget {
@@ -31,7 +32,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return InheritedProvider.value(
+    return ChangeNotifierProvider.value(
       value: _pageController,
       child: Scaffold(
         body: Stack(
@@ -42,7 +43,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               physics: const NeverScrollableScrollPhysics(),
               children: const [
                 LandingPage(),
-                LandingPage(),
+                SportVuePage(),
               ]
                   .map((page) => ScrollListener(onScroll: _onScroll, child: page))
                   .toList(),

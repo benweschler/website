@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:website/screens/main_app_scaffold.dart';
+import 'package:website/style/theme.dart';
 
 void main() {
   runApp(const WebApp());
@@ -10,9 +11,10 @@ class WebApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainAppScaffold(),
+      theme: AppColors.fromType(ThemeType.light).toThemeData(),
+      home: const MainAppScaffold(),
     );
   }
 }

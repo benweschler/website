@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/responsive_button.dart';
@@ -11,7 +15,50 @@ class GlobalHeader extends StatelessWidget {
 
   GlobalHeader({super.key});
 
-  void downloadResume() async {
+  Color _resolveHeaderColor(BuildContext context) {
+    double navigatorPage = context
+        .select<RootPageController, double>((controller) => controller.page);
+    navigatorPage = clampDouble(navigatorPage, 0, 1);
+    return Color.lerp(
+        Colors.white, AppColors.of(context).headerColor, navigatorPage)!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final resolvedHeaderColor = _resolveHeaderColor(context);
+    return Theme(
+      data: AppColors.of(context)
+          .copyWith(
+            headerColor: resolvedHeaderColor,
+            transparentContainer: resolvedHeaderColor.withOpacity(0.25),
+          )
+          .toThemeData(),
+      child: Builder(builder: (context) {
+        return DefaultTextStyle.merge(
+          style: TextStyle(color: AppColors.of(context).headerColor),
+          child: IconTheme.merge(
+            data: IconThemeData(color: AppColors.of(context).headerColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _HeaderButtons(emailPopupKey: _emailPopupKey),
+                const SizedBox(height: 15),
+                _EmailCopiedPopup(key: _emailPopupKey),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
+
+class _HeaderButtons extends StatelessWidget {
+  final GlobalKey<_EmailCopiedPopupState> emailPopupKey;
+
+  const _HeaderButtons({required this.emailPopupKey});
+
+  void _downloadResume() async {
     final bytes = await rootBundle.load('assets/resume.pdf');
     downloadFileFromBytes(
       bytes.buffer.asUint8List(),
@@ -21,17 +68,6 @@ class GlobalHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        _buildHeaderButtons(context),
-        const SizedBox(height: 15),
-        _EmailCopiedPopup(key: _emailPopupKey),
-      ],
-    );
-  }
-
-  Widget _buildHeaderButtons(BuildContext context) {
     return Row(
       children: [
         ResponsiveButton(
@@ -39,7 +75,6 @@ class GlobalHeader extends StatelessWidget {
           child: const Text(
             'Ben Weschler',
             style: TextStyle(
-              color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
@@ -48,11 +83,10 @@ class GlobalHeader extends StatelessWidget {
         ),
         const Spacer(),
         ResponsiveButton(
-          onClicked: downloadResume,
+          onClicked: _downloadResume,
           child: const Text(
             'Resumé',
             style: TextStyle(
-              color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
@@ -65,21 +99,24 @@ class GlobalHeader extends StatelessWidget {
             Clipboard.setData(
               const ClipboardData(text: 'benjaminweschler@gmail.com'),
             );
-            _emailPopupKey.currentState!.showPopup();
+            emailPopupKey.currentState!.showPopup();
           },
-          child: const Icon(
-            Icons.email_outlined,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.email_outlined),
         ),
         const SizedBox(width: 20),
         ResponsiveButton(
           onClicked: () => launchUrl(
             Uri.parse('https://www.github.com/benweschler'),
           ),
-          child: Image.asset(
-            'images/github-invertocat-logo.png',
-            height: 22,
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              AppColors.of(context).headerColor,
+              BlendMode.srcIn,
+            ),
+            child: Image.asset(
+              'images/github-invertocat-logo.png',
+              height: 22,
+            ),
           ),
         )
       ],
@@ -116,14 +153,13 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
               vertical: 5,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
+              color: AppColors.of(context).transparentContainer,
             ),
             child: const Text(
               'Email copied to clipboard',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
                 letterSpacing: 1,
               ),
             ),
@@ -149,9 +185,9 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
                         .then(duration: _animationSegmentDuration),
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.horizontal(
+                        decoration: BoxDecoration(
+                          color: AppColors.of(context).headerColor,
+                          borderRadius: const BorderRadius.horizontal(
                             left: Radius.circular(5),
                           ),
                         ),

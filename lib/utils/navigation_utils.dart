@@ -20,6 +20,9 @@ class RootPageController extends PageController {
   static const _animationCurve = Curves.easeInOutQuart;
 
   @override
+  double get page => super.page ?? 0;
+
+  @override
   Future<void> animateToPage(int page,
       {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
     return super.animateToPage(page, duration: duration, curve: curve);
