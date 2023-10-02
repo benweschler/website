@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
+import 'package:website/utils/theme_config.dart';
+import 'package:website/widgets/icon_switch.dart';
 import 'package:website/widgets/responsive_button.dart';
 
 class GlobalHeader extends StatelessWidget {
@@ -118,7 +120,17 @@ class _HeaderButtons extends StatelessWidget {
               height: 22,
             ),
           ),
-        )
+        ),
+        const SizedBox(width: 20),
+        Consumer<ThemeConfig>(
+          builder: (_, themeConfig, __) => IconSwitch(
+            onSwitch: themeConfig.switchTheme,
+            animationTarget: themeConfig.themeType == ThemeType.dark ? 0 : 1,
+            color: AppColors.of(context).headerColor,
+            firstIcon: Icons.dark_mode_rounded,
+            secondIcon: Icons.light_mode_rounded,
+          ),
+        ),
       ],
     );
   }

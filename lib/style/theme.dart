@@ -8,6 +8,11 @@ const _deepBlue = Color.fromRGBO(49, 98, 238, 1);
 const _pink = Color.fromRGBO(232, 130, 204, 1);
 const _blue = Color.fromRGBO(89, 181, 243, 1);
 
+const _purpleHaze = Color.fromRGBO(105, 49, 245, 1);
+const _swampyBlack = Color.fromRGBO(32, 42, 50, 1);
+const _persimmonOrange = Color.fromRGBO(233, 51, 52, 1);
+const _darkAmber = Color.fromRGBO(233, 160, 75, 1);
+
 class AppColors extends ThemeExtension<AppColors> {
   final bool isDark;
   final GradientColors gradientColors;
@@ -39,10 +44,10 @@ class AppColors extends ThemeExtension<AppColors> {
         return AppColors._(
           isDark: true,
           gradientColors: const GradientColors(
-            upperLeft: _blue,
-            upperRight: _deepBlue,
-            bottomLeft: _pink,
-            bottomRight: _amberYellow,
+            upperLeft: _swampyBlack,
+            upperRight: _persimmonOrange,
+            bottomLeft: _purpleHaze,
+            bottomRight: _darkAmber,
           ),
           headerColor: Colors.white,
           transparentContainer: Colors.white.withOpacity(0.25),
@@ -52,6 +57,7 @@ class AppColors extends ThemeExtension<AppColors> {
 
   ThemeData toThemeData() {
     final themeData = ThemeData(
+      scaffoldBackgroundColor: isDark ? Colors.black: Colors.white,
       brightness: isDark ? Brightness.dark : Brightness.light,
     ).copyWith(extensions: <ThemeExtension<dynamic>>[this]);
 

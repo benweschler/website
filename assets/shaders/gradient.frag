@@ -23,10 +23,6 @@ vec2 hash(vec2 p) {
     return fract(sin(p)*43758.5453);
 }
 
-float filmGrainNoise(in vec2 uv) {
-    return length(hash(vec2(uv.x, uv.y)));
-}
-
 float noise(in vec2 p) {
     vec2 i = floor(p);
     vec2 f = fract(p);
@@ -38,6 +34,10 @@ float noise(in vec2 p) {
     mix(dot(-1.0+2.0*hash(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0)),
     dot(-1.0+2.0*hash(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0)), u.x), u.y);
     return 0.5 + 0.5*n;
+}
+
+float filmGrainNoise(in vec2 uv) {
+    return length(hash(vec2(uv.x, uv.y)));
 }
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:website/screens/global_header.dart';
+import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
 import 'package:website/utils/navigation_utils.dart';
