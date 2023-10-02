@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:website/screens/main_app_scaffold.dart';
 
 void main() {
@@ -11,18 +10,9 @@ class WebApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      home: MainAppScaffold(),
     );
   }
 }
-
-final appRouter = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (_, __) => const MainAppScaffold(),
-    ),
-  ],
-);

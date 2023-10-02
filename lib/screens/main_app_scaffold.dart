@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:website/screens/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
+import 'package:website/utils/navigation_utils.dart';
 
 class MainAppScaffold extends StatefulWidget {
   const MainAppScaffold({super.key});
@@ -12,7 +13,7 @@ class MainAppScaffold extends StatefulWidget {
 }
 
 class _MainAppScaffoldState extends State<MainAppScaffold> {
-  final PageController _pageController = PageController();
+  final RootPageController _pageController = RootPageController();
   bool _isPageAnimating = false;
 
   void _onScroll(direction) async {
@@ -20,43 +21,40 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
     _isPageAnimating = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
-      await _pageController.previousPage(
-        duration: 1200.ms,
-        curve: Curves.easeInOutQuart,
-      );
-    } else if (direction == AxisDirection.down && _pageController.offset !=
-        _pageController.position.maxScrollExtent) {
-      await _pageController.nextPage(
-        duration: 1200.ms,
-        curve: Curves.easeInOutQuart,
-      );
+      await _pageController.previousPage();
+    } else if (direction == AxisDirection.down &&
+        _pageController.offset != _pageController.position.maxScrollExtent) {
+      await _pageController.nextPage();
     }
     _isPageAnimating = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              LandingPage(),
-              LandingPage(),
-            ]
-                .map((page) => ScrollListener(onScroll: _onScroll, child: page))
-                .toList(),
-          ),
-          Positioned(
-            top: 30,
-            right: 30,
-            left: 30,
-            child: GlobalHeader(),
-          ),
-        ],
+    return InheritedProvider.value(
+      value: _pageController,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            PageView(
+              controller: _pageController,
+              scrollDirection: Axis.vertical,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                LandingPage(),
+                LandingPage(),
+              ]
+                  .map((page) => ScrollListener(onScroll: _onScroll, child: page))
+                  .toList(),
+            ),
+            Positioned(
+              top: 30,
+              right: 30,
+              left: 30,
+              child: GlobalHeader(),
+            ),
+          ],
+        ),
       ),
     );
   }

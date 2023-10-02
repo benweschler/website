@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:website/utils/http_utils.dart';
+import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/responsive_button.dart';
 
 class GlobalHeader extends StatelessWidget {
@@ -23,18 +24,18 @@ class GlobalHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _buildHeaderButtons(),
+        _buildHeaderButtons(context),
         const SizedBox(height: 15),
         _EmailCopiedPopup(key: _emailPopupKey),
       ],
     );
   }
 
-  Widget _buildHeaderButtons() {
+  Widget _buildHeaderButtons(BuildContext context) {
     return Row(
       children: [
         ResponsiveButton(
-          onClicked: () {},
+          onClicked: () => context.jumpTo(0),
           child: const Text(
             'Ben Weschler',
             style: TextStyle(
