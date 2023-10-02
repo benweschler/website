@@ -25,7 +25,7 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
 
     // Trigger a more dramatic effect on a touch interaction since the
     // interaction time is usually shorter.
-    pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.16));
+    pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.12));
     pointerMoveNotifier.addMouseListener(() => setState(() => time += 0.04));
     ticker = createTicker((_) => setState(() => time += 0.03))..start();
   }

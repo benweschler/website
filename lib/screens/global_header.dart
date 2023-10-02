@@ -94,7 +94,7 @@ class _EmailCopiedPopup extends StatefulWidget {
 }
 
 class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
-  final _animationSegmentDuration = 300.ms;
+  final _animationSegmentDuration = 250.ms;
   bool _visible = false;
 
   void showPopup() async {
@@ -131,43 +131,45 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
               .visibility(duration: _animationSegmentDuration)
               .then(duration: _animationSegmentDuration),
           Positioned.fill(
-            child: LayoutBuilder(builder: (context, constraints) {
-              return Row(
-                children: [
-                  Animate(target: _visible ? 1 : 0)
-                      .custom(
-                        duration: _animationSegmentDuration,
-                        begin: 1,
-                        end: 0,
-                        curve: Curves.fastEaseInToSlowEaseOut,
-                        builder: (_, value, __) => SizedBox(
-                          width: constraints.maxWidth * value,
-                        ),
-                      )
-                      .then(duration: _animationSegmentDuration),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(5),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Row(
+                  children: [
+                    Animate(target: _visible ? 1 : 0)
+                        .custom(
+                          duration: _animationSegmentDuration,
+                          begin: 1,
+                          end: 0,
+                          curve: Curves.fastEaseInToSlowEaseOut,
+                          builder: (_, value, __) => SizedBox(
+                            width: constraints.maxWidth * value,
+                          ),
+                        )
+                        .then(duration: _animationSegmentDuration),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.horizontal(
+                            left: Radius.circular(5),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Animate(target: _visible ? 1 : 0).custom(
-                    delay: _animationSegmentDuration,
-                    duration: _animationSegmentDuration,
-                    begin: 0,
-                    end: 1,
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                    builder: (_, value, __) => SizedBox(
-                      width: constraints.maxWidth * value,
+                    Animate(target: _visible ? 1 : 0).custom(
+                      delay: _animationSegmentDuration,
+                      duration: _animationSegmentDuration,
+                      begin: 0,
+                      end: 1,
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                      builder: (_, value, __) => SizedBox(
+                        width: constraints.maxWidth * value,
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),

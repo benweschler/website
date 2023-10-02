@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:website/router.dart';
+import 'package:go_router/go_router.dart';
+import 'package:website/screens/main_app_scaffold.dart';
 
 void main() {
   runApp(const WebApp());
@@ -16,3 +17,12 @@ class WebApp extends StatelessWidget {
     );
   }
 }
+
+final appRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (_, __) => const MainAppScaffold(),
+    ),
+  ],
+);

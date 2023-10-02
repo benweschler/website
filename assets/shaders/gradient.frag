@@ -54,7 +54,7 @@ void main() {
 
 
     // draw the image
-    vec3 colorYellow = vec3(.957, .804, .623);
+    vec3 colorYellow = vec3(.957, .737, .623);
     vec3 colorDeepBlue = vec3(.192, .384, .933);
     vec3 layer1 = mix(colorYellow, colorDeepBlue, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
 

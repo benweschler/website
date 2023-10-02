@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
@@ -14,26 +15,57 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
-  final pointerMoveNotifier = PointerMoveNotifier();
+class _LandingPageState extends State<LandingPage>
+    with TickerProviderStateMixin {
+  final _pointerMoveNotifier = PointerMoveNotifier();
+  late final Ticker _mouseUpdateTicker;
+  late final Ticker _touchUpdateTicker;
+  // The number of milliseconds for which the background gradient reacts after a
+  // pointer update. This means that if the user is getting at least 20fps, they
+  // will see at least one reactive frame after a pointer event.
+  final _backgroundReactionDuration = (1000/10).ms;
+
+  @override
+  void initState() {
+    super.initState();
+    _mouseUpdateTicker =
+        createTicker((_) => _pointerMoveNotifier.notifyMouseUpdate());
+    _touchUpdateTicker =
+        createTicker((_) => _pointerMoveNotifier.notifyTouchUpdate());
+  }
+
+  @override
+  void dispose() {
+    _mouseUpdateTicker.dispose();
+    _touchUpdateTicker.dispose();
+    super.dispose();
+  }
+
+  void notifyMouseUpdate() async {
+    if (!_mouseUpdateTicker.isActive) {
+      _mouseUpdateTicker.start();
+      await Future.delayed(_backgroundReactionDuration);
+      _mouseUpdateTicker.stop();
+    }
+  }
+
+  void notifyTouchUpdate() async {
+    if (!_touchUpdateTicker.isActive) {
+      _touchUpdateTicker.start();
+      await Future.delayed((1000/5).ms);
+      _touchUpdateTicker.stop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return InheritedProvider.value(
-      value: pointerMoveNotifier,
+      value: _pointerMoveNotifier,
       child: Listener(
-        onPointerMove: (event) {
-          if(event.kind != PointerDeviceKind.touch) {
-            // For some reason, onPointerMove is triggered at around half the
-            // frequency of onPointerHover when moving the pointer the
-            // equivalent distance, so trigger two updates to compensate.
-            pointerMoveNotifier.notifyMouseUpdate();
-            pointerMoveNotifier.notifyMouseUpdate();
-          } else {
-            pointerMoveNotifier.notifyTouchUpdate();
-          }
-        },
-        onPointerHover: (_) => pointerMoveNotifier.notifyMouseUpdate(),
+        onPointerMove: (event) => event.kind != PointerDeviceKind.touch
+            ? notifyMouseUpdate()
+            : notifyTouchUpdate(),
+        onPointerHover: (_) => notifyMouseUpdate(),
         child: SizedBox.fromSize(
           size: Size.infinite,
           child: Stack(
