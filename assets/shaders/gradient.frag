@@ -56,11 +56,11 @@ void main() {
     // draw the image
     vec3 colorYellow = vec3(.957, .737, .623);
     vec3 colorDeepBlue = vec3(.192, .384, .933);
-    vec3 layer1 = mix(colorYellow, colorDeepBlue, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
-
-    vec3 colorRed = vec3(.910, .510, .8);
+    vec3 colorPink = vec3(.910, .510, .8);
     vec3 colorBlue = vec3(0.350, .71, .953);
-    vec3 layer2 = mix(colorRed, colorBlue, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+
+    vec3 layer1 = mix(colorDeepBlue, colorBlue, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
+    vec3 layer2 = mix(colorYellow, colorPink, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
 
     vec3 finalComp = mix(layer1, layer2, smoothstep(.5, -.3, tuv.y));
 
