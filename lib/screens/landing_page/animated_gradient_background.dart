@@ -29,7 +29,7 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
     // interaction time is usually shorter.
     pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.12));
     pointerMoveNotifier.addMouseListener(() => setState(() => time += 0.08));
-    ticker = createTicker((_) => setState(() => time += 0.025))..start();
+    ticker = createTicker((_) => setState(() => time += 0.032))..start();
   }
 
   @override

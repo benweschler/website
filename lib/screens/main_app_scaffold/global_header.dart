@@ -35,22 +35,24 @@ class GlobalHeader extends StatelessWidget {
             transparentContainer: resolvedHeaderColor.withOpacity(0.25),
           )
           .toThemeData(),
-      child: Builder(builder: (context) {
-        return DefaultTextStyle.merge(
-          style: TextStyle(color: AppColors.of(context).headerColor),
-          child: IconTheme.merge(
-            data: IconThemeData(color: AppColors.of(context).headerColor),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _HeaderButtons(emailPopupKey: _emailPopupKey),
-                const SizedBox(height: 15),
-                _EmailCopiedPopup(key: _emailPopupKey),
-              ],
+      child: Builder(
+        builder: (context) {
+          return DefaultTextStyle.merge(
+            style: TextStyle(color: AppColors.of(context).headerColor),
+            child: IconTheme.merge(
+              data: IconThemeData(color: AppColors.of(context).headerColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _HeaderButtons(emailPopupKey: _emailPopupKey),
+                  const SizedBox(height: 15),
+                  _EmailCopiedPopup(key: _emailPopupKey),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
@@ -78,7 +80,7 @@ class _HeaderButtons extends StatelessWidget {
             'Ben Weschler',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
             ),
           ),
@@ -90,7 +92,7 @@ class _HeaderButtons extends StatelessWidget {
             'Resumé',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
             ),
           ),

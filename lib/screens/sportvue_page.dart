@@ -8,4 +8,3 @@ class SportVuePage extends StatelessWidget {
     return const Center(child: Text('SportVue Page'));
   }
 }
-

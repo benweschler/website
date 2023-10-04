@@ -103,6 +103,7 @@ class _LandingPageState extends State<LandingPage>
         Text(
           'Hey;',
           style: TextStyle(
+            fontFamily: 'Libre Baskerville',
             color: Colors.white,
             fontSize: 36,
             letterSpacing: 2,
@@ -112,6 +113,7 @@ class _LandingPageState extends State<LandingPage>
         Text(
           "I'm Ben. I'm a software engineer and UI/UX designer in Los Angeles. I love creating delightful and accessible experiences that enrich people's lives.",
           style: TextStyle(
+            fontFamily: 'Libre Baskerville',
             color: Colors.white,
             fontSize: 30,
             letterSpacing: 2,

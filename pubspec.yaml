@@ -31,5 +31,34 @@ flutter:
   assets:
     - 'assets/resume.pdf'
 
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: 'assets/fonts/inter/Inter-Thin.ttf'
+          weight: 100
+        - asset: 'assets/fonts/inter/Inter-ExtraLight.ttf'
+          weight: 200
+        - asset: 'assets/fonts/inter/Inter-Light.ttf'
+          weight: 300
+        - asset: 'assets/fonts/inter/Inter-Regular.ttf'
+          weight: 400
+        - asset: 'assets/fonts/inter/Inter-Medium.ttf'
+          weight: 500
+        - asset: 'assets/fonts/inter/Inter-SemiBold.ttf'
+          weight: 600
+        - asset: 'assets/fonts/inter/Inter-Bold.ttf'
+          weight: 700
+        - asset: 'assets/fonts/inter/Inter-ExtraBold.ttf'
+          weight: 800
+        - asset: 'assets/fonts/inter/Inter-Black.ttf'
+          weight: 900
+    - family: Libre Baskerville
+      fonts:
+        - asset: 'assets/fonts/libre-baskerville/LibreBaskerville-Regular.ttf'
+        - asset: 'assets/fonts/libre-baskerville/LibreBaskerville-Bold.ttf'
+          weight: 700
+        - asset: 'assets/fonts/libre-baskerville/LibreBaskerville-Italic.ttf'
+          style: italic
+
   shaders:
     - 'assets/shaders/gradient.frag'
