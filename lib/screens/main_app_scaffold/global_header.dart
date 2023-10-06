@@ -161,20 +161,23 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
       borderRadius: const BorderRadius.all(Radius.circular(5)),
       child: Stack(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 5,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.of(context).transparentContainer,
-            ),
-            child: const Text(
-              'Email copied to clipboard',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 5,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.of(context).transparentContainer,
+              ),
+              child: const Text(
+                'Email copied to clipboard',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
               ),
             ),
           )

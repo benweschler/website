@@ -3,7 +3,7 @@ import 'dart:html';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:website/screens/layover-party-page.dart';
+import 'package:website/screens/layover_party_page.dart';
 import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
