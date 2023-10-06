@@ -46,28 +46,21 @@ void main() {
 
     vec2 tuv = uv - .5;
 
-    // rotate with Noise
+    // Rotate with noise
     float degree = noise(vec2(iTime*.1, tuv.x*tuv.y));
 
     tuv.y *= 1./aspectRatio;
     tuv *= Rot(radians((degree-.5)*720.+180.));
     tuv.y *= aspectRatio;
 
-
-    // Wave warp with sin
+    // Wave warp with sine
     float frequency = 5.;
     float amplitude = 30.;
     float speed = iTime * 2.;
     tuv.x += sin(tuv.y*frequency+speed)/amplitude;
     tuv.y += sin(tuv.x*frequency*1.5+speed)/(amplitude*.5);
 
-    // draw the image
-    vec4 colorYellow = vec4(.957, .737, .623, 1.);
-    vec4 colorDeepBlue = vec4(.192, .384, .933, 1.);
-    vec4 colorPink = vec4(.910, .510, .8, 1.);
-    vec4 colorBlue = vec4(0.350, .71, .953, 1.);
-
-    // Paint the gradient
+    // Blend the gradient colors and apply transformations
     vec3 layer1 = mix(upperRightColor, upperLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
     vec3 layer2 = mix(bottomRightColor, bottomLeftColor, smoothstep(-.3, .2, (tuv*Rot(radians(-5.))).x));
 
