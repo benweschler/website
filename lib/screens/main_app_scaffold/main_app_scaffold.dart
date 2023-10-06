@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,11 +96,20 @@ class ScrollListener extends StatelessWidget {
     required this.child,
   });
 
+  bool _isMobileBrowser(String userAgent) {
+    return userAgent.contains('Mobile') ||
+        userAgent.contains('Tablet') ||
+        userAgent.contains('Android') ||
+        userAgent.contains('iOS');
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onVerticalDragUpdate: (details) {
+        if(!_isMobileBrowser(window.navigator.userAgent)) return;
+
         final delta = details.delta.dy;
         final direction = delta > 0 ? AxisDirection.down : AxisDirection.up;
         onScroll(direction);
