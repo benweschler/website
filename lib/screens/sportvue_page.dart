@@ -34,69 +34,77 @@ class _SportVuePageState extends State<SportVuePage> {
         opaque: false,
         hitTestBehavior: HitTestBehavior.translucent,
         onHover: (event) => _updateMousePosition(event, constraints),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'SportVue Mobile App',
-                      style: TextStyle(
-                        fontFamily: 'Libre Baskerville',
-                        fontSize: 36,
-                        letterSpacing: 1,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: constraints.maxWidth > 1500
+                ? (constraints.maxWidth - 1500) / 2
+                : 0,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'SportVue Mobile App',
+                        style: TextStyle(
+                          fontFamily: 'Libre Baskerville',
+                          fontSize: 36,
+                          letterSpacing: 1,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const TechnologyTagChip(label: 'Flutter'),
-                        const TechnologyTagChip(label: 'Firebase'),
-                        const TechnologyTagChip(label: 'Bluetooth Low Energy'),
-                      ].separate(const SizedBox(width: 10)).toList(),
-                    ),
-                    const SizedBox(height: 15),
-                    const Text(
-                      'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
-                      style: TextStyle(
-                        fontSize: 24,
-                        height: 1.25,
-                        letterSpacing: 1.33,
+                      const SizedBox(height: 10),
+                      Row(
+                        children: <Widget>[
+                          const TechnologyTagChip(label: 'Flutter'),
+                          const TechnologyTagChip(label: 'Firebase'),
+                          const TechnologyTagChip(
+                              label: 'Bluetooth Low Energy'),
+                        ].separate(const SizedBox(width: 10)).toList(),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
+                        style: TextStyle(
+                          fontSize: 24,
+                          height: 1.25,
+                          letterSpacing: 1.33,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: _ScrollingAppFrames(
-                getAssetPaths: (Brightness brightness) {
-                  final isDark = (brightness == Brightness.dark);
-                  final themeString = isDark ? 'dark' : 'light';
-                  final assetDirectoryPath = 'images/sportvue/$themeString/';
+              Expanded(
+                flex: 3,
+                child: _ScrollingAppFrames(
+                  getAssetPaths: (Brightness brightness) {
+                    final isDark = (brightness == Brightness.dark);
+                    final themeString = isDark ? 'dark' : 'light';
+                    final assetDirectoryPath = 'images/sportvue/$themeString/';
 
-                  return [
-                    'login-$themeString.png',
-                    'no-data-$themeString.png',
-                    'dashboard-$themeString.png',
-                    'session-data-$themeString.png',
-                    'trends-$themeString.png',
-                    'calendar-$themeString.png',
-                    // TODO: add video support
-                    //'data-import-$brightness.mp4',
-                    'profile-$themeString.png',
-                  ].map((path) => assetDirectoryPath + path).toList();
-                },
-                scrollPosition: _mouseYScrollPosition,
+                    return [
+                      'login-$themeString.png',
+                      'no-data-$themeString.png',
+                      'dashboard-$themeString.png',
+                      'session-data-$themeString.png',
+                      'trends-$themeString.png',
+                      'calendar-$themeString.png',
+                      // TODO: add video support
+                      //'data-import-$brightness.mp4',
+                      'profile-$themeString.png',
+                    ].map((path) => assetDirectoryPath + path).toList();
+                  },
+                  scrollPosition: _mouseYScrollPosition,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
