@@ -16,7 +16,9 @@ class WebApp extends StatefulWidget {
 }
 
 class _WebAppState extends State<WebApp> {
-  final ThemeConfig _themeConfig = ThemeConfig();
+  late final ThemeConfig _themeConfig = ThemeConfig(
+    initialBrightness: MediaQuery.of(context).platformBrightness,
+  );
 
   @override
   Widget build(BuildContext context) {
