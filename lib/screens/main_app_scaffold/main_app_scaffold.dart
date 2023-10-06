@@ -47,8 +47,8 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
               children: const [
-                SportVuePage(),
                 LandingPage(),
+                SportVuePage(),
                 LayoverPartyPage(),
               ].map((page) => Page(onScroll: _onScroll, child: page)).toList(),
             ),

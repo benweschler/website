@@ -92,7 +92,9 @@ class AppColors extends ThemeExtension<AppColors> {
     if (other == null) return this;
 
     return AppColors._(
-      isDark: t < 0.5 ? isDark : other.isDark,
+      // Immediately update whether the theme is dark when the theme is changed
+      // in order to immediately trigger listeners that run custom animations.
+      isDark: other.isDark,
       gradientColors: gradientColors.lerpTo(other.gradientColors, t),
       headerColor: Color.lerp(headerColor, other.headerColor, t)!,
       transparentContainer: Color.lerp(transparentContainer, other.transparentContainer, t)!,
