@@ -27,6 +27,7 @@ class _WebAppState extends State<WebApp> {
       child: ListenableBuilder(
         listenable: _themeConfig,
         builder: (_, __) => MaterialApp(
+          title: 'Ben Weschler',
           debugShowCheckedModeBanner: false,
           theme: AppColors.fromType(_themeConfig.themeType).toThemeData(),
           home: const MainAppScaffold(),
