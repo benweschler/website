@@ -46,10 +46,10 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               controller: _pageController,
               scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                LandingPage(),
+              children: [
+                const LandingPage(),
                 SportVuePage(),
-                LayoverPartyPage(),
+                const LayoverPartyPage(),
               ].map((page) => Page(onScroll: _onScroll, child: page)).toList(),
             ),
             Positioned(

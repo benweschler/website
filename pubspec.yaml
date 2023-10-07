@@ -18,6 +18,7 @@ dependencies:
   provider: ^6.0.5
   url_launcher: ^6.1.14
   html: ^0.15.4
+  video_player: ^2.7.2
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,23 @@ flutter:
 
   assets:
     - 'assets/resume.pdf'
+    - 'assets/images/github-invertocat-logo.png'
+    - 'assets/images/sportvue/light/calendar-light.png'
+    - 'assets/images/sportvue/light/dashboard-light.png'
+    - 'assets/images/sportvue/light/data-import-light.mp4'
+    - 'assets/images/sportvue/light/login-light.png'
+    - 'assets/images/sportvue/light/no-data-light.png'
+    - 'assets/images/sportvue/light/profile-light.png'
+    - 'assets/images/sportvue/light/session-data-light.png'
+    - 'assets/images/sportvue/light/trends-light.png'
+    - 'assets/images/sportvue/dark/calendar-dark.png'
+    - 'assets/images/sportvue/dark/dashboard-dark.png'
+    - 'assets/images/sportvue/dark/data-import-dark.mp4'
+    - 'assets/images/sportvue/dark/login-dark.png'
+    - 'assets/images/sportvue/dark/no-data-dark.png'
+    - 'assets/images/sportvue/dark/profile-dark.png'
+    - 'assets/images/sportvue/dark/session-data-dark.png'
+    - 'assets/images/sportvue/dark/trends-dark.png'
 
   fonts:
     - family: Inter

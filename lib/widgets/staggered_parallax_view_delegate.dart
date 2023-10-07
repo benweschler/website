@@ -44,13 +44,15 @@ class StaggeredParallaxViewDelegate extends MultiChildLayoutDelegate {
       // Translated up based on scroll position
       yPos -= position * (totalHeight - size.height);
 
-      // Add padding to top and bottom of scroll view
-      final yPadding = 150 * (1 - 2 * position);
+      // Add padding to top and bottom of scroll view. Add 50% more padding at
+      // the top since the global header makes it harder to reach the top of the
+      // screen.
+      final yPadding = 150 * (1.5 - 2 * position);
       yPos += yPadding;
 
       // This is some tomfoolery right here. It adds parallax, but it's way too
       // janky and it's way too late right now to justify me writing a nice
-      // comment. Make it better later if needed.
+      // explanation. Make it better later if needed.
       yPos -= (0.2 - sizeMultipliers[i]) *
           Curves.easeIn
               .transform(clampDouble(yPos / size.height * 2, 0, 2) / 2) *
