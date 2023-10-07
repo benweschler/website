@@ -55,230 +55,258 @@ class _UnderConstructionScreenState extends State<UnderConstructionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 45,
-            right: 45,
-            left: 0,
-            child: Row(
-              children: [
-                const Spacer(),
-                Consumer<ThemeConfig>(
-                  builder: (_, themeConfig, __) => IconSwitch(
-                    onSwitch: themeConfig.toggleTheme,
-                    animationTarget:
-                        themeConfig.themeType == ThemeType.dark ? 0 : 1,
-                    color: AppColors.of(context).headerColor,
-                    firstIcon: Icons.dark_mode_rounded,
-                    secondIcon: Icons.light_mode_rounded,
-                  ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 45),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 45, bottom: 15),
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    Consumer<ThemeConfig>(
+                      builder: (_, themeConfig, __) => IconSwitch(
+                        onSwitch: themeConfig.toggleTheme,
+                        animationTarget:
+                            themeConfig.themeType == ThemeType.dark ? 0 : 1,
+                        color: AppColors.of(context).headerColor,
+                        firstIcon: Icons.dark_mode_rounded,
+                        secondIcon: Icons.light_mode_rounded,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          Positioned.fill(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 45),
+              ),
+              Expanded(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width > 1000
                       ? 1000
                       : double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      const Text(
-                        'This website is under construction and is waiting for DNS propagation and certificate provisioning, but it won\'t be long! Check back in the late afternoon or evening of October 7th.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 24,
-                          height: 1.25,
-                          letterSpacing: 1.33,
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      const Text(
-                        'Are you from Nova for Good? Hey!! Thanks for stopping by :). I\'m SO excited to apply and show you what I have here, so PLEASE come back soon and check out my portfolio once everything is up and running — I promise it won\'t be too long. In the meantime, you can check out my GitHub or download my resumé by clicking below.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          height: 1.25,
-                          letterSpacing: 1.33,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      child: Column(
                         children: [
-                          ResponsiveButton(
-                            onClicked: _downloadResume,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: AppColors.of(context).headerColor,
-                              ),
-                              child: Text(
-                                'Download Resumé',
-                                style: TextStyle(
-                                  color: AppColors.of(context).isDark
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 16,
-                                  height: 1.25,
-                                  letterSpacing: 1.33,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight / 2,
                             ),
-                          ),
-                          const SizedBox(width: 30),
-                          ResponsiveButton(
-                            onClicked: () => launchUrl(
-                              Uri.parse('https://www.github.com/benweschler'),
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: AppColors.of(context).headerColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/github-invertocat-logo.png',
-                                    color: AppColors.of(context).isDark
-                                        ? Colors.black
-                                        : Colors.white,
-                                    height: 22,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    'GitHub',
-                                    style: TextStyle(
-                                      color: AppColors.of(context).isDark
-                                          ? Colors.black
-                                          : Colors.white,
-                                      fontSize: 16,
-                                      height: 1.25,
-                                      letterSpacing: 1.33,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      const Text(
-                        'Are you Ben and want to get in? What\'s the magic word then...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          height: 1.25,
-                          letterSpacing: 1.33,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'Maybe you can even try to find it in the ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.25,
-                              letterSpacing: 1.33,
-                            ),
-                          ),
-                          ResponsiveButton(
-                            onClicked: () => launchUrl(
-                              Uri.parse(
-                                  'https://github.com/benweschler/website/blob/main/lib/screens/under_construction_page.dart'),
-                            ),
-                            child: const Text(
-                              'source code',
-                              style: TextStyle(
-                                fontSize: 12,
-                                height: 1.25,
-                                letterSpacing: 1.33,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            '?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.25,
-                              letterSpacing: 1.33,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 500,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _controller,
-                                decoration: const InputDecoration(
-                                  hintText: 'Are you magic?',
-                                  border: UnderlineInputBorder(),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 30),
-                            ResponsiveButton(
-                              onClicked: _validate,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: AppColors.of(context).headerColor,
-                                ),
-                                child: Text(
-                                  'Validate',
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'This website is under construction and is waiting for DNS propagation and certificate provisioning, but it won\'t be long! Check back in the late afternoon or evening of October 7th.',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: AppColors.of(context).isDark
-                                        ? Colors.black
-                                        : Colors.white,
+                                    fontSize: 24,
+                                    height: 1.25,
+                                    letterSpacing: 1.33,
+                                  ),
+                                ),
+                                const SizedBox(height: 50),
+                                const Text(
+                                  'Are you from Nova for Good? Hey!! Thanks for stopping by :). I\'m SO excited to apply and show you what I have here, so PLEASE come back soon and check out my portfolio once everything is up and running — I promise it won\'t be too long. In the meantime, you can check out my GitHub or download my resumé by clicking below.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
                                     fontSize: 16,
                                     height: 1.25,
                                     letterSpacing: 1.33,
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ResponsiveButton(
+                                      onClicked: _downloadResume,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                          color:
+                                              AppColors.of(context).headerColor,
+                                        ),
+                                        child: Text(
+                                          'Download Resumé',
+                                          style: TextStyle(
+                                            color: AppColors.of(context).isDark
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontSize: 16,
+                                            height: 1.25,
+                                            letterSpacing: 1.33,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 30),
+                                    ResponsiveButton(
+                                      onClicked: () => launchUrl(
+                                        Uri.parse(
+                                            'https://www.github.com/benweschler'),
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                          color:
+                                              AppColors.of(context).headerColor,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/github-invertocat-logo.png',
+                                              color:
+                                                  AppColors.of(context).isDark
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                              height: 22,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              'GitHub',
+                                              style: TextStyle(
+                                                color:
+                                                    AppColors.of(context).isDark
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                fontSize: 16,
+                                                height: 1.25,
+                                                letterSpacing: 1.33,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight / 2,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Are you Ben and want to get in? What\'s the magic word then...',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.25,
+                                    letterSpacing: 1.33,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'Maybe you can even try to find it in the ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        height: 1.25,
+                                        letterSpacing: 1.33,
+                                      ),
+                                    ),
+                                    ResponsiveButton(
+                                      onClicked: () => launchUrl(
+                                        Uri.parse(
+                                            'https://github.com/benweschler/website/blob/main/lib/screens/under_construction_page.dart'),
+                                      ),
+                                      child: const Text(
+                                        'source code',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          height: 1.25,
+                                          letterSpacing: 1.33,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      '?',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        height: 1.25,
+                                        letterSpacing: 1.33,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: 500,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _controller,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Are you magic?',
+                                            border: UnderlineInputBorder(),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 30),
+                                      ResponsiveButton(
+                                        onClicked: _validate,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 5,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                            color: AppColors.of(context)
+                                                .headerColor,
+                                          ),
+                                          child: Text(
+                                            'Validate',
+                                            style: TextStyle(
+                                              color:
+                                                  AppColors.of(context).isDark
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                              fontSize: 16,
+                                              height: 1.25,
+                                              letterSpacing: 1.33,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
