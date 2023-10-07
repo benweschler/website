@@ -126,7 +126,7 @@ class _HeaderButtons extends StatelessWidget {
         const SizedBox(width: 20),
         Consumer<ThemeConfig>(
           builder: (_, themeConfig, __) => IconSwitch(
-            onSwitch: themeConfig.switchTheme,
+            onSwitch: themeConfig.toggleTheme,
             animationTarget: themeConfig.themeType == ThemeType.dark ? 0 : 1,
             color: AppColors.of(context).headerColor,
             firstIcon: Icons.dark_mode_rounded,

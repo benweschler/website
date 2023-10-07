@@ -46,7 +46,7 @@ class _WebAppState extends State<WebApp> {
         stream: initializationStream,
         initialData: 0,
         builder: (context, snapshot) {
-          if (!_isAdminValidated && kReleaseMode) {
+          if (!_isAdminValidated && !kReleaseMode) {
             return UnderConstructionScreen(
               validateAdmin: () => setState(() => _isAdminValidated = true),
             );

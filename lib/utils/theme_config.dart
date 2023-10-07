@@ -11,7 +11,7 @@ class ThemeConfig extends ChangeNotifier {
             ? ThemeType.dark
             : ThemeType.light;
 
-  void switchTheme() {
+  void toggleTheme() {
     _themeType =
         _themeType == ThemeType.dark ? ThemeType.light : ThemeType.dark;
     notifyListeners();
