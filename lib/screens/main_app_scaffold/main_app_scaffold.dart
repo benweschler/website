@@ -7,6 +7,7 @@ import 'package:website/screens/layover_party_page.dart';
 import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
+import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
 
 typedef ScrollCallback = void Function(AxisDirection);
@@ -53,7 +54,13 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
                 const LandingPage(),
                 SportVuePage(),
                 const LayoverPartyPage(),
-              ].map((page) => Page(onScroll: _onScroll, child: page)).toList(),
+              ].map((page) {
+                // Add maintain state for now so that expensive pages with lots
+                // of images aren't rebuilt everytime they are navigated to.
+                return MaintainState(
+                  child: Page(onScroll: _onScroll, child: page),
+                );
+              }).toList(),
             ),
             Positioned(
               top: 45,
@@ -111,7 +118,7 @@ class ScrollListener extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onVerticalDragUpdate: (details) {
-        if(!_isMobileBrowser(window.navigator.userAgent)) return;
+        if (!_isMobileBrowser(window.navigator.userAgent)) return;
 
         final delta = details.delta.dy;
         final direction = delta > 0 ? AxisDirection.down : AxisDirection.up;
