@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:website/initializer.dart';
 import 'package:website/screens/initialization_screen.dart';
 import 'package:website/screens/main_app_scaffold/main_app_scaffold.dart';
-import 'package:website/screens/under_contruction_screen.dart';
+import 'package:website/screens/under_construction_page.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/theme_config.dart';
 
