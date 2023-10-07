@@ -165,8 +165,8 @@ class _UnderConstructionScreenState extends State<UnderConstructionScreen> {
                       letterSpacing: 1.33,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () => launchUrl(
+                  ResponsiveButton(
+                    onClicked: () => launchUrl(
                       Uri.parse('https://github.com/benweschler/website/blob/main/lib/screens/under_construction_page.dart'),
                     ),
                     child: const Text(
