@@ -1,8 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
-import 'package:website/media_cache.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/iterable_utils.dart';
 import 'package:website/widgets/phone_frame.dart';
@@ -166,17 +164,14 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
             LayoutId(
               id: i,
               child: PhoneFrame(
-                child: Image.memory(
-                        context.read<MediaCache>().getImageBytes(lightPaths[i]))
+                child: Image.asset(lightPaths[i])
                     .animate(
                       target: AppColors.of(context).isDark ? 1 : 0,
                       onInit: (controller) => controller.value =
                           AppColors.of(context).isDark ? 1 : 0,
                     )
                     .crossfade(
-                      builder: (_) => Image.memory(
-                        context.read<MediaCache>().getImageBytes(darkPaths[i]),
-                      ),
+                      builder: (_) => Image.asset(darkPaths[i]),
                     ),
               ),
             ),

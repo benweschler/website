@@ -1,12 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:website/media_cache.dart';
+import 'package:website/initializer.dart';
+import 'package:website/screens/initialization_screen.dart';
 import 'package:website/screens/main_app_scaffold/main_app_scaffold.dart';
+import 'package:website/screens/under_contruction_screen.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/theme_config.dart';
 
 void main() {
-  runApp(const WebApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final platformBrightness =
+      WidgetsBinding.instance.platformDispatcher.platformBrightness;
+  final themeConfig = ThemeConfig(initialBrightness: platformBrightness);
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: themeConfig,
+      child: const WebApp(),
+    ),
+  );
 }
 
 class WebApp extends StatefulWidget {
@@ -17,139 +31,32 @@ class WebApp extends StatefulWidget {
 }
 
 class _WebAppState extends State<WebApp> {
-  late final ThemeConfig _themeConfig = ThemeConfig(
-    initialBrightness: MediaQuery.of(context).platformBrightness,
-  );
-  final _mediaCache = MediaCache();
+  late final initializationStream = initializeApp(context);
+  bool _isAdminValidated = false;
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: _themeConfig),
-        Provider.value(value: _mediaCache),
-      ],
-      child: ListenableBuilder(
-        listenable: _themeConfig,
-        builder: (_, __) => StreamBuilder(
-          stream: _mediaCache.initializationController.stream,
-          initialData: 0,
-          builder: (context, snapshot) {
-            final content = snapshot.connectionState == ConnectionState.done
-                ? const MainAppScaffold()
-                : _LoadingScreen(loadingPercentage: snapshot.data!);
-            return MaterialApp(
-              title: 'Ben Weschler',
-              debugShowCheckedModeBanner: false,
-              theme: AppColors.fromType(_themeConfig.themeType).toThemeData(),
-              home: content,
+    return MaterialApp(
+      title: 'Ben Weschler',
+      debugShowCheckedModeBanner: false,
+      theme: AppColors.fromType(
+        context.watch<ThemeConfig>().themeType,
+      ).toThemeData(),
+      home: StreamBuilder(
+        stream: initializationStream,
+        initialData: 0,
+        builder: (context, snapshot) {
+          if (!_isAdminValidated && kReleaseMode) {
+            return UnderConstructionScreen(
+              validateAdmin: () => setState(() => _isAdminValidated = true),
             );
-          },
-        ),
+          }
+
+          return snapshot.connectionState == ConnectionState.done
+              ? const MainAppScaffold()
+              : InitializationScreen(loadingPercentage: snapshot.data!);
+        },
       ),
     );
   }
-}
-
-class _LoadingScreen extends StatelessWidget {
-  final int loadingPercentage;
-
-  const _LoadingScreen({required this.loadingPercentage});
-
-  @override
-  Widget build(BuildContext context) {
-    final loadingIndicatorColor =
-        AppColors.of(context).isDark ? Colors.white : Colors.black;
-
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'Loading',
-                  style: TextStyle(
-                    fontSize: 16,
-                    height: 1.25,
-                    letterSpacing: 1.33,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: CustomMultiChildLayout(
-                delegate: _LoadingIndicatorLayoutDelegate(),
-                children: [
-                  LayoutId(
-                    id: 'loading-indicator',
-                    child: Container(
-                      width: 200,
-                      height: 6,
-                      decoration: ShapeDecoration(
-                        shape: StadiumBorder(
-                          side: BorderSide(color: loadingIndicatorColor),
-                        ),
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) => Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            color: loadingIndicatorColor,
-                            width:
-                                constraints.maxWidth * loadingPercentage / 100,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  LayoutId(
-                    id: 'loading-percentage',
-                    child: Text(
-                      '$loadingPercentage%',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.25,
-                        letterSpacing: 1.33,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _LoadingIndicatorLayoutDelegate extends MultiChildLayoutDelegate {
-  @override
-  void performLayout(Size size) {
-    final loadingIndicatorSize =
-        layoutChild('loading-indicator', const BoxConstraints());
-    positionChild(
-      'loading-indicator',
-      Offset(
-        size.width / 2 - loadingIndicatorSize.width / 2,
-        -1 * loadingIndicatorSize.height / 2,
-      ),
-    );
-
-    final textSize = layoutChild('loading-percentage', const BoxConstraints());
-    positionChild(
-      'loading-percentage',
-      Offset(
-        size.width / 2 + loadingIndicatorSize.width / 2 + 15,
-        -1 * textSize.height / 2,
-      ),
-    );
-  }
-
-  @override
-  bool shouldRelayout(_LoadingIndicatorLayoutDelegate oldDelegate) => false;
 }

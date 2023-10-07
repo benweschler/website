@@ -32,6 +32,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
         _pageController.offset != _pageController.position.maxScrollExtent) {
       await _pageController.nextPage();
     }
+
+    // Add a delay to compensate for weird effects of lag
+    await Future.delayed(const Duration(seconds: 1));
     _isPageAnimating = false;
   }
 

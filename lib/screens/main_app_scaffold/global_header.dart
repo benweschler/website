@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:website/media_cache.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
@@ -118,10 +117,8 @@ class _HeaderButtons extends StatelessWidget {
               AppColors.of(context).headerColor,
               BlendMode.srcIn,
             ),
-            child: Image.memory(
-              context
-                  .read<MediaCache>()
-                  .getImageBytes('assets/images/github-invertocat-logo.png'),
+            child: Image.asset(
+              'assets/images/github-invertocat-logo.png',
               height: 22,
             ),
           ),
