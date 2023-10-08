@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/widgets/responsive_button.dart';
@@ -23,96 +24,72 @@ class AboutPopup extends StatelessWidget {
 
     return DefaultTextStyle(
       style: TextStyle(color: contentColor),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.of(context).container,
-          borderRadius: BorderRadius.circular(10),
-        ),
+      child: _SizeAwareBackgroundWrapper(
         child: Stack(
           children: [
-            Positioned(
-              top: 50,
-              right: 50,
-              child: ResponsiveButton(
-                onClicked: Navigator.of(context).pop,
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 36,
-                  color: AppColors.of(context).onContainer,
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(50),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildResumeButton(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildEmailButton(contentColor),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildGithubButton(contentColor),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildDevpostButton(contentColor),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    child: _buildShadertoyButton(contentColor),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      'Created with Flutter, GLSL, and lots of coffee in my Los Angeles apartment.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 2,
+              child: IntrinsicWidth(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 36),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(child: _buildResumeButton()),
+                          const SizedBox(width: 10),
+                          ResponsiveButton(
+                            onClicked: Navigator.of(context).pop,
+                            child: Icon(
+                              Icons.close_rounded,
+                              size: 36,
+                              color: AppColors.of(context).onContainer,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'View this website\'s source code ',
-                        style: TextStyle(fontSize: 16, letterSpacing: 2),
-                      ),
-                      ResponsiveButton(
-                        onClicked: () => launchUrl(
-                          Uri.parse('https://github.com/benweschler/website'),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 36),
+                      child: _buildEmailButton(contentColor),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 36),
+                      child: _buildGithubButton(contentColor),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 36),
+                      child: _buildDevpostButton(contentColor),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      child: _buildShadertoyButton(contentColor),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        'Created with Flutter, GLSL, and lots of coffee in my Los Angeles apartment.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 2,
                         ),
-                        child: const Text(
-                          'here',
-                          style: TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 2,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
                       ),
-                      const Text(
-                        '.',
-                        style: TextStyle(fontSize: 16, letterSpacing: 2),
-                      ),
-                    ],
-                  ),
-                ]
-                    .animate(interval: 75.ms)
-                    .slideY(
-                      begin: 0.2,
-                      end: 0,
-                      duration: 350.ms,
-                      curve: Curves.easeOutCubic,
-                    )
-                    .fadeIn(),
+                    ),
+                    _buildSourceMessage(),
+                  ]
+                      .animate(interval: 75.ms)
+                      .slideY(
+                        begin: 0.2,
+                        end: 0,
+                        duration: 350.ms,
+                        curve: Curves.easeOutCubic,
+                      )
+                      .fadeIn(),
+                ),
               ),
             ),
           ],
@@ -233,4 +210,60 @@ class AboutPopup extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildSourceMessage() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text(
+          'View this website\'s source code ',
+          style: TextStyle(fontSize: 16, letterSpacing: 2),
+        ),
+        ResponsiveButton(
+          onClicked: () => launchUrl(
+            Uri.parse('https://github.com/benweschler/website'),
+          ),
+          child: const Text(
+            'here',
+            style: TextStyle(
+              fontSize: 16,
+              letterSpacing: 2,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+        const Text(
+          '.',
+          style: TextStyle(fontSize: 16, letterSpacing: 2),
+        ),
+      ],
+    );
+  }
 }
+
+class _SizeAwareBackgroundWrapper extends StatelessWidget {
+  final Widget child;
+
+  const _SizeAwareBackgroundWrapper({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    if(MediaQuery.of(context).size.width < wideScreenCutoff) {
+      return Container(
+        color: AppColors.of(context).container,
+        width: double.infinity,
+        height: double.infinity,
+        child: child,
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.of(context).container,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: child,
+    );
+  }
+}
+
