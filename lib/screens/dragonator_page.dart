@@ -42,7 +42,7 @@ class DragonatorPage extends StatelessWidget {
         TagChip(label: 'Firebase'),
         TagChip(label: 'Google Cloud Functions'),
       ],
-      description: 'A Dragonboat team management platform.',
+      description: 'A Dragonboat team management platform. Track your paddler roster within a division and during races, automatically calculate paddler seating to optimize boat balance and center of gravity, and automate the creation of race heats with hundreds of paddlers. Share anything with your team and collaborate securely with other coaches in real time.',
       bottomContent: GithubRepoButton(repoName: 'dragonator'),
     );
   }
