@@ -131,6 +131,7 @@ class _HeaderButtons extends StatelessWidget {
             color: AppColors.of(context).onBackground,
             firstIcon: Icons.dark_mode_rounded,
             secondIcon: Icons.light_mode_rounded,
+            isDisabled: themeConfig.darkModeLocked,
           ),
         ),
       ],

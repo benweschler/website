@@ -7,6 +7,7 @@ class IconSwitch extends StatelessWidget {
   final Color color;
   final IconData firstIcon;
   final IconData secondIcon;
+  final bool isDisabled;
 
   const IconSwitch({
     super.key,
@@ -15,12 +16,14 @@ class IconSwitch extends StatelessWidget {
     required this.color,
     required this.firstIcon,
     required this.secondIcon,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor:
+          isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: onSwitch,
         child: Container(
@@ -68,7 +71,9 @@ class IconSwitch extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        )
+            .animate(target: isDisabled ? 0.25 : 1)
+            .fade(curve: Curves.easeOut),
       ),
     );
   }

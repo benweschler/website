@@ -14,6 +14,7 @@ class ThemeConfig extends ChangeNotifier {
   // it is unlocked.
   bool _darkModeQueued = false;
   bool _darkModeLocked = false;
+  bool get darkModeLocked => _darkModeLocked;
 
   void lockDarkMode() {
     if(_darkModeLocked) return;
