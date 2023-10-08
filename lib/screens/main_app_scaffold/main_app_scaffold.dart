@@ -37,19 +37,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
     _isPageAnimating = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
-      // Account for this method somehow being triggered slightly after animation
-      // has started, when the current page isn't a whole number.
-      final nextPage = (_pageController.page - 1).ceil();
-      _updateDarkModeLock(nextPage);
-
       await _pageController.previousPage();
     } else if (direction == AxisDirection.down &&
         _pageController.offset != _pageController.position.maxScrollExtent) {
-      // Account for this method somehow being triggered slightly after animation
-      // has started, when the current page isn't a whole number.
-      final nextPage = (_pageController.page + 1).floor();
-      _updateDarkModeLock(nextPage);
-
       await _pageController.nextPage();
     }
 

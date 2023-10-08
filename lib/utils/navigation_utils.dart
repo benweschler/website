@@ -40,22 +40,25 @@ class RootPageController extends PageController {
   @override
   Future<void> animateToPage(int page,
       {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
-    return super
-        .animateToPage(page, duration: duration, curve: curve)
-        .then((_) => _notifyScrollListeners(page));
+    if ((page - this.page).abs() > 1) {
+      return super
+          .animateToPage(page, duration: duration, curve: curve)
+          .then((_) => _notifyScrollListeners(page));
+    }
+
+    _notifyScrollListeners(page);
+    return super.animateToPage(page, duration: duration, curve: curve);
   }
 
   @override
   Future<void> nextPage(
       {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
-    _notifyScrollListeners((page + 1).toInt());
     return super.nextPage(duration: duration, curve: curve);
   }
 
   @override
   Future<void> previousPage(
       {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
-    _notifyScrollListeners((page + 1).toInt());
     return super.previousPage(duration: duration, curve: curve);
   }
 }
