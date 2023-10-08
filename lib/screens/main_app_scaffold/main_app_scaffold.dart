@@ -34,8 +34,6 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       await _pageController.nextPage();
     }
 
-    // Add a delay to compensate for weird effects of lag
-    await Future.delayed(const Duration(seconds: 1));
     _isPageAnimating = false;
   }
 
@@ -52,7 +50,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 const LandingPage(),
-                SportVuePage(),
+                const SportVuePage(),
                 const LayoverPartyPage(),
               ].map((page) {
                 // Add maintain state for now so that expensive pages with lots

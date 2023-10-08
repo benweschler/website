@@ -164,7 +164,7 @@ class _UnderConstructionScreenState extends State<UnderConstructionScreen> {
                                         child: Row(
                                           children: [
                                             Image.asset(
-                                              'assets/images/github-invertocat-logo.png',
+                                              'assets/github-invertocat-logo.png',
                                               color:
                                                   AppColors.of(context).isDark
                                                       ? Colors.black

@@ -6,14 +6,14 @@ import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
 
 class AppPreviewPage extends StatelessWidget {
-  final Widget textColumn;
+  final Widget pageContent;
   final List<String> lightAssetPaths;
   final List<String> darkAssetPaths;
   final List<double> phoneFrameSizeMultipliers;
 
   AppPreviewPage({
     super.key,
-    required this.textColumn,
+    required this.pageContent,
     required this.lightAssetPaths,
     required this.darkAssetPaths,
     required this.phoneFrameSizeMultipliers,
@@ -50,7 +50,7 @@ class AppPreviewPage extends StatelessWidget {
                 flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: textColumn,
+                  child: pageContent,
                 ),
               ),
               Expanded(
@@ -104,7 +104,7 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     _controller.animateTo(
       widget.scrollPosition,
       curve: Curves.easeOutQuart,
-      duration: 600.ms,
+      duration: 700.ms,
     );
   }
 

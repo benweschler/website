@@ -118,7 +118,7 @@ class _HeaderButtons extends StatelessWidget {
               BlendMode.srcIn,
             ),
             child: Image.asset(
-              'assets/images/github-invertocat-logo.png',
+              'assets/github-invertocat-logo.png',
               height: 22,
             ),
           ),

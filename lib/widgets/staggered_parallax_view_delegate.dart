@@ -24,7 +24,7 @@ class StaggeredParallaxViewDelegate extends MultiChildLayoutDelegate {
     for (int i = 0; i < length; i++) {
       final width =
           (size.width * 0.9 / 2) * (1 + (2 * sizeMultipliers[i] - 0.2));
-      sizes.add(layoutChild(i, BoxConstraints(maxWidth: width)));
+      sizes.add(layoutChild(i, BoxConstraints.tightFor(width: width)));
     }
 
     // The portion of the previous child's height that the top of this child is

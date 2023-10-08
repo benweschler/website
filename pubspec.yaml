@@ -20,6 +20,7 @@ dependencies:
   html: ^0.15.4
   video_player: ^2.7.2
   crypto: ^3.0.3
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:
@@ -32,23 +33,38 @@ flutter:
 
   assets:
     - 'assets/resume.pdf'
-    - 'assets/images/github-invertocat-logo.png'
-    - 'assets/images/sportvue/light/calendar-light.png'
-    - 'assets/images/sportvue/light/dashboard-light.png'
-    - 'assets/images/sportvue/light/data-import-light.mp4'
-    - 'assets/images/sportvue/light/login-light.png'
-    - 'assets/images/sportvue/light/no-data-light.png'
-    - 'assets/images/sportvue/light/profile-light.png'
-    - 'assets/images/sportvue/light/session-data-light.png'
-    - 'assets/images/sportvue/light/trends-light.png'
-    - 'assets/images/sportvue/dark/calendar-dark.png'
-    - 'assets/images/sportvue/dark/dashboard-dark.png'
-    - 'assets/images/sportvue/dark/data-import-dark.mp4'
-    - 'assets/images/sportvue/dark/login-dark.png'
-    - 'assets/images/sportvue/dark/no-data-dark.png'
-    - 'assets/images/sportvue/dark/profile-dark.png'
-    - 'assets/images/sportvue/dark/session-data-dark.png'
-    - 'assets/images/sportvue/dark/trends-dark.png'
+    - 'assets/github-invertocat-logo.png'
+    - 'assets/devpost-logo.png'
+    - 'assets/showcase-media/sportvue/light/calendar-light.png'
+    - 'assets/showcase-media/sportvue/light/dashboard-light.png'
+    - 'assets/showcase-media/sportvue/light/data-import-light.mp4'
+    - 'assets/showcase-media/sportvue/light/login-light.png'
+    - 'assets/showcase-media/sportvue/light/no-data-light.png'
+    - 'assets/showcase-media/sportvue/light/profile-light.png'
+    - 'assets/showcase-media/sportvue/light/session-data-light.png'
+    - 'assets/showcase-media/sportvue/light/trends-light.png'
+    - 'assets/showcase-media/sportvue/dark/calendar-dark.png'
+    - 'assets/showcase-media/sportvue/dark/dashboard-dark.png'
+    - 'assets/showcase-media/sportvue/dark/data-import-dark.mp4'
+    - 'assets/showcase-media/sportvue/dark/login-dark.png'
+    - 'assets/showcase-media/sportvue/dark/no-data-dark.png'
+    - 'assets/showcase-media/sportvue/dark/profile-dark.png'
+    - 'assets/showcase-media/sportvue/dark/session-data-dark.png'
+    - 'assets/showcase-media/sportvue/dark/trends-dark.png'
+    - 'assets/showcase-media/layover-party/images/onboarding-one.png'
+    - 'assets/showcase-media/layover-party/images/onboarding-two.png'
+    - 'assets/showcase-media/layover-party/images/onboarding-three.png'
+    - 'assets/showcase-media/layover-party/images/search-bar.png'
+    - 'assets/showcase-media/layover-party/images/trip-ticket.png'
+    - 'assets/showcase-media/layover-party/images/trips.png'
+    - 'assets/showcase-media/layover-party/videos/onboarding-first-second.mp4'
+    - 'assets/showcase-media/layover-party/videos/onboarding-second-third.mp4'
+    - 'assets/showcase-media/layover-party/videos/search-bar.mp4'
+    - 'assets/showcase-media/layover-party/videos/trip-ticket.mp4'
+    - 'assets/showcase-media/allynd/login.png'
+    - 'assets/showcase-media/allynd/onboarding-one.png'
+    - 'assets/showcase-media/allynd/onboarding-two.png'
+    - 'assets/showcase-media/allynd/onboarding-three.png'
 
   fonts:
     - family: Inter
