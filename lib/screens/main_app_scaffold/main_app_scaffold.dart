@@ -62,7 +62,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       if (themeConfig.themeType == ThemeType.dark) {
         final appName = darkModeUnsupportedPages[nextPage];
         _headerMessengerKey.currentState!
-            .showPopup("$appName doesn't have dark mode");
+            .showPopup('$appName doesn\'t have dark mode');
       }
 
       themeConfig.lockDarkMode();

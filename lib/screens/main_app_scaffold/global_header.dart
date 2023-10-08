@@ -1,11 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:website/constants.dart';
+import 'package:website/screens/main_app_scaffold/about_popup.dart';
 import 'package:website/style/theme.dart';
-import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
@@ -45,7 +44,7 @@ class GlobalHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _HeaderButtons(emailPopupKey: messengerKey),
+                  _HeaderButtons(headerMessengerKey: messengerKey),
                   const SizedBox(height: 15),
                   HeaderMessenger(messengerKey: messengerKey),
                 ],
@@ -59,17 +58,9 @@ class GlobalHeader extends StatelessWidget {
 }
 
 class _HeaderButtons extends StatelessWidget {
-  final GlobalKey<HeaderMessengerState> emailPopupKey;
+  final GlobalKey<HeaderMessengerState> headerMessengerKey;
 
-  const _HeaderButtons({required this.emailPopupKey});
-
-  void _downloadResume() async {
-    final bytes = await rootBundle.load('assets/resume.pdf');
-    downloadFileFromBytes(
-      bytes.buffer.asUint8List(),
-      'Benjamin Weschler Resume.pdf',
-    );
-  }
+  const _HeaderButtons({required this.headerMessengerKey});
 
   @override
   Widget build(BuildContext context) {
@@ -87,48 +78,12 @@ class _HeaderButtons extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        /*
         ResponsiveButton(
-          onClicked: _downloadResume,
-          child: const Text(
-            'Resumé',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
-            ),
+          onClicked: () => showGeneralDialog(
+            context: context,
+            barrierColor: Colors.black.withOpacity(0.25),
+            pageBuilder: (_, __, ___) => const Center(child: AboutPopup()),
           ),
-        ),
-        const SizedBox(width: 20),
-        ResponsiveButton(
-          onClicked: () {
-            Clipboard.setData(
-              const ClipboardData(text: 'benjaminweschler@gmail.com'),
-            );
-            emailPopupKey.currentState!.showPopup();
-          },
-          child: const Icon(Icons.email_outlined),
-        ),
-        const SizedBox(width: 20),
-        ResponsiveButton(
-          onClicked: () => launchUrl(
-            Uri.parse('https://www.github.com/benweschler'),
-          ),
-          child: ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              AppColors.of(context).onBackground,
-              BlendMode.srcIn,
-            ),
-            child: Image.asset(
-              'assets/github-invertocat-logo.png',
-              height: 22,
-            ),
-          ),
-        ),
-         */
-        //TODO: implement about button
-        ResponsiveButton(
-          onClicked: () {},
           child: const Text(
             'About',
             style: TextStyle(
@@ -149,8 +104,8 @@ class _HeaderButtons extends StatelessWidget {
             isDisabled: themeConfig.darkModeLocked,
             onDisabledClick: () {
               final appName = darkModeUnsupportedPages[context.currentPage()];
-              emailPopupKey.currentState!
-                  .showPopup("$appName doesn't have dark mode");
+              headerMessengerKey.currentState!
+                  .showPopup('$appName doesn\'t have dark mode');
             },
           ),
         ),
