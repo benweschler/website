@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
+import 'package:website/widgets/app_preview_page.dart';
 import 'package:website/widgets/rectangular_button.dart';
 import 'package:website/widgets/technology_tag_chip.dart';
 
-import '../widgets/app_preview_page.dart';
-
-class LayoverPartyPage extends StatelessWidget {
-  const LayoverPartyPage({super.key});
+class AllyndPage extends StatelessWidget {
+  const AllyndPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class LayoverPartyPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Layover Party',
+            'Allynd',
             style: TextStyle(
               fontFamily: 'Libre Baskerville',
               fontSize: 36,
@@ -30,18 +29,18 @@ class LayoverPartyPage extends StatelessWidget {
             runSpacing: 10,
             children: <Widget>[
               TechnologyTagChip(
-                label: 'LA Hacks 2023 Winner',
+                label: 'QWER Hacks 2023',
                 textColor: AppColors.of(context).isDark ? Colors.black : Colors.white,
                 color: AppColors.of(context).isDark ? Colors.white : Colors.black,
               ),
               const TechnologyTagChip(label: 'Flutter'),
-              const TechnologyTagChip(label: 'FastAPI'),
-              const TechnologyTagChip(label: 'Swagger'),
+              const TechnologyTagChip(label: 'Firebase'),
+              const TechnologyTagChip(label: 'Google Maps Platform'),
             ],
           ),
           const SizedBox(height: 15),
           const Text(
-            'Rather than taking a direct flight the next time you travel, find flights with multiple long layovers — which are often cheaper than direct flights — in places you want to visit, allowing you to save money and explore destinations you\'ve always wanted to see every time you travel. Exploring is better together, so connect with other travellers who have layovers that overlap with yours.',
+            'Supporting people in the queer community who are forced to travel long distances in order to access gender-affirming healthcare, often due to legal restrictions. Find a medical center that offers the care you need, and then securely connect with people in the community near your clinic who are volunteering their home as temporary housing.',
             style: TextStyle(
               fontSize: 24,
               height: 1.25,
@@ -54,11 +53,11 @@ class LayoverPartyPage extends StatelessWidget {
               RectangularButton(
                 onClicked: () => launchUrl(
                   Uri.parse(
-                    'https://devpost.com/software/layover-party',
+                    'https://devpost.com/software/allynd',
                   ),
                 ),
                 backgroundColor:
-                    AppColors.of(context).isDark ? Colors.white : Colors.black,
+                AppColors.of(context).isDark ? Colors.white : Colors.black,
                 child: Row(
                   children: [
                     Image.asset(
@@ -87,10 +86,10 @@ class LayoverPartyPage extends StatelessWidget {
               const SizedBox(width: 20),
               RectangularButton(
                 onClicked: () => launchUrl(
-                  Uri.parse('https://github.com/benweschler/layover-party-app'),
+                  Uri.parse('https://github.com/benweschler/allyned'),
                 ),
                 backgroundColor:
-                    AppColors.of(context).isDark ? Colors.white : Colors.black,
+                AppColors.of(context).isDark ? Colors.white : Colors.black,
                 child: Row(
                   children: [
                     Image.asset(
@@ -124,21 +123,17 @@ class LayoverPartyPage extends StatelessWidget {
       darkAssetPaths: _assetPaths,
       phoneFrameSizeMultipliers: const [
         0.18733774497866676,
-        0.06376676727551374,
-        0.10034349543461248,
         0.1778201150198227,
-        0.10986685597364959,
-        0.07033322353229098,
+        0.10034349543461248,
+        0.06376676727551374,
       ],
     );
   }
 
   final List<String> _assetPaths = const [
-    'assets/showcase-media/layover-party/images/onboarding-one.png',
-    'assets/showcase-media/layover-party/images/onboarding-two.png',
-    'assets/showcase-media/layover-party/images/onboarding-three.png',
-    'assets/showcase-media/layover-party/images/trip-ticket.png',
-    'assets/showcase-media/layover-party/images/search-bar.png',
-    'assets/showcase-media/layover-party/images/trips.png',
+    'assets/showcase-media/allynd/login.png',
+    'assets/showcase-media/allynd/onboarding-one.png',
+    'assets/showcase-media/allynd/onboarding-two.png',
+    'assets/showcase-media/allynd/onboarding-three.png',
   ];
 }

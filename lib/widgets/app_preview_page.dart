@@ -6,17 +6,17 @@ import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
 
 class AppPreviewPage extends StatelessWidget {
-  final Widget pageContent;
   final List<String> lightAssetPaths;
   final List<String> darkAssetPaths;
   final List<double> phoneFrameSizeMultipliers;
+  final Widget pageContent;
 
   AppPreviewPage({
     super.key,
-    required this.pageContent,
     required this.lightAssetPaths,
     required this.darkAssetPaths,
     required this.phoneFrameSizeMultipliers,
+    required this.pageContent,
   });
 
 // The portion of the total vertical space the mouse is at.

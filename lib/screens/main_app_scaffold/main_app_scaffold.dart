@@ -3,6 +3,8 @@ import 'dart:html';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:website/screens/allynd_page.dart';
+import 'package:website/screens/dragonator_page.dart';
 import 'package:website/screens/layover_party_page.dart';
 import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
@@ -52,6 +54,8 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
                 const LandingPage(),
                 const SportVuePage(),
                 const LayoverPartyPage(),
+                const DragonatorPage(),
+                const AllyndPage(),
               ].map((page) {
                 // Add maintain state for now so that expensive pages with lots
                 // of images aren't rebuilt everytime they are navigated to.

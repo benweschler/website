@@ -8,6 +8,17 @@ class SportVuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPreviewPage(
+      lightAssetPaths: _getAssetPaths(Brightness.light),
+      darkAssetPaths: _getAssetPaths(Brightness.dark),
+      phoneFrameSizeMultipliers: const [
+        0.18733774497866676,
+        0.06376676727551374,
+        0.10034349543461248,
+        0.1778201150198227,
+        0.10986685597364959,
+        0.07033322353229098,
+        0.1191127705251509,
+      ],
       pageContent: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,8 +38,7 @@ class SportVuePage extends StatelessWidget {
             children: <Widget>[
               TechnologyTagChip(label: 'Flutter'),
               TechnologyTagChip(label: 'Firebase'),
-              TechnologyTagChip(
-                  label: 'Bluetooth Low Energy'),
+              TechnologyTagChip(label: 'Bluetooth Low Energy'),
             ],
           ),
           SizedBox(height: 15),
@@ -40,27 +50,20 @@ class SportVuePage extends StatelessWidget {
               letterSpacing: 1.33,
             ),
           ),
+          SizedBox(height: 50),
+          Text(
+            'SportVue is not open-source.',
+            style: TextStyle(fontSize: 12, letterSpacing: 1),
+          ),
         ],
       ),
-      lightAssetPaths: _getAssetPaths(Brightness.light),
-      darkAssetPaths: _getAssetPaths(Brightness.dark),
-      phoneFrameSizeMultipliers: const [
-        0.18733774497866676,
-        0.06376676727551374,
-        0.10034349543461248,
-        0.1778201150198227,
-        0.10986685597364959,
-        0.07033322353229098,
-        0.1191127705251509,
-      ],
     );
   }
 
   List<String> _getAssetPaths(Brightness brightness) {
     final isDark = (brightness == Brightness.dark);
     final themeString = isDark ? 'dark' : 'light';
-    final assetDirectoryPath =
-        'assets/showcase-media/sportvue/$themeString/';
+    final assetDirectoryPath = 'assets/showcase-media/sportvue/$themeString/';
 
     return [
       'login-$themeString.png',

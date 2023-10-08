@@ -35,6 +35,8 @@ flutter:
     - 'assets/resume.pdf'
     - 'assets/github-invertocat-logo.png'
     - 'assets/devpost-logo.png'
+
+    # SportVue light
     - 'assets/showcase-media/sportvue/light/calendar-light.png'
     - 'assets/showcase-media/sportvue/light/dashboard-light.png'
     - 'assets/showcase-media/sportvue/light/data-import-light.mp4'
@@ -43,6 +45,8 @@ flutter:
     - 'assets/showcase-media/sportvue/light/profile-light.png'
     - 'assets/showcase-media/sportvue/light/session-data-light.png'
     - 'assets/showcase-media/sportvue/light/trends-light.png'
+
+    # SportVue dark
     - 'assets/showcase-media/sportvue/dark/calendar-dark.png'
     - 'assets/showcase-media/sportvue/dark/dashboard-dark.png'
     - 'assets/showcase-media/sportvue/dark/data-import-dark.mp4'
@@ -51,6 +55,8 @@ flutter:
     - 'assets/showcase-media/sportvue/dark/profile-dark.png'
     - 'assets/showcase-media/sportvue/dark/session-data-dark.png'
     - 'assets/showcase-media/sportvue/dark/trends-dark.png'
+
+    # Layover Party
     - 'assets/showcase-media/layover-party/images/onboarding-one.png'
     - 'assets/showcase-media/layover-party/images/onboarding-two.png'
     - 'assets/showcase-media/layover-party/images/onboarding-three.png'
@@ -61,6 +67,22 @@ flutter:
     - 'assets/showcase-media/layover-party/videos/onboarding-second-third.mp4'
     - 'assets/showcase-media/layover-party/videos/search-bar.mp4'
     - 'assets/showcase-media/layover-party/videos/trip-ticket.mp4'
+
+    # Dragonator light
+    - 'assets/showcase-media/dragonator/light/create-paddler-light.png'
+    - 'assets/showcase-media/dragonator/light/roster-light.png'
+    - 'assets/showcase-media/dragonator/light/edit-lineup-light.png'
+    - 'assets/showcase-media/dragonator/light/paddler-details-light.png'
+    - 'assets/showcase-media/dragonator/light/settings-light.png'
+
+    # Dragonator dark
+    - 'assets/showcase-media/dragonator/dark/create-paddler-dark.png'
+    - 'assets/showcase-media/dragonator/dark/roster-dark.png'
+    - 'assets/showcase-media/dragonator/dark/edit-lineup-dark.png'
+    - 'assets/showcase-media/dragonator/dark/paddler-details-dark.png'
+    - 'assets/showcase-media/dragonator/dark/settings-dark.png'
+
+    # Allynd
     - 'assets/showcase-media/allynd/login.png'
     - 'assets/showcase-media/allynd/onboarding-one.png'
     - 'assets/showcase-media/allynd/onboarding-two.png'

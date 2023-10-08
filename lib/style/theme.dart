@@ -57,7 +57,7 @@ class AppColors extends ThemeExtension<AppColors> {
 
   ThemeData toThemeData() {
     final themeData = ThemeData(
-      scaffoldBackgroundColor: isDark ? Colors.black: Colors.white,
+      scaffoldBackgroundColor: isDark ? Colors.black : Colors.white,
       brightness: isDark ? Brightness.dark : Brightness.light,
       fontFamily: 'Inter',
     ).copyWith(extensions: <ThemeExtension<dynamic>>[this]);
