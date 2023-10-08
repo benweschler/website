@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 enum ThemeType { light, dark }
 
 // LIGHT GRADIENT COLORS
-const _amberYellow = Color.fromRGBO(244, 188, 159, 1);
+const _amberYellow = Color.fromRGBO(229, 186, 137, 1.0);
 const _deepBlue = Color.fromRGBO(49, 98, 238, 1);
-const _pink = Color.fromRGBO(232, 130, 204, 1);
+const _pink = Color.fromRGBO(246, 146, 146, 1.0);
 const _blue = Color.fromRGBO(89, 181, 243, 1);
 
 const _purpleHaze = Color.fromRGBO(105, 49, 245, 1);
