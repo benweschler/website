@@ -32,77 +32,50 @@ class DragonatorPage extends StatelessWidget {
         0.1778201150198227,
         0.10986685597364959,
       ],
-      pageContent: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Dragonator',
-            style: TextStyle(
-              fontFamily: 'Libre Baskerville',
-              fontSize: 36,
-              letterSpacing: 2,
+      title: 'Dragonator',
+      tagChips: const [
+        TechnologyTagChip(
+          label: 'Under Development',
+          textColor: Colors.white,
+          // This is the Dragonator theme red
+          color: Color(0xFFE55C45),
+        ),
+        TechnologyTagChip(label: 'Flutter'),
+        TechnologyTagChip(label: 'Firebase'),
+        TechnologyTagChip(label: 'Google Cloud Functions'),
+      ],
+      description: 'A Dragonboat team management platform.',
+      bottomContent: RectangularButton(
+        onClicked: () => launchUrl(
+          Uri.parse('https://github.com/benweschler/dragonator'),
+        ),
+        backgroundColor:
+        AppColors.of(context).isDark ? Colors.white : Colors.black,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/github-invertocat-logo.png',
+              color: AppColors.of(context).isDark
+                  ? Colors.black
+                  : Colors.white,
+              height: 22,
             ),
-          ),
-          const SizedBox(height: 10),
-          const Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: <Widget>[
-              TechnologyTagChip(
-                label: 'Under Development',
-                textColor: Colors.white,
-                // This is the Dragonator theme red
-                color: Color(0xFFE55C45),
+            const SizedBox(width: 10),
+            Text(
+              'GitHub',
+              style: TextStyle(
+                color: AppColors.of(context).isDark
+                    ? Colors.black
+                    : Colors.white,
+                fontSize: 20,
+                height: 1.25,
+                letterSpacing: 1.33,
+                fontWeight: FontWeight.w500,
               ),
-              TechnologyTagChip(label: 'Flutter'),
-              TechnologyTagChip(label: 'Firebase'),
-              TechnologyTagChip(label: 'Google Cloud Functions'),
-            ],
-          ),
-          const SizedBox(height: 15),
-          const Text(
-            'A Dragonboat team management platform.',
-            style: TextStyle(
-              fontSize: 24,
-              height: 1.25,
-              letterSpacing: 1.33,
             ),
-          ),
-          const SizedBox(height: 50),
-          RectangularButton(
-            onClicked: () => launchUrl(
-              Uri.parse('https://github.com/benweschler/dragonator'),
-            ),
-            backgroundColor:
-            AppColors.of(context).isDark ? Colors.white : Colors.black,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/github-invertocat-logo.png',
-                  color: AppColors.of(context).isDark
-                      ? Colors.black
-                      : Colors.white,
-                  height: 22,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'GitHub',
-                  style: TextStyle(
-                    color: AppColors.of(context).isDark
-                        ? Colors.black
-                        : Colors.white,
-                    fontSize: 20,
-                    height: 1.25,
-                    letterSpacing: 1.33,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

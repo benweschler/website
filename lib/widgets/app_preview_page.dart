@@ -4,19 +4,26 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
+import 'package:website/widgets/technology_tag_chip.dart';
 
 class AppPreviewPage extends StatelessWidget {
   final List<String> lightAssetPaths;
   final List<String> darkAssetPaths;
   final List<double> phoneFrameSizeMultipliers;
-  final Widget pageContent;
+  final String title;
+  final List<TechnologyTagChip> tagChips;
+  final String description;
+  final Widget bottomContent;
 
   AppPreviewPage({
     super.key,
     required this.lightAssetPaths,
     required this.darkAssetPaths,
     required this.phoneFrameSizeMultipliers,
-    required this.pageContent,
+    required this.title,
+    required this.tagChips,
+    required this.description,
+    required this.bottomContent,
   });
 
 // The portion of the total vertical space the mouse is at.
@@ -50,7 +57,37 @@ class AppPreviewPage extends StatelessWidget {
                 flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: pageContent,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontFamily: 'Libre Baskerville',
+                          fontSize: 36,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: tagChips,
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        description,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          height: 1.25,
+                          letterSpacing: 1.33,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      bottomContent,
+                    ],
+                  ),
                 ),
               ),
               Expanded(

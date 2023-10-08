@@ -19,43 +19,16 @@ class SportVuePage extends StatelessWidget {
         0.07033322353229098,
         0.1191127705251509,
       ],
-      pageContent: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'SportVue Mobile App',
-            style: TextStyle(
-              fontFamily: 'Libre Baskerville',
-              fontSize: 36,
-              letterSpacing: 1,
-            ),
-          ),
-          SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: <Widget>[
-              TechnologyTagChip(label: 'Flutter'),
-              TechnologyTagChip(label: 'Firebase'),
-              TechnologyTagChip(label: 'Bluetooth Low Energy'),
-            ],
-          ),
-          SizedBox(height: 15),
-          Text(
-            'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
-            style: TextStyle(
-              fontSize: 24,
-              height: 1.25,
-              letterSpacing: 1.33,
-            ),
-          ),
-          SizedBox(height: 50),
-          Text(
-            'SportVue is not open-source.',
-            style: TextStyle(fontSize: 12, letterSpacing: 1),
-          ),
-        ],
+      title: 'SportVue Mobile App',
+      tagChips: const [
+        TechnologyTagChip(label: 'Flutter'),
+        TechnologyTagChip(label: 'Firebase'),
+        TechnologyTagChip(label: 'Bluetooth Low Energy'),
+      ],
+      description: 'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
+      bottomContent: const Text(
+        'The SportVue mobile app is not open-source.',
+        style: TextStyle(fontSize: 12, letterSpacing: 1),
       ),
     );
   }
