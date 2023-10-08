@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
@@ -12,10 +10,12 @@ import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
 import 'package:website/widgets/responsive_button.dart';
 
-class GlobalHeader extends StatelessWidget {
-  final _emailPopupKey = GlobalKey<_EmailCopiedPopupState>();
+import 'header_messenger.dart';
 
-  GlobalHeader({super.key});
+class GlobalHeader extends StatelessWidget {
+  final GlobalKey<HeaderMessengerState> messengerKey;
+
+  const GlobalHeader({super.key, required this.messengerKey});
 
   Color _resolveHeaderColor(BuildContext context) {
     double navigatorPage = context
@@ -44,9 +44,9 @@ class GlobalHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _HeaderButtons(emailPopupKey: _emailPopupKey),
+                  _HeaderButtons(emailPopupKey: messengerKey),
                   const SizedBox(height: 15),
-                  _EmailCopiedPopup(key: _emailPopupKey),
+                  HeaderMessenger(messengerKey: messengerKey),
                 ],
               ),
             ),
@@ -58,7 +58,7 @@ class GlobalHeader extends StatelessWidget {
 }
 
 class _HeaderButtons extends StatelessWidget {
-  final GlobalKey<_EmailCopiedPopupState> emailPopupKey;
+  final GlobalKey<HeaderMessengerState> emailPopupKey;
 
   const _HeaderButtons({required this.emailPopupKey});
 
@@ -86,6 +86,7 @@ class _HeaderButtons extends StatelessWidget {
           ),
         ),
         const Spacer(),
+        /*
         ResponsiveButton(
           onClicked: _downloadResume,
           child: const Text(
@@ -123,7 +124,20 @@ class _HeaderButtons extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 20),
+         */
+        //TODO: implement about button
+        ResponsiveButton(
+          onClicked: () {},
+          child: const Text(
+            'About',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.2,
+            ),
+          ),
+        ),
+        const SizedBox(width: 30),
         Consumer<ThemeConfig>(
           builder: (_, themeConfig, __) => IconSwitch(
             onSwitch: themeConfig.toggleTheme,
@@ -135,99 +149,6 @@ class _HeaderButtons extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _EmailCopiedPopup extends StatefulWidget {
-  const _EmailCopiedPopup({super.key});
-
-  @override
-  State<_EmailCopiedPopup> createState() => _EmailCopiedPopupState();
-}
-
-class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
-  final _animationSegmentDuration = 250.ms;
-  bool _visible = false;
-
-  void showPopup() async {
-    setState(() => _visible = true);
-    await Future.delayed(2500.ms);
-    setState(() => _visible = false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(5)),
-      child: Stack(
-        children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.of(context).transparentContainer,
-              ),
-              child: const Text(
-                'Email copied to clipboard',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1,
-                ),
-              ),
-            ),
-          )
-              .animate(target: _visible ? 1 : 0)
-              .visibility(duration: _animationSegmentDuration)
-              .then(duration: _animationSegmentDuration),
-          Positioned.fill(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Row(
-                  children: [
-                    Animate(target: _visible ? 1 : 0)
-                        .custom(
-                          duration: _animationSegmentDuration,
-                          begin: 1,
-                          end: 0,
-                          curve: Curves.fastEaseInToSlowEaseOut,
-                          builder: (_, value, __) => SizedBox(
-                            width: constraints.maxWidth * value,
-                          ),
-                        )
-                        .then(duration: _animationSegmentDuration),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.of(context).onBackground,
-                          borderRadius: const BorderRadius.horizontal(
-                            left: Radius.circular(5),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Animate(target: _visible ? 1 : 0).custom(
-                      delay: _animationSegmentDuration,
-                      duration: _animationSegmentDuration,
-                      begin: 0,
-                      end: 1,
-                      curve: Curves.fastEaseInToSlowEaseOut,
-                      builder: (_, value, __) => SizedBox(
-                        width: constraints.maxWidth * value,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

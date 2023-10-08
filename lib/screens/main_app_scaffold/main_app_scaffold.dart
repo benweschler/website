@@ -9,11 +9,16 @@ import 'package:website/screens/layover_party_page.dart';
 import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
+import 'package:website/style/theme.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
 
-const _darkModeSupportedPageIndexes = {0, 1, 2};
+import 'header_messenger.dart';
+
+/// The indices of pages that don't support dark mode and the corresponding app
+/// names.
+const _darkModeUnsupportedPages = {3: 'Layover Party', 4: 'Allynd'};
 
 typedef ScrollCallback = void Function(AxisDirection);
 
@@ -25,6 +30,7 @@ class MainAppScaffold extends StatefulWidget {
 }
 
 class _MainAppScaffoldState extends State<MainAppScaffold> {
+  final _headerMessengerKey = GlobalKey<HeaderMessengerState>();
   final RootPageController _pageController = RootPageController();
   bool _isPageAnimating = false;
 
@@ -52,8 +58,15 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     final resolvedNextPage =
         direction == AxisDirection.up ? nextPage.ceil() : nextPage.floor();
 
-    if (!_darkModeSupportedPageIndexes.contains(resolvedNextPage)) {
-      context.read<ThemeConfig>().lockDarkMode();
+    if (_darkModeUnsupportedPages.containsKey(resolvedNextPage)) {
+      final themeConfig = context.read<ThemeConfig>();
+      if(themeConfig.themeType == ThemeType.dark) {
+        final appName = _darkModeUnsupportedPages[resolvedNextPage];
+        _headerMessengerKey.currentState!
+            .showPopup("$appName doesn't have dark mode");
+      }
+
+      themeConfig.lockDarkMode();
     } else {
       context.read<ThemeConfig>().unlockDarkMode();
     }
@@ -88,7 +101,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               top: 45,
               right: 45,
               left: 45,
-              child: GlobalHeader(),
+              child: GlobalHeader(messengerKey: _headerMessengerKey),
             ),
           ],
         ),

@@ -41,7 +41,7 @@ class LayoverPartyPage extends StatelessWidget {
         const TagChip(label: 'Swagger'),
       ],
       description:
-          'Rather than taking a direct flight the next time you travel, find flights with multiple long layovers — which are often cheaper than direct flights — in places you want to visit, allowing you to save money and explore destinations you\'ve always wanted to see every time you travel. Exploring is better together, so connect with other travellers who have layovers that overlap with yours.',
+          "Rather than taking a direct flight the next time you travel, find flights with multiple long layovers — which are often cheaper than direct flights — in places you want to visit, allowing you to save money and explore destinations you've always wanted to see every time you travel. Exploring is better together, so connect with other travellers who have layovers that overlap with yours.",
       bottomContent: const Row(
         children: [
           DevpostButton(projectName: 'layover-party'),

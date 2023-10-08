@@ -25,7 +25,7 @@ class SportVuePage extends StatelessWidget {
         TagChip(label: 'Firebase'),
         TagChip(label: 'Bluetooth Low Energy'),
       ],
-      description: 'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
+      description: "Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player's coach.",
       bottomContent: const Text(
         'The SportVue mobile app is not open-source.',
         style: TextStyle(fontSize: 12, letterSpacing: 1),
