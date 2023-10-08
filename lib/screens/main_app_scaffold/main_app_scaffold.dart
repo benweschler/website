@@ -30,15 +30,16 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
   final _headerMessengerKey = GlobalKey<HeaderMessengerState>();
   late final RootPageController _pageController = RootPageController()
     ..addScrollListener(_updateDarkModeLock);
-  bool _isPageAnimating = false;
+  bool _isAnimatingFromScroll = false;
 
   void _onScroll(AxisDirection direction) async {
-    if (_isPageAnimating) return;
+    // If the page controller is between pages
+    if (_isAnimatingFromScroll) return;
 
     if (MediaQuery.of(context).size.width < wideScreenCutoff &&
         _pageController.page > 0) return;
 
-    _isPageAnimating = true;
+    _isAnimatingFromScroll = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
       await _pageController.previousPage();
     } else if (direction == AxisDirection.down &&
@@ -46,7 +47,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       await _pageController.nextPage();
     }
 
-    _isPageAnimating = false;
+    // Debounce
+    await Future.delayed(const Duration(milliseconds: 500));
+    _isAnimatingFromScroll = false;
   }
 
   void _updateDarkModeLock(int nextPage) {
@@ -71,23 +74,24 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       child: Scaffold(
         body: Stack(
           children: [
-            PageView(
-              controller: _pageController,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                const LandingPage(),
-                const SportVuePage(),
-                const DragonatorPage(),
-                const LayoverPartyPage(),
-                const AllyndPage(),
-              ].map((page) {
-                // Add maintain state for now so that expensive pages with lots
-                // of images aren't rebuilt everytime they are navigated to.
-                return MaintainState(
-                  child: Page(onScroll: _onScroll, child: page),
-                );
-              }).toList(),
+            ScrollListener(
+              onScroll: _onScroll,
+              child: PageView(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  const LandingPage(),
+                  const SportVuePage(),
+                  const DragonatorPage(),
+                  const LayoverPartyPage(),
+                  const AllyndPage(),
+                ].map((page) {
+                  // Add maintain state for now so that expensive pages with lots
+                  // of images aren't rebuilt everytime they are navigated to.
+                  return MaintainState(child: Page(child: page));
+                }).toList(),
+              ),
             ),
             Positioned(
               top: 45,
@@ -103,21 +107,19 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 }
 
 class Page extends StatelessWidget {
-  final ScrollCallback onScroll;
   final Widget child;
 
-  const Page({super.key, required this.onScroll, required this.child});
+  const Page({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return ScrollListener(
-      onScroll: onScroll,
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          child: child,
-        ),
+    if(MediaQuery.of(context).size.width < wideScreenCutoff) return child;
+
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        child: child,
       ),
     );
   }
@@ -148,6 +150,10 @@ class ScrollListener extends StatelessWidget {
         if (!_isMobileBrowser(window.navigator.userAgent)) return;
 
         final delta = details.delta.dy;
+
+        // Ignore small swipes for app scrolling
+        if(delta.abs() < 30) return;
+
         // This is opposite to what is intuitive since up -> previous. On mobile
         // if you drag up you want to scroll down.
         final direction = delta > 0 ? AxisDirection.up : AxisDirection.down;
