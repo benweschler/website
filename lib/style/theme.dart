@@ -16,13 +16,19 @@ const _darkAmber = Color.fromRGBO(233, 160, 75, 1);
 class AppColors extends ThemeExtension<AppColors> {
   final bool isDark;
   final GradientColors gradientColors;
-  final Color headerColor;
+  final Color background;
+  final Color onBackground;
+  final Color container;
+  final Color onContainer;
   final Color transparentContainer;
 
   const AppColors._({
     required this.isDark,
     required this.gradientColors,
-    required this.headerColor,
+    required this.background,
+    required this.onBackground,
+    required this.container,
+    required this.onContainer,
     required this.transparentContainer,
   });
 
@@ -37,8 +43,11 @@ class AppColors extends ThemeExtension<AppColors> {
             bottomLeft: _pink,
             bottomRight: _amberYellow,
           ),
-          headerColor: Colors.black,
-          transparentContainer: Colors.black.withOpacity(0.25),
+          background: Colors.white,
+          onBackground: Colors.black,
+          container: Colors.black,
+          onContainer: Colors.white,
+          transparentContainer: Colors.black.withOpacity(0.15),
         );
       case ThemeType.dark:
         return AppColors._(
@@ -49,15 +58,21 @@ class AppColors extends ThemeExtension<AppColors> {
             bottomLeft: _purpleHaze,
             bottomRight: _darkAmber,
           ),
-          headerColor: Colors.white,
-          transparentContainer: Colors.white.withOpacity(0.25),
+          background: Colors.black,
+          onBackground: Colors.white,
+          container: Colors.white,
+          onContainer: Colors.black,
+          transparentContainer: Colors.white.withOpacity(0.15),
         );
     }
   }
 
+  static AppColors of(BuildContext context) =>
+      Theme.of(context).extension<AppColors>()!;
+
   ThemeData toThemeData() {
     final themeData = ThemeData(
-      scaffoldBackgroundColor: isDark ? Colors.black : Colors.white,
+      scaffoldBackgroundColor: background,
       brightness: isDark ? Brightness.dark : Brightness.light,
       fontFamily: 'Inter',
     ).copyWith(extensions: <ThemeExtension<dynamic>>[this]);
@@ -65,24 +80,28 @@ class AppColors extends ThemeExtension<AppColors> {
     return themeData.copyWith(
       colorScheme: themeData.colorScheme.copyWith(
         primary: isDark ? Colors.white : Colors.black,
+        secondary: isDark ? Colors.white : Colors.black,
       ),
     );
   }
-
-  static AppColors of(BuildContext context) =>
-      Theme.of(context).extension<AppColors>()!;
 
   @override
   AppColors copyWith({
     bool? isDark,
     GradientColors? gradientColors,
-    Color? headerColor,
+    Color? background,
+    Color? onBackground,
+    Color? container,
+    Color? onContainer,
     Color? transparentContainer,
   }) {
     return AppColors._(
       isDark: isDark ?? this.isDark,
       gradientColors: gradientColors ?? this.gradientColors,
-      headerColor: headerColor ?? this.headerColor,
+      background: background ?? this.background,
+      onBackground: onBackground ?? this.onBackground,
+      container: container ?? this.onContainer,
+      onContainer: onContainer ?? this.onContainer,
       transparentContainer: transparentContainer ?? this.transparentContainer,
     );
   }
@@ -96,7 +115,10 @@ class AppColors extends ThemeExtension<AppColors> {
       // in order to immediately trigger listeners that run custom animations.
       isDark: other.isDark,
       gradientColors: gradientColors.lerpTo(other.gradientColors, t),
-      headerColor: Color.lerp(headerColor, other.headerColor, t)!,
+      background: Color.lerp(background, other.background, t)!,
+      onBackground: Color.lerp(background, other.background, t)!,
+      container: Color.lerp(container, other.container, t)!,
+      onContainer: Color.lerp(onContainer, other.onContainer, t)!,
       transparentContainer: Color.lerp(transparentContainer, other.transparentContainer, t)!,
     );
   }

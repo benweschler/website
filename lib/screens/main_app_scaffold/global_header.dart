@@ -22,7 +22,7 @@ class GlobalHeader extends StatelessWidget {
         .select<RootPageController, double>((controller) => controller.page);
     navigatorPage = clampDouble(navigatorPage, 0, 1);
     return Color.lerp(
-        Colors.white, AppColors.of(context).headerColor, navigatorPage)!;
+        Colors.white, AppColors.of(context).onBackground, navigatorPage)!;
   }
 
   @override
@@ -31,16 +31,16 @@ class GlobalHeader extends StatelessWidget {
     return Theme(
       data: AppColors.of(context)
           .copyWith(
-            headerColor: resolvedHeaderColor,
-            transparentContainer: resolvedHeaderColor.withOpacity(0.25),
+            onBackground: resolvedHeaderColor,
+            transparentContainer: resolvedHeaderColor.withOpacity(0.15),
           )
           .toThemeData(),
       child: Builder(
         builder: (context) {
           return DefaultTextStyle.merge(
-            style: TextStyle(color: AppColors.of(context).headerColor),
+            style: TextStyle(color: AppColors.of(context).onBackground),
             child: IconTheme.merge(
-              data: IconThemeData(color: AppColors.of(context).headerColor),
+              data: IconThemeData(color: AppColors.of(context).onBackground),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -114,7 +114,7 @@ class _HeaderButtons extends StatelessWidget {
           ),
           child: ColorFiltered(
             colorFilter: ColorFilter.mode(
-              AppColors.of(context).headerColor,
+              AppColors.of(context).onBackground,
               BlendMode.srcIn,
             ),
             child: Image.asset(
@@ -128,7 +128,7 @@ class _HeaderButtons extends StatelessWidget {
           builder: (_, themeConfig, __) => IconSwitch(
             onSwitch: themeConfig.toggleTheme,
             animationTarget: themeConfig.themeType == ThemeType.dark ? 0 : 1,
-            color: AppColors.of(context).headerColor,
+            color: AppColors.of(context).onBackground,
             firstIcon: Icons.dark_mode_rounded,
             secondIcon: Icons.light_mode_rounded,
           ),
@@ -162,7 +162,7 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
       child: Stack(
         children: [
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
@@ -203,7 +203,7 @@ class _EmailCopiedPopupState extends State<_EmailCopiedPopup> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.of(context).headerColor,
+                          color: AppColors.of(context).onBackground,
                           borderRadius: const BorderRadius.horizontal(
                             left: Radius.circular(5),
                           ),
