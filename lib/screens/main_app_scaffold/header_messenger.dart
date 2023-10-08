@@ -19,13 +19,12 @@ class HeaderMessengerState extends State<HeaderMessenger> {
   String message = '';
 
   void showPopup(String message) async {
-    // Hide the current message and wait for the animation to complete.
-    if (_visible) {
-      setState(() => _visible = false);
-      await Future.delayed(
-        (2 * _animationSegmentDuration.inMilliseconds + 100).ms,
-      );
-    }
+    // Don't show a popup if there is currently one showing. This:
+    // 1) Prevents jumps by preventing modification of the popup while it is
+    // active
+    // 2) Ensures that rapid calls to show a popup originating from a user
+    // interaction (like repeatedly clicking a button) have no effect.
+    if (_visible) return;
 
     this.message = message;
     setState(() => _visible = true);

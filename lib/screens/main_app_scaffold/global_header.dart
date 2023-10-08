@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
@@ -146,6 +147,11 @@ class _HeaderButtons extends StatelessWidget {
             firstIcon: Icons.dark_mode_rounded,
             secondIcon: Icons.light_mode_rounded,
             isDisabled: themeConfig.darkModeLocked,
+            onDisabledClick: () {
+              final appName = darkModeUnsupportedPages[context.currentPage()];
+              emailPopupKey.currentState!
+                  .showPopup("$appName doesn't have dark mode");
+            },
           ),
         ),
       ],

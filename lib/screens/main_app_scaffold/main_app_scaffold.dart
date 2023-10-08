@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:website/constants.dart';
 import 'package:website/screens/allynd_page.dart';
 import 'package:website/screens/dragonator_page.dart';
 import 'package:website/screens/layover_party_page.dart';
@@ -15,10 +16,6 @@ import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
 
 import 'header_messenger.dart';
-
-/// The indices of pages that don't support dark mode and the corresponding app
-/// names.
-const _darkModeUnsupportedPages = {3: 'Layover Party', 4: 'Allynd'};
 
 typedef ScrollCallback = void Function(AxisDirection);
 
@@ -58,10 +55,10 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     final resolvedNextPage =
         direction == AxisDirection.up ? nextPage.ceil() : nextPage.floor();
 
-    if (_darkModeUnsupportedPages.containsKey(resolvedNextPage)) {
+    if (darkModeUnsupportedPages.containsKey(resolvedNextPage)) {
       final themeConfig = context.read<ThemeConfig>();
       if(themeConfig.themeType == ThemeType.dark) {
-        final appName = _darkModeUnsupportedPages[resolvedNextPage];
+        final appName = darkModeUnsupportedPages[resolvedNextPage];
         _headerMessengerKey.currentState!
             .showPopup("$appName doesn't have dark mode");
       }

@@ -8,6 +8,7 @@ class IconSwitch extends StatelessWidget {
   final IconData firstIcon;
   final IconData secondIcon;
   final bool isDisabled;
+  final VoidCallback? onDisabledClick;
 
   const IconSwitch({
     super.key,
@@ -17,6 +18,7 @@ class IconSwitch extends StatelessWidget {
     required this.firstIcon,
     required this.secondIcon,
     this.isDisabled = false,
+    this.onDisabledClick,
   });
 
   @override
@@ -25,7 +27,7 @@ class IconSwitch extends StatelessWidget {
       cursor:
           isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onSwitch,
+        onTap: isDisabled ? onDisabledClick : onSwitch,
         child: Container(
           decoration: ShapeDecoration(
             shape: StadiumBorder(

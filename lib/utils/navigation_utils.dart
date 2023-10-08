@@ -13,6 +13,8 @@ extension NavigationUtils on BuildContext {
   Future<void> jumpPrevious() {
     return read<RootPageController>().previousPage();
   }
+
+  double currentPage() => read<RootPageController>().page;
 }
 
 class RootPageController extends PageController {
