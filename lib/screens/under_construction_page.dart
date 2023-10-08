@@ -145,10 +145,10 @@ class _PageContentState extends State<_PageContent> {
                           ),
                           TextSpan(
                             text:
-                                ' This is taking a little longer, than expected... Everything should be up and running by the ',
+                                ' So close! Everything should be up and running ',
                           ),
                           TextSpan(
-                            text: 'early morning of October 8th',
+                            text: 'within or or two hours',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                             ),

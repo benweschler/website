@@ -6,6 +6,7 @@ const _imageAssetPaths = [
   // GitHub logo
   'assets/github-invertocat-logo.png',
   'assets/devpost-logo.png',
+  'assets/shadertoy-logo.png',
 
   // SportVue light
   'assets/showcase-media/sportvue/light/calendar-light.png',

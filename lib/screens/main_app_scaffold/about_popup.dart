@@ -61,8 +61,12 @@ class AboutPopup extends StatelessWidget {
                     child: _buildGithubButton(contentColor),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
+                    padding: const EdgeInsets.only(bottom: 36),
                     child: _buildDevpostButton(contentColor),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 50),
+                    child: _buildShadertoyButton(contentColor),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(bottom: 5),
@@ -103,11 +107,11 @@ class AboutPopup extends StatelessWidget {
                 ]
                     .animate(interval: 75.ms)
                     .slideY(
-                  begin: 0.2,
-                  end: 0,
-                  duration: 350.ms,
-                  curve: Curves.easeOutCubic,
-                )
+                      begin: 0.2,
+                      end: 0,
+                      duration: 350.ms,
+                      curve: Curves.easeOutCubic,
+                    )
                     .fadeIn(),
               ),
             ),
@@ -194,6 +198,32 @@ class AboutPopup extends StatelessWidget {
           const SizedBox(width: 20),
           const Text(
             'Devpost',
+            style: TextStyle(
+              fontSize: 48,
+              letterSpacing: 2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShadertoyButton(Color color) {
+    return ResponsiveButton(
+      onClicked: () => launchUrl(
+        Uri.parse('https://www.shadertoy.com/user/welches'),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/shadertoy-logo.png',
+            color: color,
+            height: 48,
+          ),
+          const SizedBox(width: 20),
+          const Text(
+            'Shadertoy',
             style: TextStyle(
               fontSize: 48,
               letterSpacing: 2,
