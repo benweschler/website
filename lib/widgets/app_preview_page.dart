@@ -158,7 +158,9 @@ class _MobileLayout extends StatefulWidget {
 }
 
 class _MobileLayoutState extends State<_MobileLayout> {
-  final _scrollController = ScrollController();
+  // Add a small amount to the scroll offset so that if the user scrolls back
+  // to the edge the controller notifies listeners and we can detect it.
+  final _scrollController = ScrollController(initialScrollOffset: 10);
 
   @override
   void initState() {
@@ -175,12 +177,13 @@ class _MobileLayoutState extends State<_MobileLayout> {
 
   void _onScrollEnd() {
     if (_scrollController.position.atEdge) {
-      if(_scrollController.offset == 0) {
-        if(context.currentPage() > 0) {
-          context.jumpPrevious();
+      if (_scrollController.offset == 0) {
+        if (context.currentPage() > 0) {
+          context.jumpPrevious().then((_) => _scrollController.jumpTo(1));
         }
-      } else if(context.currentPage() <= 3) {
-        context.jumpNext();
+      } else if (context.currentPage() <= 3) {
+        final offset = _scrollController.offset;
+        context.jumpNext().then((_) => _scrollController.jumpTo(offset - 1));
       }
     }
   }
@@ -213,13 +216,18 @@ class _MobileLayoutState extends State<_MobileLayout> {
           ),
         ),
         Positioned.fill(
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            physics: const ClampingScrollPhysics(),
-            child: SizedBox(
-              // This makes the scroll extent 50% of the screen's height
-              height: widget.constraints.maxHeight * 1.5,
-              width: widget.constraints.maxWidth,
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              scrollbars: false,
+            ),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: const ClampingScrollPhysics(),
+              child: SizedBox(
+                // This makes the scroll extent 50% of the screen's height
+                height: widget.constraints.maxHeight * 1.5,
+                width: widget.constraints.maxWidth,
+              ),
             ),
           ),
         ),
@@ -249,6 +257,8 @@ class _TextContent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Add top padding to avoid header
+          const SizedBox(height: 60),
           Text(
             title,
             style: const TextStyle(
