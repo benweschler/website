@@ -18,9 +18,8 @@ class GlobalHeader extends StatelessWidget {
   const GlobalHeader({super.key, required this.messengerKey});
 
   Color _resolveHeaderColor(BuildContext context) {
-    double navigatorPage = context
-        .select<RootPageController, double>((controller) => controller.page);
-    navigatorPage = clampDouble(navigatorPage, 0, 1);
+    double navigatorPage = context.select<RootPageController, double>(
+        (controller) => clampDouble(controller.page, 0, 1));
     return Color.lerp(
         Colors.white, AppColors.of(context).onBackground, navigatorPage)!;
   }
@@ -28,6 +27,7 @@ class GlobalHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedHeaderColor = _resolveHeaderColor(context);
+
     return Theme(
       data: AppColors.of(context)
           .copyWith(
@@ -93,10 +93,10 @@ class _HeaderButtons extends StatelessWidget {
             ),
           ),
         ),
-        if(MediaQuery.of(context).size.width < wideScreenCutoff)
-          const SizedBox(width: 15)
+        if (MediaQuery.of(context).size.width > wideScreenCutoff)
+          const SizedBox(width: 30)
         else
-          const SizedBox(width: 30),
+          const SizedBox(width: 15),
         Consumer<ThemeConfig>(
           builder: (_, themeConfig, __) => IconSwitch(
             onSwitch: themeConfig.toggleTheme,
@@ -107,6 +107,7 @@ class _HeaderButtons extends StatelessWidget {
             isDisabled: themeConfig.darkModeLocked,
             onDisabledClick: () {
               final appName = darkModeUnsupportedPages[context.currentPage()];
+              if(appName == null) return;
               headerMessengerKey.currentState!
                   .showPopup('$appName doesn\'t have dark mode');
             },

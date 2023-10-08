@@ -15,7 +15,7 @@ class InitializationScreen extends StatelessWidget {
     final showWorksOnMobilePrompt = !(MediaQuery
         .of(context)
         .size
-        .width < wideScreenCutoff) && !_isMobileBrowser();
+        .width <= wideScreenCutoff) && !_isMobileBrowser();
 
     return Scaffold(
       body: Center(
@@ -44,6 +44,7 @@ class InitializationScreen extends StatelessWidget {
                     .isDark ? Colors.white : Colors.black,
               ),
             ),
+            /*
             if (showWorksOnMobilePrompt)
               const Text(
                 'This webapp also works on mobile',
@@ -53,6 +54,8 @@ class InitializationScreen extends StatelessWidget {
                   letterSpacing: 1.33,
                 ),
               )
+
+             */
           ],
         ),
       ),

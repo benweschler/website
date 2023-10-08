@@ -35,7 +35,7 @@ class AppPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (MediaQuery.of(context).size.width < wideScreenCutoff) {
+        if (MediaQuery.of(context).size.width <= wideScreenCutoff) {
           return _MobileLayout(
             constraints: constraints,
             lightAssetPaths: lightAssetPaths,
@@ -194,6 +194,8 @@ class _MobileLayoutState extends State<_MobileLayout> {
       children: [
         Positioned.fill(child: widget.textContent),
         Positioned.fill(
+          left: 15,
+          right: 15,
           child: ListenableBuilder(
             listenable: _scrollController,
             builder: (_, __) {
@@ -225,7 +227,7 @@ class _MobileLayoutState extends State<_MobileLayout> {
               physics: const ClampingScrollPhysics(),
               child: SizedBox(
                 // This makes the scroll extent 50% of the screen's height
-                height: widget.constraints.maxHeight * 1.5,
+                height: widget.constraints.maxHeight * 3,
                 width: widget.constraints.maxWidth,
               ),
             ),

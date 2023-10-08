@@ -20,12 +20,13 @@ class ThemeConfig extends ChangeNotifier {
     if(_darkModeLocked) return;
 
     _darkModeLocked = true;
-    _darkModeQueued = _themeType == ThemeType.dark;
 
     if(_themeType == ThemeType.dark) {
+      _darkModeQueued = true;
       _themeType = ThemeType.light;
-      notifyListeners();
     }
+
+    notifyListeners();
   }
 
   void unlockDarkMode() {
@@ -35,8 +36,9 @@ class ThemeConfig extends ChangeNotifier {
 
     if(_darkModeQueued && _themeType == ThemeType.light) {
       _themeType = ThemeType.dark;
-      notifyListeners();
     }
+
+    notifyListeners();
   }
 
   void toggleTheme() {
