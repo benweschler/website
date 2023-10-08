@@ -75,6 +75,6 @@ void _precacheAssets(BuildContext context, StreamController controller) async {
 // Add a small delay between when initialization completes and closing the
 // login screen to ensure the user sees some frames where the app is 100%
 // loaded.
-  await Future.delayed(const Duration(milliseconds: 100));
+  await Future.delayed(const Duration(milliseconds: 500));
   controller.close();
 }

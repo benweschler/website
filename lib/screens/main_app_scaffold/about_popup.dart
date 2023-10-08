@@ -22,7 +22,7 @@ class AboutPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWideFormat = MediaQuery.of(context).size.width > wideScreenCutoff;
     final Color contentColor = AppColors.of(context).onContainer;
-    final double largeFontSize = isWideFormat ? 48 : 36;
+    final double largeFontSize = isWideFormat ? 48 : 30;
 
     return DefaultTextStyle(
       style: TextStyle(

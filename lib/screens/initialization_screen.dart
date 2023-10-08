@@ -1,7 +1,6 @@
-import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/widgets/linear_loading_indicator.dart';
 
@@ -12,11 +11,6 @@ class InitializationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showWorksOnMobilePrompt = !(MediaQuery
-        .of(context)
-        .size
-        .width <= wideScreenCutoff) && !_isMobileBrowser();
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -39,34 +33,31 @@ class InitializationScreen extends StatelessWidget {
               child: LinearLoadingIndicator(
                 progress: loadingPercentage / 100,
                 color:
-                AppColors
-                    .of(context)
-                    .isDark ? Colors.white : Colors.black,
+                    AppColors.of(context).isDark ? Colors.white : Colors.black,
               ),
             ),
-            /*
-            if (showWorksOnMobilePrompt)
-              const Text(
-                'This webapp also works on mobile',
-                style: TextStyle(
-                  fontSize: 14,
-                  height: 1.25,
-                  letterSpacing: 1.33,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: LayoutBuilder(
+                builder: (context, constraints) => ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: max(constraints.maxWidth / 3, 500),
+                  ),
+                  child: const Text(
+                    'Due to Safari\'s implementation of WebGL 2.0, use a Chromium browser for best performance',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.25,
+                      letterSpacing: 1.33,
+                    ),
+                  ),
                 ),
-              )
-
-             */
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-}
-
-bool _isMobileBrowser() {
-  final userAgent = window.navigator.userAgent;
-  return userAgent.contains('Mobile') ||
-      userAgent.contains('Tablet') ||
-      userAgent.contains('Android') ||
-      userAgent.contains('iOS');
 }
