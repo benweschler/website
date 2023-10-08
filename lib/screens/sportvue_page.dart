@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:website/widgets/app_preview_page.dart';
-import 'package:website/widgets/technology_tag_chip.dart';
+import 'package:website/widgets/tag_chip.dart';
 
 class SportVuePage extends StatelessWidget {
   const SportVuePage({super.key});
@@ -21,9 +21,9 @@ class SportVuePage extends StatelessWidget {
       ],
       title: 'SportVue Mobile App',
       tagChips: const [
-        TechnologyTagChip(label: 'Flutter'),
-        TechnologyTagChip(label: 'Firebase'),
-        TechnologyTagChip(label: 'Bluetooth Low Energy'),
+        TagChip(label: 'Flutter'),
+        TagChip(label: 'Firebase'),
+        TagChip(label: 'Bluetooth Low Energy'),
       ],
       description: 'Making sports safer and training more effective. Integrates with custom wearable hardware over Bluetooth to track athlete performance metrics. Prevents injury through in-game feedback and supercharges training with targeted recommendations and advanced analysis — with everything shared in real time with each player\'s coach.',
       bottomContent: const Text(

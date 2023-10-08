@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:website/style/theme.dart';
 
 class PhoneFrame extends StatelessWidget {
   final Widget child;
@@ -17,7 +18,7 @@ class PhoneFrame extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(_frameBorderRadius)),
         border: Border.all(
-          color: DefaultTextStyle.of(context).style.color!,
+          color: AppColors.of(context).onBackground,
           width: _frameThickness,
         ),
       ),

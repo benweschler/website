@@ -116,7 +116,7 @@ class AppColors extends ThemeExtension<AppColors> {
       isDark: other.isDark,
       gradientColors: gradientColors.lerpTo(other.gradientColors, t),
       background: Color.lerp(background, other.background, t)!,
-      onBackground: Color.lerp(background, other.background, t)!,
+      onBackground: Color.lerp(onBackground, other.onBackground, t)!,
       container: Color.lerp(container, other.container, t)!,
       onContainer: Color.lerp(onContainer, other.onContainer, t)!,
       transparentContainer: Color.lerp(transparentContainer, other.transparentContainer, t)!,

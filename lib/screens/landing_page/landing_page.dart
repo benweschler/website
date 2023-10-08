@@ -23,7 +23,7 @@ class _LandingPageState extends State<LandingPage>
   // The number of milliseconds for which the background gradient reacts after a
   // pointer update. This means that if the user is getting at least 20fps, they
   // will see at least one reactive frame after a pointer event.
-  final _backgroundReactionDuration = (1000/10).ms;
+  final _backgroundReactionDuration = (1000/20).ms;
 
   @override
   void initState() {

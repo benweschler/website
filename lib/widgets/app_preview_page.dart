@@ -4,18 +4,21 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
-import 'package:website/widgets/technology_tag_chip.dart';
+import 'package:website/widgets/tag_chip.dart';
 
-class AppPreviewPage extends StatelessWidget {
+// Make this a stateful widget to store the current mouse position in a state
+// variable that is persistent between rebuilds, even though the state is never
+// explicitly mutated.
+class AppPreviewPage extends StatefulWidget {
   final List<String> lightAssetPaths;
   final List<String> darkAssetPaths;
   final List<double> phoneFrameSizeMultipliers;
   final String title;
-  final List<TechnologyTagChip> tagChips;
+  final List<TagChip> tagChips;
   final String description;
   final Widget bottomContent;
 
-  AppPreviewPage({
+  const AppPreviewPage({
     super.key,
     required this.lightAssetPaths,
     required this.darkAssetPaths,
@@ -26,8 +29,13 @@ class AppPreviewPage extends StatelessWidget {
     required this.bottomContent,
   });
 
+  @override
+  State<AppPreviewPage> createState() => _AppPreviewPageState();
+}
+
+class _AppPreviewPageState extends State<AppPreviewPage> {
 // The portion of the total vertical space the mouse is at.
-  final _mouseYPositionNotifier = ValueNotifier(0.5);
+  final _mouseYPositionNotifier = ValueNotifier(0.0);
 
   void _updateMousePosition(
     PointerHoverEvent event,
@@ -35,6 +43,12 @@ class AppPreviewPage extends StatelessWidget {
   ) {
     final newPosition = event.localPosition.dy / constraints.maxHeight;
     _mouseYPositionNotifier.value = newPosition;
+  }
+
+  @override
+  void dispose() {
+    _mouseYPositionNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,7 +76,7 @@ class AppPreviewPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         style: const TextStyle(
                           fontFamily: 'Libre Baskerville',
                           fontSize: 36,
@@ -73,11 +87,11 @@ class AppPreviewPage extends StatelessWidget {
                       Wrap(
                         spacing: 10,
                         runSpacing: 10,
-                        children: tagChips,
+                        children: widget.tagChips,
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        description,
+                        widget.description,
                         style: const TextStyle(
                           fontSize: 24,
                           height: 1.25,
@@ -85,20 +99,29 @@ class AppPreviewPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 50),
-                      bottomContent,
+                      widget.bottomContent,
                     ],
                   ),
                 ),
               ),
               Expanded(
                 flex: 3,
+                // This rebuilds the entire ScrollingAppFrames widget, and
+                // probably the images too, each time the mouse moves. This is
+                // causing performance issues. The easier solution would be to
+                // pass the notifier rather than rebuild the widget, but this
+                // causes the animation to freeze. It seems like calling
+                // animateTo() in didUpdateWidget is fine but calling it in a
+                // listener triggered by the notifier freezes the animation.
+                // Giant performance gains but can't figure out how to fix this.
+                //TODO: fix this...
                 child: ListenableBuilder(
                   listenable: _mouseYPositionNotifier,
                   builder: (_, __) => _ScrollingAppFrames(
-                    lightAssetPaths: lightAssetPaths,
-                    darkAssetPaths: darkAssetPaths,
+                    lightAssetPaths: widget.lightAssetPaths,
+                    darkAssetPaths: widget.darkAssetPaths,
                     scrollPosition: _mouseYPositionNotifier.value,
-                    phoneFrameSizeMultipliers: phoneFrameSizeMultipliers,
+                    phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
                   ),
                 ),
               ),

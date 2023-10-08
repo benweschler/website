@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:website/style/theme.dart';
 
-class TechnologyTagChip extends StatelessWidget {
+class TagChip extends StatelessWidget {
   final String label;
   final Color? color;
   final Color? textColor;
 
-  const TechnologyTagChip({
+  const TagChip({
     super.key,
     required this.label,
     this.color,

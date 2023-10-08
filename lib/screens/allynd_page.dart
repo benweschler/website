@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/widgets/app_preview_page.dart';
-import 'package:website/widgets/rectangular_button.dart';
-import 'package:website/widgets/technology_tag_chip.dart';
+import 'package:website/widgets/outlink_buttons.dart';
+import 'package:website/widgets/tag_chip.dart';
 
 class AllyndPage extends StatelessWidget {
   const AllyndPage({super.key});
@@ -21,83 +20,21 @@ class AllyndPage extends StatelessWidget {
       ],
       title: 'Allynd',
       tagChips: [
-        TechnologyTagChip(
+        TagChip(
           label: 'QWER Hacks 2023',
           textColor: AppColors.of(context).isDark ? Colors.black : Colors.white,
           color: AppColors.of(context).isDark ? Colors.white : Colors.black,
         ),
-        const TechnologyTagChip(label: 'Flutter'),
-        const TechnologyTagChip(label: 'Firebase'),
-        const TechnologyTagChip(label: 'Google Maps Cloud Platform'),
+        const TagChip(label: 'Flutter'),
+        const TagChip(label: 'Firebase'),
+        const TagChip(label: 'Google Maps Cloud Platform'),
       ],
       description: 'Supporting people in the queer community who are forced to travel long distances in order to access gender-affirming healthcare, often due to legal restrictions. Find a medical center that offers the care you need, and then securely connect with people in the community near your clinic who are volunteering their home as temporary housing.',
-      bottomContent: Row(
+      bottomContent: const Row(
         children: [
-          RectangularButton(
-            onClicked: () => launchUrl(
-              Uri.parse(
-                'https://devpost.com/software/allynd',
-              ),
-            ),
-            backgroundColor:
-            AppColors.of(context).isDark ? Colors.white : Colors.black,
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/devpost-logo.png',
-                  color: AppColors.of(context).isDark
-                      ? Colors.black
-                      : Colors.white,
-                  height: 22,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'Devpost',
-                  style: TextStyle(
-                    color: AppColors.of(context).isDark
-                        ? Colors.black
-                        : Colors.white,
-                    fontSize: 20,
-                    height: 1.25,
-                    letterSpacing: 1.33,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 20),
-          RectangularButton(
-            onClicked: () => launchUrl(
-              Uri.parse('https://github.com/benweschler/allyned'),
-            ),
-            backgroundColor:
-            AppColors.of(context).isDark ? Colors.white : Colors.black,
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/github-invertocat-logo.png',
-                  color: AppColors.of(context).isDark
-                      ? Colors.black
-                      : Colors.white,
-                  height: 22,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'GitHub',
-                  style: TextStyle(
-                    color: AppColors.of(context).isDark
-                        ? Colors.black
-                        : Colors.white,
-                    fontSize: 20,
-                    height: 1.25,
-                    letterSpacing: 1.33,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          DevpostButton(projectName: 'allynd'),
+          SizedBox(width: 20),
+          GithubRepoButton(repoName: 'allyned'),
         ],
       ),
     );
