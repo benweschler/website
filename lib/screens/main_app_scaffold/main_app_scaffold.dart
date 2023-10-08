@@ -35,6 +35,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
   void _onScroll(AxisDirection direction) async {
     if (_isPageAnimating) return;
 
+    if (MediaQuery.of(context).size.width < wideScreenCutoff &&
+        _pageController.page > 0) return;
+
     _isPageAnimating = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
       await _pageController.previousPage();

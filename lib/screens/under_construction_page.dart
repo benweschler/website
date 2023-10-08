@@ -148,7 +148,7 @@ class _PageContentState extends State<_PageContent> {
                                 ' So close! Everything should be up and running ',
                           ),
                           TextSpan(
-                            text: 'within or or two hours',
+                            text: 'within one or two hours',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                             ),

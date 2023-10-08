@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
+import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
 import 'package:website/widgets/tag_chip.dart';
@@ -9,7 +11,7 @@ import 'package:website/widgets/tag_chip.dart';
 // Make this a stateful widget to store the current mouse position in a state
 // variable that is persistent between rebuilds, even though the state is never
 // explicitly mutated.
-class AppPreviewPage extends StatefulWidget {
+class AppPreviewPage extends StatelessWidget {
   final List<String> lightAssetPaths;
   final List<String> darkAssetPaths;
   final List<double> phoneFrameSizeMultipliers;
@@ -30,11 +32,62 @@ class AppPreviewPage extends StatefulWidget {
   });
 
   @override
-  State<AppPreviewPage> createState() => _AppPreviewPageState();
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (MediaQuery.of(context).size.width < wideScreenCutoff) {
+          return _MobileLayout(
+            constraints: constraints,
+            lightAssetPaths: lightAssetPaths,
+            darkAssetPaths: darkAssetPaths,
+            phoneFrameSizeMultipliers: phoneFrameSizeMultipliers,
+            textContent: _TextContent(
+              title: title,
+              tagChips: tagChips,
+              description: description,
+              bottomContent: bottomContent,
+            ),
+          );
+        }
+
+        return _WideLayout(
+          constraints: constraints,
+          lightAssetPaths: lightAssetPaths,
+          darkAssetPaths: darkAssetPaths,
+          phoneFrameSizeMultipliers: phoneFrameSizeMultipliers,
+          textContent: _TextContent(
+            title: title,
+            tagChips: tagChips,
+            description: description,
+            bottomContent: bottomContent,
+          ),
+        );
+      },
+    );
+  }
 }
 
-class _AppPreviewPageState extends State<AppPreviewPage> {
-// The portion of the total vertical space the mouse is at.
+class _WideLayout extends StatefulWidget {
+  final BoxConstraints constraints;
+  final List<String> lightAssetPaths;
+  final List<String> darkAssetPaths;
+  final List<double> phoneFrameSizeMultipliers;
+  final Widget textContent;
+
+  const _WideLayout({
+    required this.constraints,
+    required this.lightAssetPaths,
+    required this.darkAssetPaths,
+    required this.phoneFrameSizeMultipliers,
+    required this.textContent,
+  });
+
+  @override
+  State<_WideLayout> createState() => _WideLayoutState();
+}
+
+class _WideLayoutState extends State<_WideLayout> {
+  // The portion of the total vertical space the mouse is at.
   final _mouseYPositionNotifier = ValueNotifier(0.0);
 
   void _updateMousePosition(
@@ -53,81 +106,175 @@ class _AppPreviewPageState extends State<AppPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: change to stacked layout on mobile
-    return LayoutBuilder(
-      builder: (context, constraints) => MouseRegion(
-        opaque: false,
-        hitTestBehavior: HitTestBehavior.translucent,
-        onHover: (event) => _updateMousePosition(event, constraints),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: constraints.maxWidth > 1500
-                ? (constraints.maxWidth - 1500) / 2
-                : 0,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.title,
-                        style: const TextStyle(
-                          fontFamily: 'Libre Baskerville',
-                          fontSize: 36,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: widget.tagChips,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        widget.description,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          height: 1.25,
-                          letterSpacing: 1.33,
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      widget.bottomContent,
-                    ],
-                  ),
+    return MouseRegion(
+      opaque: false,
+      hitTestBehavior: HitTestBehavior.translucent,
+      onHover: (event) => _updateMousePosition(event, widget.constraints),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: widget.constraints.maxWidth > 1500
+              ? (widget.constraints.maxWidth - 1500) / 2
+              : 0,
+        ),
+        child: Row(
+          children: [
+            Expanded(flex: 4, child: widget.textContent),
+            Expanded(
+              flex: 3,
+              child: ListenableBuilder(
+                listenable: _mouseYPositionNotifier,
+                builder: (_, __) => _ScrollingAppFrames(
+                  lightAssetPaths: widget.lightAssetPaths,
+                  darkAssetPaths: widget.darkAssetPaths,
+                  scrollPosition: _mouseYPositionNotifier.value,
+                  phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
                 ),
               ),
-              Expanded(
-                flex: 3,
-                // This rebuilds the entire ScrollingAppFrames widget, and
-                // probably the images too, each time the mouse moves. This is
-                // causing performance issues. The easier solution would be to
-                // pass the notifier rather than rebuild the widget, but this
-                // causes the animation to freeze. It seems like calling
-                // animateTo() in didUpdateWidget is fine but calling it in a
-                // listener triggered by the notifier freezes the animation.
-                // Giant performance gains but can't figure out how to fix this.
-                //TODO: fix this performance issue...
-                child: ListenableBuilder(
-                  listenable: _mouseYPositionNotifier,
-                  builder: (_, __) => _ScrollingAppFrames(
-                    lightAssetPaths: widget.lightAssetPaths,
-                    darkAssetPaths: widget.darkAssetPaths,
-                    scrollPosition: _mouseYPositionNotifier.value,
-                    phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
-                  ),
-                ),
-              ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileLayout extends StatefulWidget {
+  final BoxConstraints constraints;
+  final List<String> lightAssetPaths;
+  final List<String> darkAssetPaths;
+  final List<double> phoneFrameSizeMultipliers;
+  final Widget textContent;
+
+  const _MobileLayout({
+    required this.constraints,
+    required this.lightAssetPaths,
+    required this.darkAssetPaths,
+    required this.phoneFrameSizeMultipliers,
+    required this.textContent,
+  });
+
+  @override
+  State<_MobileLayout> createState() => _MobileLayoutState();
+}
+
+class _MobileLayoutState extends State<_MobileLayout> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScrollEnd);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScrollEnd);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScrollEnd() {
+    if (_scrollController.position.atEdge) {
+      if(_scrollController.offset == 0) {
+        if(context.currentPage() > 0) {
+          context.jumpPrevious();
+        }
+      } else if(context.currentPage() <= 3) {
+        context.jumpNext();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(child: widget.textContent),
+        Positioned.fill(
+          child: ListenableBuilder(
+            listenable: _scrollController,
+            builder: (_, __) {
+              double scrollPosition = -0.25;
+              if (_scrollController.positions.isNotEmpty) {
+                scrollPosition = _scrollController.offset /
+                    _scrollController.position.maxScrollExtent;
+              }
+
+              return _ScrollingAppFrames(
+                lightAssetPaths: widget.lightAssetPaths,
+                darkAssetPaths: widget.darkAssetPaths,
+                scrollPosition: scrollPosition,
+                phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
+                positionLowerBound: -0.55,
+                positionUpperBound:
+                    1 + (0.45 * widget.constraints.maxHeight / 803),
+              );
+            },
           ),
         ),
+        Positioned.fill(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: const ClampingScrollPhysics(),
+            child: SizedBox(
+              // This makes the scroll extent 50% of the screen's height
+              height: widget.constraints.maxHeight * 1.5,
+              width: widget.constraints.maxWidth,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TextContent extends StatelessWidget {
+  final String title;
+  final List<TagChip> tagChips;
+  final String description;
+  final Widget bottomContent;
+
+  const _TextContent({
+    required this.title,
+    required this.tagChips,
+    required this.description,
+    required this.bottomContent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontFamily: 'Libre Baskerville',
+              fontSize: 36,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: tagChips,
+          ),
+          const SizedBox(height: 15),
+          Text(
+            description,
+            style: const TextStyle(
+              fontSize: 24,
+              height: 1.25,
+              letterSpacing: 1.33,
+            ),
+          ),
+          const SizedBox(height: 50),
+          bottomContent,
+        ],
       ),
     );
   }
@@ -138,12 +285,16 @@ class _ScrollingAppFrames extends StatefulWidget {
   final List<String> darkAssetPaths;
   final double scrollPosition;
   final List<double> phoneFrameSizeMultipliers;
+  final double positionLowerBound;
+  final double positionUpperBound;
 
   const _ScrollingAppFrames({
     required this.lightAssetPaths,
     required this.darkAssetPaths,
     required this.scrollPosition,
     required this.phoneFrameSizeMultipliers,
+    this.positionLowerBound = 0,
+    this.positionUpperBound = 1,
   }) : assert(
           lightAssetPaths.length == darkAssetPaths.length &&
               lightAssetPaths.length == phoneFrameSizeMultipliers.length,
@@ -156,7 +307,11 @@ class _ScrollingAppFrames extends StatefulWidget {
 
 class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(vsync: this);
+  late final _controller = AnimationController(vsync: this);
+  late final _positionAnimation = Tween(
+    begin: widget.positionLowerBound,
+    end: widget.positionUpperBound,
+  ).animate(_controller);
 
   @override
   void didUpdateWidget(covariant _ScrollingAppFrames oldWidget) {
@@ -179,7 +334,7 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     return RepaintBoundary(
       child: CustomMultiChildLayout(
         delegate: StaggeredParallaxViewDelegate(
-          positionAnimation: _controller,
+          positionAnimation: _positionAnimation,
           length: widget.lightAssetPaths.length,
           sizeMultipliers: widget.phoneFrameSizeMultipliers,
         ),

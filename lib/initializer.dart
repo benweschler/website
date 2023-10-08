@@ -63,10 +63,7 @@ Stream<int> initializeApp(BuildContext context) {
   return controller.stream;
 }
 
-void _precacheAssets(
-  BuildContext context,
-  StreamController controller,
-) async {
+void _precacheAssets(BuildContext context, StreamController controller) async {
   for (int i = 0; i < _imageAssetPaths.length; i++) {
     final path = _imageAssetPaths[i];
     await precacheImage(AssetImage(path), context);
