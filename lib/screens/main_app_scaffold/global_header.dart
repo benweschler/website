@@ -93,7 +93,10 @@ class _HeaderButtons extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 30),
+        if(MediaQuery.of(context).size.width < wideScreenCutoff)
+          const SizedBox(width: 15)
+        else
+          const SizedBox(width: 30),
         Consumer<ThemeConfig>(
           builder: (_, themeConfig, __) => IconSwitch(
             onSwitch: themeConfig.toggleTheme,

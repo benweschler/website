@@ -69,6 +69,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final isWideFormat = MediaQuery.of(context).size.width < wideScreenCutoff;
+    final double headerPadding = isWideFormat ? 45 : 30;
+
     return ChangeNotifierProvider.value(
       value: _pageController,
       child: Scaffold(
@@ -94,9 +97,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               ),
             ),
             Positioned(
-              top: 45,
-              right: 45,
-              left: 45,
+              top: headerPadding,
+              right: headerPadding,
+              left: headerPadding,
               child: GlobalHeader(messengerKey: _headerMessengerKey),
             ),
           ],
