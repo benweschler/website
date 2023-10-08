@@ -145,7 +145,9 @@ class ScrollListener extends StatelessWidget {
         if (!_isMobileBrowser(window.navigator.userAgent)) return;
 
         final delta = details.delta.dy;
-        final direction = delta > 0 ? AxisDirection.down : AxisDirection.up;
+        // This is opposite to what is intuitive since up -> previous. On mobile
+        // if you drag up you want to scroll down.
+        final direction = delta > 0 ? AxisDirection.up : AxisDirection.down;
         onScroll(direction);
       },
       child: Listener(
