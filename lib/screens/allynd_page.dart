@@ -14,9 +14,9 @@ class AllyndPage extends StatelessWidget {
       darkAssetPaths: _assetPaths,
       phoneFrameSizeMultipliers: const [
         0.18733774497866676,
-        0.1778201150198227,
+        0.09376676727551374,
         0.10034349543461248,
-        0.06376676727551374,
+        0.1778201150198227,
       ],
       title: 'Allynd',
       tagChips: [

@@ -9,8 +9,11 @@ import 'package:website/screens/layover_party_page.dart';
 import 'package:website/screens/main_app_scaffold/global_header.dart';
 import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
+import 'package:website/theme_config.dart';
 import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
+
+const _darkModeSupportedPageIndexes = {0, 1, 2};
 
 typedef ScrollCallback = void Function(AxisDirection);
 
@@ -30,13 +33,30 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
     _isPageAnimating = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
+      _updateDarkModeLock(direction);
       await _pageController.previousPage();
     } else if (direction == AxisDirection.down &&
         _pageController.offset != _pageController.position.maxScrollExtent) {
+      _updateDarkModeLock(direction);
       await _pageController.nextPage();
     }
 
     _isPageAnimating = false;
+  }
+
+  void _updateDarkModeLock(AxisDirection direction) {
+    final pageIncrement = direction == AxisDirection.up ? -1 : 1;
+    final nextPage = _pageController.page + pageIncrement;
+    // Account for this method somehow being triggered slightly after animation
+    // has started, when the current page isn't a whole number.
+    final resolvedNextPage =
+        direction == AxisDirection.up ? nextPage.ceil() : nextPage.floor();
+
+    if (!_darkModeSupportedPageIndexes.contains(resolvedNextPage)) {
+      context.read<ThemeConfig>().lockDarkMode();
+    } else {
+      context.read<ThemeConfig>().unlockDarkMode();
+    }
   }
 
   @override
@@ -53,8 +73,8 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
               children: [
                 const LandingPage(),
                 const SportVuePage(),
-                const LayoverPartyPage(),
                 const DragonatorPage(),
+                const LayoverPartyPage(),
                 const AllyndPage(),
               ].map((page) {
                 // Add maintain state for now so that expensive pages with lots

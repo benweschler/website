@@ -12,7 +12,7 @@ class SportVuePage extends StatelessWidget {
       darkAssetPaths: _getAssetPaths(Brightness.dark),
       phoneFrameSizeMultipliers: const [
         0.18733774497866676,
-        0.06376676727551374,
+        0.09376676727551374,
         0.10034349543461248,
         0.1778201150198227,
         0.10986685597364959,
@@ -39,14 +39,12 @@ class SportVuePage extends StatelessWidget {
     final assetDirectoryPath = 'assets/showcase-media/sportvue/$themeString/';
 
     return [
-      'login-$themeString.png',
-      'no-data-$themeString.png',
       'dashboard-$themeString.png',
       'session-data-$themeString.png',
-      'trends-$themeString.png',
+      'login-$themeString.png',
       'calendar-$themeString.png',
-      // TODO: add video support
-      //'data-import-$brightness.mp4',
+      'trends-$themeString.png',
+      'no-data-$themeString.png',
       'profile-$themeString.png',
     ].map((path) => assetDirectoryPath + path).toList();
   }

@@ -114,7 +114,7 @@ class _AppPreviewPageState extends State<AppPreviewPage> {
                 // animateTo() in didUpdateWidget is fine but calling it in a
                 // listener triggered by the notifier freezes the animation.
                 // Giant performance gains but can't figure out how to fix this.
-                //TODO: fix this...
+                //TODO: fix this performance issue...
                 child: ListenableBuilder(
                   listenable: _mouseYPositionNotifier,
                   builder: (_, __) => _ScrollingAppFrames(

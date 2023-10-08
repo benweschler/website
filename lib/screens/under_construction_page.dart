@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
-import 'package:website/utils/theme_config.dart';
+import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
 import 'package:website/widgets/responsive_button.dart';
 
