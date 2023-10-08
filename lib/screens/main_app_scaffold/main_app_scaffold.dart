@@ -28,37 +28,39 @@ class MainAppScaffold extends StatefulWidget {
 
 class _MainAppScaffoldState extends State<MainAppScaffold> {
   final _headerMessengerKey = GlobalKey<HeaderMessengerState>();
-  final RootPageController _pageController = RootPageController();
+  late final RootPageController _pageController = RootPageController()
+    ..addScrollListener(_updateDarkModeLock);
   bool _isPageAnimating = false;
 
-  void _onScroll(direction) async {
+  void _onScroll(AxisDirection direction) async {
     if (_isPageAnimating) return;
 
     _isPageAnimating = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
-      _updateDarkModeLock(direction);
+      // Account for this method somehow being triggered slightly after animation
+      // has started, when the current page isn't a whole number.
+      final nextPage = (_pageController.page - 1).ceil();
+      _updateDarkModeLock(nextPage);
+
       await _pageController.previousPage();
     } else if (direction == AxisDirection.down &&
         _pageController.offset != _pageController.position.maxScrollExtent) {
-      _updateDarkModeLock(direction);
+      // Account for this method somehow being triggered slightly after animation
+      // has started, when the current page isn't a whole number.
+      final nextPage = (_pageController.page + 1).floor();
+      _updateDarkModeLock(nextPage);
+
       await _pageController.nextPage();
     }
 
     _isPageAnimating = false;
   }
 
-  void _updateDarkModeLock(AxisDirection direction) {
-    final pageIncrement = direction == AxisDirection.up ? -1 : 1;
-    final nextPage = _pageController.page + pageIncrement;
-    // Account for this method somehow being triggered slightly after animation
-    // has started, when the current page isn't a whole number.
-    final resolvedNextPage =
-        direction == AxisDirection.up ? nextPage.ceil() : nextPage.floor();
-
-    if (darkModeUnsupportedPages.containsKey(resolvedNextPage)) {
+  void _updateDarkModeLock(int nextPage) {
+    if (darkModeUnsupportedPages.containsKey(nextPage)) {
       final themeConfig = context.read<ThemeConfig>();
-      if(themeConfig.themeType == ThemeType.dark) {
-        final appName = darkModeUnsupportedPages[resolvedNextPage];
+      if (themeConfig.themeType == ThemeType.dark) {
+        final appName = darkModeUnsupportedPages[nextPage];
         _headerMessengerKey.currentState!
             .showPopup("$appName doesn't have dark mode");
       }
