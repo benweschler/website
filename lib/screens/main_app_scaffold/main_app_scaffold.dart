@@ -116,7 +116,10 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(MediaQuery.of(context).size.width <= wideScreenCutoff) return child;
+    if (MediaQuery.of(context).size.width <= wideScreenCutoff) {
+      // Clip overflow phone frames
+      return ClipRect(child: child);
+    }
 
     return Padding(
       padding: const EdgeInsets.all(15),
@@ -155,7 +158,7 @@ class ScrollListener extends StatelessWidget {
         final delta = details.delta.dy;
 
         // Ignore small swipes for app scrolling
-        if(delta.abs() < 20) return;
+        if (delta.abs() < 20) return;
 
         // This is opposite to what is intuitive since up -> previous. On mobile
         // if you drag up you want to scroll down.
