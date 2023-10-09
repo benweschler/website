@@ -40,7 +40,6 @@ flutter:
     # SportVue light
     - 'assets/showcase-media/sportvue/light/calendar-light.png'
     - 'assets/showcase-media/sportvue/light/dashboard-light.png'
-    - 'assets/showcase-media/sportvue/light/data-import-light.mp4'
     - 'assets/showcase-media/sportvue/light/login-light.png'
     - 'assets/showcase-media/sportvue/light/no-data-light.png'
     - 'assets/showcase-media/sportvue/light/profile-light.png'
@@ -50,7 +49,6 @@ flutter:
     # SportVue dark
     - 'assets/showcase-media/sportvue/dark/calendar-dark.png'
     - 'assets/showcase-media/sportvue/dark/dashboard-dark.png'
-    - 'assets/showcase-media/sportvue/dark/data-import-dark.mp4'
     - 'assets/showcase-media/sportvue/dark/login-dark.png'
     - 'assets/showcase-media/sportvue/dark/no-data-dark.png'
     - 'assets/showcase-media/sportvue/dark/profile-dark.png'
@@ -58,16 +56,12 @@ flutter:
     - 'assets/showcase-media/sportvue/dark/trends-dark.png'
 
     # Layover Party
-    - 'assets/showcase-media/layover-party/images/onboarding-one.png'
-    - 'assets/showcase-media/layover-party/images/onboarding-two.png'
-    - 'assets/showcase-media/layover-party/images/onboarding-three.png'
-    - 'assets/showcase-media/layover-party/images/search-bar.png'
-    - 'assets/showcase-media/layover-party/images/trip-ticket.png'
-    - 'assets/showcase-media/layover-party/images/trips.png'
-    - 'assets/showcase-media/layover-party/videos/onboarding-first-second.mp4'
-    - 'assets/showcase-media/layover-party/videos/onboarding-second-third.mp4'
-    - 'assets/showcase-media/layover-party/videos/search-bar.mp4'
-    - 'assets/showcase-media/layover-party/videos/trip-ticket.mp4'
+    - 'assets/showcase-media/layover-party/onboarding-one.png'
+    - 'assets/showcase-media/layover-party/onboarding-two.png'
+    - 'assets/showcase-media/layover-party/onboarding-three.png'
+    - 'assets/showcase-media/layover-party/search-bar.png'
+    - 'assets/showcase-media/layover-party/trip-ticket.png'
+    - 'assets/showcase-media/layover-party/trips.png'
 
     # Dragonator light
     - 'assets/showcase-media/dragonator/light/create-paddler-light.png'

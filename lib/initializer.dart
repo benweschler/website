@@ -26,13 +26,13 @@ const _imageAssetPaths = [
   'assets/showcase-media/sportvue/dark/session-data-dark.png',
   'assets/showcase-media/sportvue/dark/trends-dark.png',
 
-  // Layover Party Images
-  'assets/showcase-media/layover-party/images/onboarding-one.png',
-  'assets/showcase-media/layover-party/images/onboarding-two.png',
-  'assets/showcase-media/layover-party/images/onboarding-three.png',
-  'assets/showcase-media/layover-party/images/search-bar.png',
-  'assets/showcase-media/layover-party/images/trip-ticket.png',
-  'assets/showcase-media/layover-party/images/trips.png',
+  // Layover Party
+  'assets/showcase-media/layover-party/onboarding-one.png',
+  'assets/showcase-media/layover-party/onboarding-two.png',
+  'assets/showcase-media/layover-party/onboarding-three.png',
+  'assets/showcase-media/layover-party/search-bar.png',
+  'assets/showcase-media/layover-party/trip-ticket.png',
+  'assets/showcase-media/layover-party/trips.png',
 
   // Dragonator light
   'assets/showcase-media/dragonator/light/create-paddler-light.png',
