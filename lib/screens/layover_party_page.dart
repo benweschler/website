@@ -32,13 +32,14 @@ class LayoverPartyPage extends StatelessWidget {
       title: 'Layover Party',
       tagChips: [
         TagChip(
-          label: 'LA Hacks 2023 Winner',
+          label: 'LA Hacks 2023 Track Winner',
           textColor: AppColors.of(context).onContainer,
           color: AppColors.of(context).onBackground,
         ),
         const TagChip(label: 'Flutter'),
         const TagChip(label: 'FastAPI'),
         const TagChip(label: 'Swagger'),
+        const TagChip(label: 'Python'),
       ],
       description:
           'Rather than taking a direct flight the next time you travel, find flights with multiple long layovers — which are often cheaper than direct flights — in places you want to visit, allowing you to save money and explore destinations you\'ve always wanted to see every time you travel. Exploring is better together, so connect with other travellers who have layovers that overlap with yours.',
