@@ -202,9 +202,6 @@ class _MobileLayoutState extends State<_MobileLayout> {
                   darkAssetPaths: widget.darkAssetPaths,
                   scrollPosition: _scrollPositionNotifier.value,
                   phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
-                  positionLowerBound: -0.55,
-                  positionUpperBound:
-                      1 + (0.45 * widget.constraints.maxHeight / 803),
                 );
               },
             ),
@@ -314,16 +311,12 @@ class _ScrollingAppFrames extends StatefulWidget {
   final List<String> darkAssetPaths;
   final double scrollPosition;
   final List<double> phoneFrameSizeMultipliers;
-  final double positionLowerBound;
-  final double positionUpperBound;
 
   const _ScrollingAppFrames({
     required this.lightAssetPaths,
     required this.darkAssetPaths,
     required this.scrollPosition,
     required this.phoneFrameSizeMultipliers,
-    this.positionLowerBound = 0,
-    this.positionUpperBound = 1,
   }) : assert(
           lightAssetPaths.length == darkAssetPaths.length &&
               lightAssetPaths.length == phoneFrameSizeMultipliers.length,
@@ -337,10 +330,6 @@ class _ScrollingAppFrames extends StatefulWidget {
 class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     with SingleTickerProviderStateMixin {
   late final _controller = AnimationController(vsync: this);
-  late final _positionAnimation = Tween(
-    begin: widget.positionLowerBound,
-    end: widget.positionUpperBound,
-  ).animate(_controller);
 
   @override
   void didUpdateWidget(covariant _ScrollingAppFrames oldWidget) {
@@ -363,8 +352,9 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     return RepaintBoundary(
       child: CustomMultiChildLayout(
         delegate: StaggeredParallaxViewDelegate(
-          positionAnimation: _positionAnimation,
+          positionAnimation: _controller,
           length: widget.lightAssetPaths.length,
+          mobileLayout: MediaQuery.of(context).size.width <= wideScreenCutoff,
           sizeMultipliers: widget.phoneFrameSizeMultipliers,
         ),
         // Reverse the list to ensure that children appearing first in the
