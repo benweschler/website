@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:website/utils/navigation_utils.dart';
+import 'package:website/widgets/responsive_button.dart';
 
 import 'animated_gradient_background.dart';
 import 'pointer_move_notifier.dart';
@@ -87,7 +89,7 @@ class _LandingPageState extends State<LandingPage>
               left: 0,
               right: 0,
               bottom: 30,
-              child: ScrollPromptText(),
+              child: ScrollPrompt(),
             ),
           ],
         ),
@@ -124,38 +126,41 @@ class _LandingPageState extends State<LandingPage>
   }
 }
 
-class ScrollPromptText extends StatelessWidget {
-  const ScrollPromptText({super.key});
+class ScrollPrompt extends StatelessWidget {
+  const ScrollPrompt({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          'See my work',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        const SizedBox(width: 5),
-        const Icon(Icons.arrow_downward_rounded, color: Colors.white)
-            .animate(
-              onPlay: (controller) => controller.repeat(),
-            )
-            .slideY(
-              begin: -0.15,
-              end: 0.05,
-              duration: 700.ms,
-              curve: Curves.easeOut,
-            )
-            .then(duration: 200.ms)
-            .slideY(
-              begin: 0.15,
-              end: -0.05,
-              curve: Curves.easeOut,
-              duration: 700.ms,
-            )
-            .then(duration: 350.ms),
-      ],
+    return ResponsiveButton(
+      onClicked: context.goNext,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'See my work',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          const SizedBox(width: 5),
+          const Icon(Icons.arrow_downward_rounded, color: Colors.white)
+              .animate(
+                onPlay: (controller) => controller.repeat(),
+              )
+              .slideY(
+                begin: -0.15,
+                end: 0.05,
+                duration: 700.ms,
+                curve: Curves.easeOut,
+              )
+              .then(duration: 200.ms)
+              .slideY(
+                begin: 0.15,
+                end: -0.05,
+                curve: Curves.easeOut,
+                duration: 700.ms,
+              )
+              .then(duration: 350.ms),
+        ],
+      ),
     );
   }
 }
