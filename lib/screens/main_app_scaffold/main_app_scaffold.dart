@@ -46,7 +46,8 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     // If the page controller is between pages
     if (_isAnimatingFromScroll) return;
 
-    if (context.isWideLayout() && _pageController.page > 0) return;
+    // App preview pages handle their own scrolling in mobile layout.
+    if (!context.isWideLayout() && _pageController.page > 0) return;
 
     _isAnimatingFromScroll = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
@@ -119,17 +120,16 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.isWideLayout()) {
-      // Clip overflow phone frames
-      return ClipRect(child: child);
+      return Padding(
+        padding: const EdgeInsets.all(15),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          child: child,
+        ),
+      );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        child: child,
-      ),
-    );
+    return child;
   }
 }
 

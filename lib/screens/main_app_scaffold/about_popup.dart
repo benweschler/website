@@ -21,8 +21,8 @@ class AboutPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWideFormat = context.isWideLayout();
-    final Color contentColor = AppColors.of(context).onContainer;
     final double largeFontSize = isWideFormat ? 48 : 30;
+    final Color contentColor = AppColors.of(context).onContainer;
 
     return DefaultTextStyle(
       style: TextStyle(
@@ -59,9 +59,8 @@ class AboutPopup extends StatelessWidget {
                     child: _buildDevpostButton(contentColor, largeFontSize),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      bottom: isWideFormat ? 50 : 0,
-                    ),
+                    // Add a spacer instead of padding if not wide format
+                    padding: EdgeInsets.only(bottom: isWideFormat ? 50 : 0),
                     child: _buildShadertoyButton(contentColor, largeFontSize),
                   ),
                   if (!isWideFormat) const Spacer(),

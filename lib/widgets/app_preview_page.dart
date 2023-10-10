@@ -39,7 +39,7 @@ class AppPreviewPage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (context.isWideLayout()) {
-          return _MobileLayout(
+          return _WideLayout(
             constraints: constraints,
             lightAssetPaths: lightAssetPaths,
             darkAssetPaths: darkAssetPaths,
@@ -53,7 +53,7 @@ class AppPreviewPage extends StatelessWidget {
           );
         }
 
-        return _WideLayout(
+        return _MobileLayout(
           constraints: constraints,
           lightAssetPaths: lightAssetPaths,
           darkAssetPaths: darkAssetPaths,
@@ -197,11 +197,14 @@ class _MobileLayoutState extends State<_MobileLayout> {
             child: ListenableBuilder(
               listenable: _scrollPositionNotifier,
               builder: (_, __) {
-                return _ScrollingAppFrames(
-                  lightAssetPaths: widget.lightAssetPaths,
-                  darkAssetPaths: widget.darkAssetPaths,
-                  scrollPosition: _scrollPositionNotifier.value,
-                  phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
+                // Clip overflow phone frames
+                return ClipRect(
+                  child: _ScrollingAppFrames(
+                    lightAssetPaths: widget.lightAssetPaths,
+                    darkAssetPaths: widget.darkAssetPaths,
+                    scrollPosition: _scrollPositionNotifier.value,
+                    phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
+                  ),
                 );
               },
             ),
@@ -354,7 +357,7 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
         delegate: StaggeredParallaxViewDelegate(
           positionAnimation: _controller,
           length: widget.lightAssetPaths.length,
-          mobileLayout: context.isWideLayout(),
+          mobileLayout: !context.isWideLayout(),
           sizeMultipliers: widget.phoneFrameSizeMultipliers,
         ),
         // Reverse the list to ensure that children appearing first in the
