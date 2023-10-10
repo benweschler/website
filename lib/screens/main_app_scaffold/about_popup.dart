@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
+import 'package:website/utils/layout_utils.dart';
 import 'package:website/widgets/responsive_button.dart';
 
 class AboutPopup extends StatelessWidget {
@@ -20,7 +20,7 @@ class AboutPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWideFormat = MediaQuery.of(context).size.width > wideScreenCutoff;
+    final isWideFormat = context.isWideLayout();
     final Color contentColor = AppColors.of(context).onContainer;
     final double largeFontSize = isWideFormat ? 48 : 30;
 

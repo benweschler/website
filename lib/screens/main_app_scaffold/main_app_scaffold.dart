@@ -12,6 +12,7 @@ import 'package:website/screens/landing_page/landing_page.dart';
 import 'package:website/screens/sportvue_page.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/theme_config.dart';
+import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
 
@@ -45,8 +46,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     // If the page controller is between pages
     if (_isAnimatingFromScroll) return;
 
-    if (MediaQuery.of(context).size.width <= wideScreenCutoff &&
-        _pageController.page > 0) return;
+    if (context.isWideLayout() && _pageController.page > 0) return;
 
     _isAnimatingFromScroll = true;
     if (direction == AxisDirection.up && _pageController.offset != 0) {
@@ -78,8 +78,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final isWideFormat = MediaQuery.of(context).size.width > wideScreenCutoff;
-    final double headerPadding = isWideFormat ? 45 : 30;
+    final double headerPadding = context.isWideLayout() ? 45 : 30;
 
     return ChangeNotifierProvider.value(
       value: _pageController,
@@ -119,7 +118,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width <= wideScreenCutoff) {
+    if (context.isWideLayout()) {
       // Clip overflow phone frames
       return ClipRect(child: child);
     }

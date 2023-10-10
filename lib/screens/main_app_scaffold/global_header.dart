@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:website/constants.dart';
 import 'package:website/screens/main_app_scaffold/about_popup.dart';
 import 'package:website/style/theme.dart';
+import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
@@ -93,7 +94,7 @@ class _HeaderButtons extends StatelessWidget {
             ),
           ),
         ),
-        if (MediaQuery.of(context).size.width > wideScreenCutoff)
+        if (context.isWideLayout())
           const SizedBox(width: 30)
         else
           const SizedBox(width: 15),

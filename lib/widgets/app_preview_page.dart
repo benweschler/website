@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:website/constants.dart';
 import 'package:website/style/theme.dart';
+import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
@@ -38,7 +38,7 @@ class AppPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (MediaQuery.of(context).size.width <= wideScreenCutoff) {
+        if (context.isWideLayout()) {
           return _MobileLayout(
             constraints: constraints,
             lightAssetPaths: lightAssetPaths,
@@ -354,7 +354,7 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
         delegate: StaggeredParallaxViewDelegate(
           positionAnimation: _controller,
           length: widget.lightAssetPaths.length,
-          mobileLayout: MediaQuery.of(context).size.width <= wideScreenCutoff,
+          mobileLayout: context.isWideLayout(),
           sizeMultipliers: widget.phoneFrameSizeMultipliers,
         ),
         // Reverse the list to ensure that children appearing first in the
