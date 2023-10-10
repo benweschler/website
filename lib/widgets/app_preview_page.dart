@@ -1,8 +1,9 @@
-import 'dart:html';
+import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/layout_utils.dart';
@@ -160,13 +161,31 @@ class _MobileLayout extends StatefulWidget {
   State<_MobileLayout> createState() => _MobileLayoutState();
 }
 
-class _MobileLayoutState extends State<_MobileLayout> {
+class _MobileLayoutState extends State<_MobileLayout>
+    with SingleTickerProviderStateMixin {
   final _scrollPositionNotifier = ValueNotifier(0.0);
+  late final _inertiaController =
+      AnimationController.unbounded(value: 0, vsync: this);
+
+  @override
+  void initState() {
+    super.initState();
+    _inertiaController.addListener(_updateScrollInertia);
+  }
 
   @override
   void dispose() {
     _scrollPositionNotifier.dispose();
+    _inertiaController.dispose();
     super.dispose();
+  }
+
+  /// Converts a global scroll position to a proportion scrolled of the total
+  /// scrollable height amount.
+  double _scrollPositionToRelative(double scrollPosition) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    // Make the total scrollable length 2.5 times the height of the screen.
+    return scrollPosition / (screenHeight * 2.5);
   }
 
   void _onScroll(double delta) {
@@ -176,18 +195,42 @@ class _MobileLayoutState extends State<_MobileLayout> {
       context.goNext();
     }
 
-    final screenHeight = MediaQuery.of(context).size.height;
-    // Make the total scrollable length of the ScrollingAppFrames 2.5 times the
-    // height of the screen.
-    final scrollPortion = delta / (screenHeight * 2.5);
+    // Cancel scroll inertia to start a new scroll
+    _inertiaController.stop();
+
+    final scrollPortion = _scrollPositionToRelative(delta);
     _scrollPositionNotifier.value =
         clampDouble(_scrollPositionNotifier.value + scrollPortion, 0, 1);
+  }
+
+  void _onDragEnd(double velocity) {
+    final simulation = FrictionSimulation(
+      0.05,
+      _scrollPositionNotifier.value * MediaQuery.of(context).size.height * 2.5,
+      -1 * velocity * 60,
+    );
+    _inertiaController.animateWith(simulation);
+  }
+
+  void _updateScrollInertia() {
+    _scrollPositionNotifier.value =
+        clampDouble(_scrollPositionToRelative(_inertiaController.value), 0, 1);
+
+    if (_scrollPositionNotifier.value == 0) {
+      context.goPrevious();
+      _inertiaController.stop();
+    } else if (_scrollPositionNotifier.value == 1) {
+      context.goNext();
+      _inertiaController.stop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return _ScrollDetector(
+      stopScrollInertia: _inertiaController.stop,
       onScroll: _onScroll,
+      onDragEnd: _onDragEnd,
       child: Stack(
         children: [
           Positioned.fill(child: widget.textContent),
@@ -216,15 +259,20 @@ class _MobileLayoutState extends State<_MobileLayout> {
 }
 
 class _ScrollDetector extends StatelessWidget {
-  final void Function(double) onScroll;
+  final ValueChanged<double> onScroll;
+  final ValueChanged<double> onDragEnd;
+  final VoidCallback stopScrollInertia;
   final Widget child;
 
   const _ScrollDetector({
     required this.onScroll,
+    required this.onDragEnd,
+    required this.stopScrollInertia,
     required this.child,
   });
 
-  bool _isMobileBrowser(String userAgent) {
+  bool _isMobileBrowser() {
+    final userAgent = html.window.navigator.userAgent;
     return userAgent.contains('Mobile') ||
         userAgent.contains('Tablet') ||
         userAgent.contains('Android') ||
@@ -235,9 +283,13 @@ class _ScrollDetector extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
+      onTapDown: (_) => stopScrollInertia(),
+      onVerticalDragEnd: (details) {
+        if (!_isMobileBrowser()) return;
+        onDragEnd(details.velocity.pixelsPerSecond.dy / 60);
+      },
       onVerticalDragUpdate: (details) {
-        if (!_isMobileBrowser(window.navigator.userAgent)) return;
-
+        if (!_isMobileBrowser()) return;
         // Mobile scrolling has opposite delta as trackpad scrolling for a given
         // direction.
         onScroll(-1 * details.delta.dy);
@@ -340,7 +392,11 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     _controller.animateTo(
       widget.scrollPosition,
       curve: Curves.easeOutQuart,
-      duration: 700.ms,
+      // In mobile layout, easing really only takes effect when the user stops
+      // scrolling, since the scroll inertia controller takes care of easing the
+      // rest of the time. Only use a small amount of easing to maintain a
+      // responsive feel.
+      duration: context.isWideLayout() ? 700.ms : 300.ms,
     );
   }
 
