@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,61 +33,57 @@ class AboutPopup extends StatelessWidget {
       ),
       child: _SizeAwareBackgroundWrapper(
         isWideFormat: isWideFormat,
-        child: Stack(
-          children: [
-            IntrinsicWidth(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (isWideFormat)
-                    _buildCombinedResumeAndCloseButtons(context, contentColor)
-                  else
-                    ..._buildStackedResumeAndCloseButtons(
-                      context,
-                      contentColor,
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildEmailButton(contentColor, largeFontSize),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildGithubButton(contentColor, largeFontSize),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 36),
-                    child: _buildDevpostButton(contentColor, largeFontSize),
-                  ),
-                  Padding(
-                    // Add a spacer instead of padding if not wide format
-                    padding: EdgeInsets.only(bottom: isWideFormat ? 50 : 0),
-                    child: _buildShadertoyButton(contentColor, largeFontSize),
-                  ),
-                  if (!isWideFormat) const Spacer(),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      'Created with Flutter, GLSL, and lots of coffee in my Los Angeles apartment.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                  ),
-                  _buildSourceMessage(),
-                ]
-                    .animate(interval: 75.ms)
-                    .slideY(
-                      begin: 0.2,
-                      end: 0,
-                      duration: 350.ms,
-                      curve: Curves.easeOutCubic,
-                    )
-                    .fadeIn(),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: isWideFormat ? MainAxisSize.min : MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isWideFormat)
+                _buildCombinedResumeAndCloseButtons(context, contentColor)
+              else
+                ..._buildStackedResumeAndCloseButtons(
+                  context,
+                  contentColor,
+                ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 36),
+                child: _buildEmailButton(contentColor, largeFontSize),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 36),
+                child: _buildGithubButton(contentColor, largeFontSize),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 36),
+                child: _buildDevpostButton(contentColor, largeFontSize),
+              ),
+              Padding(
+                // Add a spacer instead of padding if not wide format
+                padding: EdgeInsets.only(bottom: isWideFormat ? 50 : 0),
+                child: _buildShadertoyButton(contentColor, largeFontSize),
+              ),
+              if (!isWideFormat) const Spacer(),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 5),
+                child: Text(
+                  'Created with Flutter, GLSL, and lots of coffee in my Los Angeles apartment.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+              const _SourceMessage(),
+            ]
+                .animate(interval: 75.ms)
+                .slideY(
+                  begin: 0.2,
+                  end: 0,
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                )
+                .fadeIn(),
+          ),
         ),
       ),
     );
@@ -100,7 +97,7 @@ class AboutPopup extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(child: _buildResumeButton()),
+          _buildResumeButton(),
           const SizedBox(width: 10),
           ResponsiveButton(
             onClicked: Navigator.of(context).pop,
@@ -132,11 +129,9 @@ class AboutPopup extends StatelessWidget {
           ),
         ),
       ),
-      Flexible(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 36),
-          child: _buildResumeButton(),
-        ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 36),
+        child: _buildResumeButton(),
       ),
     ];
   }
@@ -223,35 +218,41 @@ class AboutPopup extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSourceMessage() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Flexible(
-          child: Text(
-            'View this website\'s source code ',
-            style: TextStyle(fontSize: 16, letterSpacing: 2),
-          ),
+class _SourceMessage extends StatefulWidget {
+  const _SourceMessage();
+
+  @override
+  State<_SourceMessage> createState() => _SourceMessageState();
+}
+
+class _SourceMessageState extends State<_SourceMessage> {
+  final recognizer = TapGestureRecognizer()
+    ..onTap = () => launchUrl(
+          Uri.parse('https://github.com/benweschler/website'),
+        );
+
+  @override
+  void dispose() {
+    recognizer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(children: [
+        const TextSpan(text: 'View this website\'s source code '),
+        TextSpan(
+          text: 'here',
+          style: const TextStyle(decoration: TextDecoration.underline),
+          recognizer: recognizer,
+          mouseCursor: SystemMouseCursors.click,
         ),
-        ResponsiveButton(
-          onClicked: () => launchUrl(
-            Uri.parse('https://github.com/benweschler/website'),
-          ),
-          child: const Text(
-            'here',
-            style: TextStyle(
-              fontSize: 16,
-              letterSpacing: 2,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
-        const Text(
-          '.',
-          style: TextStyle(fontSize: 16, letterSpacing: 2),
-        ),
-      ],
+        const TextSpan(text: '.'),
+      ]),
+      style: const TextStyle(fontSize: 16, letterSpacing: 2),
     );
   }
 }
