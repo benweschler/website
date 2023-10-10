@@ -2,15 +2,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 extension NavigationUtils on BuildContext {
-  Future<void> jumpTo(int page) {
+  Future<void> goTo(int page) {
     return read<RootPageController>().animateToPage(page);
   }
 
-  Future<void> jumpNext() {
+  Future<void> goNext() {
     return read<RootPageController>().nextPage();
   }
 
-  Future<void> jumpPrevious() {
+  Future<void> goPrevious() {
     return read<RootPageController>().previousPage();
   }
 

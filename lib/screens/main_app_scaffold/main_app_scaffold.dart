@@ -77,7 +77,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       child: Scaffold(
         body: Stack(
           children: [
-            ScrollListener(
+            _PageScrollListener(
               onScroll: _onScroll,
               child: PageView(
                 controller: _pageController,
@@ -131,12 +131,11 @@ class Page extends StatelessWidget {
   }
 }
 
-class ScrollListener extends StatelessWidget {
+class _PageScrollListener extends StatelessWidget {
   final void Function(AxisDirection direciton) onScroll;
   final Widget child;
 
-  const ScrollListener({
-    super.key,
+  const _PageScrollListener({
     required this.onScroll,
     required this.child,
   });

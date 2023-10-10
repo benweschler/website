@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -158,82 +161,96 @@ class _MobileLayout extends StatefulWidget {
 }
 
 class _MobileLayoutState extends State<_MobileLayout> {
-  // Add a small amount to the scroll offset so that if the user scrolls back
-  // to the edge the controller notifies listeners and we can detect it.
-  final _scrollController = ScrollController(initialScrollOffset: 10);
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScrollEnd);
-  }
+  final _scrollPositionNotifier = ValueNotifier(0.0);
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScrollEnd);
-    _scrollController.dispose();
+    _scrollPositionNotifier.dispose();
     super.dispose();
   }
 
-  void _onScrollEnd() {
-    if (_scrollController.position.atEdge) {
-      if (_scrollController.offset == 0) {
-        if (context.currentPage() > 0) {
-          context.jumpPrevious().then((_) => _scrollController.jumpTo(1));
-        }
-      } else if (context.currentPage() <= 3) {
-        final offset = _scrollController.offset;
-        context.jumpNext().then((_) => _scrollController.jumpTo(offset - 1));
-      }
+  void _onScroll(double delta) {
+    if (delta < 0 && _scrollPositionNotifier.value == 0) {
+      context.goPrevious();
+    } else if (delta > 0 && _scrollPositionNotifier.value == 1) {
+      context.goNext();
     }
+
+    final screenHeight = MediaQuery.of(context).size.height;
+    // Make the total scrollable length of the ScrollingAppFrames 2.5 times the
+    // height of the screen.
+    final scrollPortion = delta / (screenHeight * 2.5);
+    _scrollPositionNotifier.value =
+        clampDouble(_scrollPositionNotifier.value + scrollPortion, 0, 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(child: widget.textContent),
-        Positioned.fill(
-          left: 15,
-          right: 15,
-          child: ListenableBuilder(
-            listenable: _scrollController,
-            builder: (_, __) {
-              double scrollPosition = -0.25;
-              if (_scrollController.positions.isNotEmpty) {
-                scrollPosition = _scrollController.offset /
-                    _scrollController.position.maxScrollExtent;
-              }
+    return _ScrollDetector(
+      onScroll: _onScroll,
+      child: Stack(
+        children: [
+          Positioned.fill(child: widget.textContent),
+          Positioned.fill(
+            left: 15,
+            right: 15,
+            child: ListenableBuilder(
+              listenable: _scrollPositionNotifier,
+              builder: (_, __) {
+                return _ScrollingAppFrames(
+                  lightAssetPaths: widget.lightAssetPaths,
+                  darkAssetPaths: widget.darkAssetPaths,
+                  scrollPosition: _scrollPositionNotifier.value,
+                  phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
+                  positionLowerBound: -0.55,
+                  positionUpperBound:
+                      1 + (0.45 * widget.constraints.maxHeight / 803),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-              return _ScrollingAppFrames(
-                lightAssetPaths: widget.lightAssetPaths,
-                darkAssetPaths: widget.darkAssetPaths,
-                scrollPosition: scrollPosition,
-                phoneFrameSizeMultipliers: widget.phoneFrameSizeMultipliers,
-                positionLowerBound: -0.55,
-                positionUpperBound:
-                    1 + (0.45 * widget.constraints.maxHeight / 803),
-              );
-            },
-          ),
-        ),
-        Positioned.fill(
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              scrollbars: false,
-            ),
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                // This makes the scroll extent 50% of the screen's height
-                height: widget.constraints.maxHeight * 3,
-                width: widget.constraints.maxWidth,
-              ),
-            ),
-          ),
-        ),
-      ],
+class _ScrollDetector extends StatelessWidget {
+  final void Function(double) onScroll;
+  final Widget child;
+
+  const _ScrollDetector({
+    required this.onScroll,
+    required this.child,
+  });
+
+  bool _isMobileBrowser(String userAgent) {
+    return userAgent.contains('Mobile') ||
+        userAgent.contains('Tablet') ||
+        userAgent.contains('Android') ||
+        userAgent.contains('iOS');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onVerticalDragUpdate: (details) {
+        if (!_isMobileBrowser(window.navigator.userAgent)) return;
+
+        // Mobile scrolling has opposite delta as trackpad scrolling for a given
+        // direction.
+        onScroll(-1 * details.delta.dy);
+      },
+      child: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerSignal: (PointerSignalEvent signalEvent) {
+          if (signalEvent is! PointerScrollEvent) return;
+
+          onScroll(signalEvent.scrollDelta.dy);
+        },
+        child: child,
+      ),
     );
   }
 }

@@ -67,7 +67,7 @@ class _HeaderButtons extends StatelessWidget {
     return Row(
       children: [
         ResponsiveButton(
-          onClicked: () => context.jumpTo(0),
+          onClicked: () => context.goTo(0),
           child: const Text(
             'Ben Weschler',
             style: TextStyle(

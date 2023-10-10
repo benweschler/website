@@ -1,7 +1,8 @@
-My personal website: www.benweschler.dev. Built with Flutter and OpenGL.
+My personal website: www.benweschler.dev. Built with Flutter and GLSL.
 
-## Runing
-Requires Flutter 3.13 or higher.
+## Build it Yourself
+Building from source requires Flutter 3.13 or higher. After downloading this
+source code, navigate to the root directory.
 
 Fetch dependencies:
 ```
@@ -24,4 +25,3 @@ support the fragment program API, which is required in order to run GLSL shaders
 on the web.
 
 Build artifacts are created in under `/build/web/` by default.
-
