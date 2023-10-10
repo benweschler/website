@@ -18,6 +18,11 @@ extension NavigationUtils on BuildContext {
 }
 
 class RootPageController extends PageController {
+  /// The number of pages this controller has.
+  final int length;
+
+  RootPageController({required this.length});
+
   static const _animationDuration = Duration(milliseconds: 1200);
   static const _animationCurve = Curves.easeInOutQuart;
   final List<ValueChanged<int>> _scrollListeners = [];
@@ -38,8 +43,17 @@ class RootPageController extends PageController {
   double get page => super.page ?? 0;
 
   @override
-  Future<void> animateToPage(int page,
-      {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
+  Future<void> animateToPage(
+    int page, {
+    Duration duration = _animationDuration,
+    Curve curve = _animationCurve,
+  }) async {
+    if (page < 0 || page >= length) return;
+
+    // When animating through multiple pages, notify scroll listeners only after
+    // animating to the final page so that listeners aren't triggered
+    // mid-animation on intervening pages. This is important for listeners that
+    // should only be triggered when cross the boundary of a specific page.
     if ((page - this.page).abs() > 1) {
       return super
           .animateToPage(page, duration: duration, curve: curve)
@@ -51,14 +65,20 @@ class RootPageController extends PageController {
   }
 
   @override
-  Future<void> nextPage(
-      {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
+  Future<void> nextPage({
+    Duration duration = _animationDuration,
+    Curve curve = _animationCurve,
+  }) async {
+    if (page == length - 1) return;
     return super.nextPage(duration: duration, curve: curve);
   }
 
   @override
-  Future<void> previousPage(
-      {Duration duration = _animationDuration, Curve curve = _animationCurve}) {
+  Future<void> previousPage({
+    Duration duration = _animationDuration,
+    Curve curve = _animationCurve,
+  }) async {
+    if(page == 0) return;
     return super.previousPage(duration: duration, curve: curve);
   }
 }

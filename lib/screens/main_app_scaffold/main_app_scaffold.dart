@@ -28,9 +28,18 @@ class MainAppScaffold extends StatefulWidget {
 
 class _MainAppScaffoldState extends State<MainAppScaffold> {
   final _headerMessengerKey = GlobalKey<HeaderMessengerState>();
-  late final RootPageController _pageController = RootPageController()
-    ..addScrollListener(_updateDarkModeLock);
+  late final RootPageController _pageController = RootPageController(
+    length: _appPages.length,
+  )..addScrollListener(_updateDarkModeLock);
   bool _isAnimatingFromScroll = false;
+
+  final _appPages = [
+    const LandingPage(),
+    const SportVuePage(),
+    const DragonatorPage(),
+    const LayoverPartyPage(),
+    const AllyndPage(),
+  ];
 
   void _onScroll(AxisDirection direction) async {
     // If the page controller is between pages
@@ -83,13 +92,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
                 controller: _pageController,
                 scrollDirection: Axis.vertical,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const LandingPage(),
-                  const SportVuePage(),
-                  const DragonatorPage(),
-                  const LayoverPartyPage(),
-                  const AllyndPage(),
-                ].map((page) {
+                children: _appPages.map((page) {
                   // Add maintain state for now so that expensive pages with lots
                   // of images aren't rebuilt everytime they are navigated to.
                   return MaintainState(child: Page(child: page));
