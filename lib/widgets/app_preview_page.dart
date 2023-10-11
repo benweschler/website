@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:website/style/theme.dart';
+import 'package:website/utils/iterable_utils.dart';
 import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/phone_frame.dart';
@@ -339,16 +340,29 @@ class _TextContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: tagChips,
-          ),
+          if (context.isWideLayout())
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: tagChips,
+            )
+          else
+            //TODO: not always apparent that the user should scroll
+            SingleChildScrollView(
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[...tagChips]
+                    .separate(const SizedBox(width: 10))
+                    .toList(),
+              ),
+            ),
           const SizedBox(height: 15),
           Text(
             description,
-            style: const TextStyle(
-              fontSize: 24,
+            style: TextStyle(
+              // This is necessary to make the text fit on small phones.
+              fontSize: context.isWideLayout() ? 24 : 20,
               height: 1.25,
               letterSpacing: 1.33,
             ),
