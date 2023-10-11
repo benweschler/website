@@ -36,6 +36,7 @@ class ThemeConfig extends ChangeNotifier {
 
     if(_darkModeQueued && _themeType == ThemeType.light) {
       _themeType = ThemeType.dark;
+      _darkModeQueued = false;
     }
 
     notifyListeners();
