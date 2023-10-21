@@ -24,6 +24,8 @@ class _ResponsiveButtonState extends State<ResponsiveButton> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onClicked,
+        onTapDown: (_) => setState(() => isHovered = true),
+        onTapCancel: () => setState(() => isHovered = false),
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (_) => setState(() => isHovered = true),
