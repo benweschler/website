@@ -19,14 +19,9 @@ void main() {
   );
 }
 
-class WebApp extends StatefulWidget {
+class WebApp extends StatelessWidget {
   const WebApp({super.key});
 
-  @override
-  State<WebApp> createState() => _WebAppState();
-}
-
-class _WebAppState extends State<WebApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

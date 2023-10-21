@@ -420,6 +420,23 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     super.dispose();
   }
 
+  Widget imageFrameBuilder(
+    BuildContext context,
+    Widget child,
+    int? frame,
+    bool? wasSynchronouslyLoaded,
+  ) {
+    if (frame != null) return child;
+
+    return LayoutBuilder(
+      builder: (context, constraints) => SizedBox(
+        width: constraints.maxWidth,
+        // The exact aspect ratio of the media showcase images
+        height: constraints.maxWidth * 2.164,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
@@ -437,14 +454,20 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
             LayoutId(
               id: i,
               child: PhoneFrame(
-                child: Image.asset(widget.lightAssetPaths[i])
+                child: Image.asset(
+                  widget.lightAssetPaths[i],
+                  frameBuilder: imageFrameBuilder,
+                )
                     .animate(
                       target: AppColors.of(context).isDark ? 1 : 0,
                       onInit: (controller) => controller.value =
                           AppColors.of(context).isDark ? 1 : 0,
                     )
                     .crossfade(
-                      builder: (_) => Image.asset(widget.darkAssetPaths[i]),
+                      builder: (_) => Image.asset(
+                        widget.darkAssetPaths[i],
+                        frameBuilder: imageFrameBuilder,
+                      ),
                     ),
               ),
             ),
