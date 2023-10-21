@@ -9,6 +9,7 @@ import 'package:website/style/theme.dart';
 import 'package:website/utils/iterable_utils.dart';
 import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 import 'package:website/widgets/phone_frame.dart';
 import 'package:website/widgets/staggered_parallax_view_delegate.dart';
 import 'package:website/widgets/tag_chip.dart';
@@ -420,23 +421,6 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
     super.dispose();
   }
 
-  Widget imageFrameBuilder(
-    BuildContext context,
-    Widget child,
-    int? frame,
-    bool? wasSynchronouslyLoaded,
-  ) {
-    if (frame != null) return child;
-
-    return LayoutBuilder(
-      builder: (context, constraints) => SizedBox(
-        width: constraints.maxWidth,
-        // The exact aspect ratio of the media showcase images
-        height: constraints.maxWidth * 2.164,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
@@ -453,26 +437,168 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
           for (int i = widget.lightAssetPaths.length - 1; i >= 0; i--)
             LayoutId(
               id: i,
-              child: PhoneFrame(
-                child: Image.asset(
-                  widget.lightAssetPaths[i],
-                  frameBuilder: imageFrameBuilder,
-                )
-                    .animate(
-                      target: AppColors.of(context).isDark ? 1 : 0,
-                      onInit: (controller) => controller.value =
-                          AppColors.of(context).isDark ? 1 : 0,
-                    )
-                    .crossfade(
-                      builder: (_) => Image.asset(
-                        widget.darkAssetPaths[i],
-                        frameBuilder: imageFrameBuilder,
-                      ),
-                    ),
+              child: AppPreviewFrame(
+                lightAssetPath: widget.lightAssetPaths[i],
+                darkAssetPath: widget.darkAssetPaths[i],
               ),
             ),
         ],
       ),
     );
+  }
+}
+
+class AppPreviewFrame extends StatelessWidget {
+  final String lightAssetPath;
+  final String darkAssetPath;
+
+  const AppPreviewFrame({
+    super.key,
+    required this.lightAssetPath,
+    required this.darkAssetPath,
+  });
+
+  Widget _imageFrameBuilder(
+    BuildContext context,
+    Widget child,
+    int? frame,
+    bool? wasSynchronouslyLoaded,
+  ) {
+    if (frame != null) return child;
+
+    return LayoutBuilder(
+      builder: (context, constraints) => SizedBox(
+        width: constraints.maxWidth,
+        // The exact aspect ratio of the media showcase images
+        height: constraints.maxWidth * 2.164,
+      ),
+    );
+  }
+
+  void _showFullscreenPreview(BuildContext context, Widget child) {
+    Navigator.of(context).push(HeroDialogRoute(
+      child: DefaultTextStyle(
+        style: DefaultTextStyle.of(context).style,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: constraints.maxHeight * 0.07,
+              horizontal: constraints.maxWidth * 0.07,
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ResponsiveButton(
+                    onClicked: Navigator.of(context).pop,
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.of(context).container,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: AppColors.of(context).onContainer,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 25,
+                        horizontal: 40,
+                      ),
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget child = Hero(
+      tag: lightAssetPath,
+      // No clue why this is required, but it prevents jumps in the rounded
+      // clipping around images.
+      // See https://github.com/flutter/flutter/issues/100903/
+      createRectTween: (begin, end) => RectTween(begin: begin, end: end),
+      child: PhoneFrame(
+        child: Image.asset(
+          lightAssetPath,
+          frameBuilder: _imageFrameBuilder,
+        )
+            .animate(
+              target: AppColors.of(context).isDark ? 1 : 0,
+              onInit: (controller) =>
+                  controller.value = AppColors.of(context).isDark ? 1 : 0,
+            )
+            .crossfade(
+              builder: (_) => Image.asset(
+                darkAssetPath,
+                frameBuilder: _imageFrameBuilder,
+              ),
+            ),
+      ),
+    );
+
+    return GestureDetector(
+      onTap: () => _showFullscreenPreview(context, child),
+      child: child,
+    );
+  }
+}
+
+/// A dialog route that mimics showDialog when pushed. This is required since
+/// showDialog does not support [Hero].
+class HeroDialogRoute<T> extends PageRoute<T> {
+  final Widget child;
+
+  HeroDialogRoute({required this.child}) : super();
+
+  @override
+  bool get opaque => false;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 300);
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  Color get barrierColor => Colors.black54;
+
+  @override
+  String? get barrierLabel => 'Full screen app preview';
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      ),
+      child: child,
+    );
+  }
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return child;
   }
 }
