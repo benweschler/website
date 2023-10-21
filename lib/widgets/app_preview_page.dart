@@ -507,8 +507,8 @@ class AppPreviewFrame extends StatelessWidget {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 25,
-                        horizontal: 40,
+                        vertical: 15,
+                        horizontal: 50,
                       ),
                       child: child,
                     ),
