@@ -463,7 +463,7 @@ class AppPreviewFrame extends StatefulWidget {
 }
 
 class _AppPreviewFrameState extends State<AppPreviewFrame> {
-  late final bool _isDark;
+  late bool _isDark;
 
   @override
   void didChangeDependencies() {
