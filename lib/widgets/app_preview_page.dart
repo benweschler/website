@@ -476,6 +476,7 @@ class _AppPreviewFrameState extends State<AppPreviewFrame> {
     setState(() => _isDark = AppColors.of(context).isDark);
     super.didChangeDependencies();
   }
+
   Widget _imageFrameBuilder(
     BuildContext context,
     Widget child,
@@ -508,8 +509,7 @@ class _AppPreviewFrameState extends State<AppPreviewFrame> {
         )
             .animate(
               target: _isDark ? 1 : 0,
-              onInit: (controller) =>
-                  controller.value = _isDark ? 1 : 0,
+              onInit: (controller) => controller.value = _isDark ? 1 : 0,
             )
             .crossfade(
               builder: (_) => Image.asset(
@@ -538,15 +538,18 @@ class _FullScreenPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final closeButton = ResponsiveButton(
       onClicked: Navigator.of(context).pop,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: AppColors.of(context).container,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.close_rounded,
-          color: AppColors.of(context).onContainer,
+      child: const Material(
+        color: Colors.white,
+        // Adding a shadow increases visibility in light mode, when both the
+        // button and background are white.
+        elevation: 15,
+        shape: CircleBorder(),
+        child: Padding(
+          padding: EdgeInsets.all(5),
+          child: Icon(
+            Icons.close_rounded,
+            color: Colors.black,
+          ),
         ),
       ),
     );
@@ -554,7 +557,8 @@ class _FullScreenPreview extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) => Padding(
         padding: EdgeInsets.symmetric(
-          vertical: constraints.maxHeight * 0.05,
+          vertical:
+              constraints.maxHeight * (context.isWideLayout() ? 0.05 : 0.03),
         ),
         child: Center(
           child: Column(
@@ -563,8 +567,7 @@ class _FullScreenPreview extends StatelessWidget {
                 ? CrossAxisAlignment.end
                 : CrossAxisAlignment.center,
             children: [
-              if (context.isWideLayout())
-                closeButton,
+              if (context.isWideLayout()) closeButton,
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -574,11 +577,10 @@ class _FullScreenPreview extends StatelessWidget {
                   child: child,
                 ),
               ),
-              if (!context.isWideLayout())
-                ...[
-                  const SizedBox(height: 20),
-                  closeButton,
-                ],
+              if (!context.isWideLayout()) ...[
+                const SizedBox(height: 10),
+                closeButton,
+              ],
             ],
           ),
         ),
