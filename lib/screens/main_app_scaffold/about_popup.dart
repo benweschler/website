@@ -23,7 +23,9 @@ class AboutPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWideFormat = context.isWideLayout();
     final double largeFontSize = isWideFormat ? 48 : 30;
-    final Color contentColor = AppColors.of(context).onContainer;
+    final Color contentColor = context.isWideLayout()
+        ? AppColors.of(context).onContainer
+        : AppColors.of(context).onBackground;
 
     return DefaultTextStyle(
       style: TextStyle(
@@ -220,6 +222,38 @@ class AboutPopup extends StatelessWidget {
   }
 }
 
+class _SizeAwareBackgroundWrapper extends StatelessWidget {
+  final bool isWideFormat;
+  final Widget child;
+
+  const _SizeAwareBackgroundWrapper({
+    required this.isWideFormat,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isWideFormat) {
+      return Container(
+        padding: const EdgeInsets.all(50),
+        decoration: BoxDecoration(
+          color: AppColors.of(context).container,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: child,
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(35),
+      color: AppColors.of(context).background,
+      width: double.infinity,
+      height: double.infinity,
+      child: child,
+    );
+  }
+}
+
 class _SourceMessage extends StatefulWidget {
   const _SourceMessage();
 
@@ -253,38 +287,6 @@ class _SourceMessageState extends State<_SourceMessage> {
         const TextSpan(text: '.'),
       ]),
       style: const TextStyle(fontSize: 16, letterSpacing: 2),
-    );
-  }
-}
-
-class _SizeAwareBackgroundWrapper extends StatelessWidget {
-  final bool isWideFormat;
-  final Widget child;
-
-  const _SizeAwareBackgroundWrapper({
-    required this.isWideFormat,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (isWideFormat) {
-      return Container(
-        padding: const EdgeInsets.all(50),
-        decoration: BoxDecoration(
-          color: AppColors.of(context).container,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: child,
-      );
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(35),
-      color: AppColors.of(context).container,
-      width: double.infinity,
-      height: double.infinity,
-      child: child,
     );
   }
 }
