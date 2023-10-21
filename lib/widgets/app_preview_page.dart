@@ -448,7 +448,7 @@ class _ScrollingAppFramesState extends State<_ScrollingAppFrames>
   }
 }
 
-class AppPreviewFrame extends StatelessWidget {
+class AppPreviewFrame extends StatefulWidget {
   final String lightAssetPath;
   final String darkAssetPath;
 
@@ -458,6 +458,24 @@ class AppPreviewFrame extends StatelessWidget {
     required this.darkAssetPath,
   });
 
+  @override
+  State<AppPreviewFrame> createState() => _AppPreviewFrameState();
+}
+
+class _AppPreviewFrameState extends State<AppPreviewFrame> {
+  late final bool _isDark;
+
+  @override
+  void didChangeDependencies() {
+    // AppColors must be depended on here rather than in the build method. This
+    // is because if dependOnInheritedWidgetOfExactType is called in the build
+    // method, when the screen changes whether it is in the wide layout or not,
+    // its context becomes stale and using a stale build context is unsafe and
+    // throws an error. didChangeDependencies fires when the context becomes
+    // stale and dependOnInheritedWidgetOfExactType is called in its body.
+    setState(() => _isDark = AppColors.of(context).isDark);
+    super.didChangeDependencies();
+  }
   Widget _imageFrameBuilder(
     BuildContext context,
     Widget child,
@@ -475,74 +493,27 @@ class AppPreviewFrame extends StatelessWidget {
     );
   }
 
-  void _showFullscreenPreview(BuildContext context, Widget child) {
-    Navigator.of(context).push(HeroDialogRoute(
-      child: DefaultTextStyle(
-        style: DefaultTextStyle.of(context).style,
-        child: LayoutBuilder(
-          builder: (context, constraints) => Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: constraints.maxHeight * 0.07,
-              horizontal: constraints.maxWidth * 0.07,
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  ResponsiveButton(
-                    onClicked: Navigator.of(context).pop,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: AppColors.of(context).container,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.close_rounded,
-                        color: AppColors.of(context).onContainer,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 50,
-                      ),
-                      child: child,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     final Widget child = Hero(
-      tag: lightAssetPath,
+      tag: widget.lightAssetPath,
       // No clue why this is required, but it prevents jumps in the rounded
       // clipping around images.
       // See https://github.com/flutter/flutter/issues/100903/
       createRectTween: (begin, end) => RectTween(begin: begin, end: end),
       child: PhoneFrame(
         child: Image.asset(
-          lightAssetPath,
+          widget.lightAssetPath,
           frameBuilder: _imageFrameBuilder,
         )
             .animate(
-              target: AppColors.of(context).isDark ? 1 : 0,
+              target: _isDark ? 1 : 0,
               onInit: (controller) =>
-                  controller.value = AppColors.of(context).isDark ? 1 : 0,
+                  controller.value = _isDark ? 1 : 0,
             )
             .crossfade(
               builder: (_) => Image.asset(
-                darkAssetPath,
+                widget.darkAssetPath,
                 frameBuilder: _imageFrameBuilder,
               ),
             ),
@@ -550,8 +521,68 @@ class AppPreviewFrame extends StatelessWidget {
     );
 
     return GestureDetector(
-      onTap: () => _showFullscreenPreview(context, child),
+      onTap: () => Navigator.of(context).push(HeroDialogRoute(
+        child: _FullScreenPreview(child: child),
+      )),
       child: child,
+    );
+  }
+}
+
+class _FullScreenPreview extends StatelessWidget {
+  final Widget child;
+
+  const _FullScreenPreview({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final closeButton = ResponsiveButton(
+      onClicked: Navigator.of(context).pop,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: AppColors.of(context).container,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.close_rounded,
+          color: AppColors.of(context).onContainer,
+        ),
+      ),
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) => Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: constraints.maxHeight * 0.05,
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: context.isWideLayout()
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.center,
+            children: [
+              if (context.isWideLayout())
+                closeButton,
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 50,
+                  ),
+                  child: child,
+                ),
+              ),
+              if (!context.isWideLayout())
+                ...[
+                  const SizedBox(height: 20),
+                  closeButton,
+                ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
