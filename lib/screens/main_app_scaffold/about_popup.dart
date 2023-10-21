@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/utils/layout_utils.dart';
-import 'package:website/widgets/responsive_button.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 
 class AboutPopup extends StatelessWidget {
   const AboutPopup({super.key});

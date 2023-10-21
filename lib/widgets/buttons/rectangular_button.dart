@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:website/widgets/responsive_button.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 
 class RectangularButton extends StatelessWidget {
   final GestureTapCallback onClicked;

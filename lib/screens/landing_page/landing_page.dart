@@ -5,7 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:website/utils/navigation_utils.dart';
-import 'package:website/widgets/responsive_button.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 
 import 'animated_gradient_background.dart';
 import 'pointer_move_notifier.dart';

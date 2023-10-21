@@ -9,7 +9,7 @@ import 'package:website/style/theme.dart';
 import 'package:website/utils/http_utils.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
-import 'package:website/widgets/responsive_button.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 
 // HAHA you sneaky sneaker. Checking the source code to try and get in smh...
 // Wait until the site is ready!!! I promise it'll worth the wait.

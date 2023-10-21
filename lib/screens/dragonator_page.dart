@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:website/widgets/app_preview_page.dart';
-import 'package:website/widgets/outlink_buttons.dart';
+import 'package:website/widgets/buttons/outlink_buttons.dart';
 import 'package:website/widgets/tag_chip.dart';
 
 class DragonatorPage extends StatelessWidget {

@@ -9,7 +9,7 @@ import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/widgets/icon_switch.dart';
-import 'package:website/widgets/responsive_button.dart';
+import 'package:website/widgets/buttons/responsive_button.dart';
 
 import 'header_messenger.dart';
 

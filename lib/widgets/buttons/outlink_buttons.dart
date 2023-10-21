@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:website/style/theme.dart';
-import 'package:website/widgets/rectangular_button.dart';
+import 'package:website/widgets/buttons/rectangular_button.dart';
 
 class GithubRepoButton extends StatelessWidget {
   final String repoName;
