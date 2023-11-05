@@ -5,12 +5,12 @@ import 'package:website/widgets/buttons/outlink_buttons.dart';
 import 'package:website/widgets/tag_chip.dart';
 
 const List<String> _assetPaths = [
-  'assets/showcase-media/layover-party/onboarding-one.png',
-  'assets/showcase-media/layover-party/onboarding-two.png',
-  'assets/showcase-media/layover-party/onboarding-three.png',
-  'assets/showcase-media/layover-party/trip-ticket.png',
-  'assets/showcase-media/layover-party/search-bar.png',
-  'assets/showcase-media/layover-party/trips.png',
+  'assets/showcase-media/layover-party/onboarding-one.jpg',
+  'assets/showcase-media/layover-party/onboarding-two.jpg',
+  'assets/showcase-media/layover-party/onboarding-three.jpg',
+  'assets/showcase-media/layover-party/trip-ticket.jpg',
+  'assets/showcase-media/layover-party/search-bar.jpg',
+  'assets/showcase-media/layover-party/trips.jpg',
 ];
 
 class LayoverPartyPage extends StatelessWidget {

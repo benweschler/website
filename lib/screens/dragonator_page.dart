@@ -10,18 +10,18 @@ class DragonatorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppPreviewPage(
       lightAssetPaths: [
-        'assets/showcase-media/dragonator/light/roster-light.png',
-        'assets/showcase-media/dragonator/light/edit-lineup-light.png',
-        'assets/showcase-media/dragonator/light/create-paddler-light.png',
-        'assets/showcase-media/dragonator/light/paddler-details-light.png',
-        'assets/showcase-media/dragonator/light/settings-light.png',
+        'assets/showcase-media/dragonator/light/roster-light.jpg',
+        'assets/showcase-media/dragonator/light/edit-lineup-light.jpg',
+        'assets/showcase-media/dragonator/light/create-paddler-light.jpg',
+        'assets/showcase-media/dragonator/light/paddler-details-light.jpg',
+        'assets/showcase-media/dragonator/light/settings-light.jpg',
       ],
       darkAssetPaths: [
-        'assets/showcase-media/dragonator/dark/roster-dark.png',
-        'assets/showcase-media/dragonator/dark/edit-lineup-dark.png',
-        'assets/showcase-media/dragonator/dark/create-paddler-dark.png',
-        'assets/showcase-media/dragonator/dark/paddler-details-dark.png',
-        'assets/showcase-media/dragonator/dark/settings-dark.png',
+        'assets/showcase-media/dragonator/dark/roster-dark.jpg',
+        'assets/showcase-media/dragonator/dark/edit-lineup-dark.jpg',
+        'assets/showcase-media/dragonator/dark/create-paddler-dark.jpg',
+        'assets/showcase-media/dragonator/dark/paddler-details-dark.jpg',
+        'assets/showcase-media/dragonator/dark/settings-dark.jpg',
       ],
       phoneFrameSizeMultipliers: [
         0.18733774497866676,

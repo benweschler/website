@@ -41,9 +41,9 @@ class AllyndPage extends StatelessWidget {
   }
 
   final List<String> _assetPaths = const [
-    'assets/showcase-media/allynd/login.png',
-    'assets/showcase-media/allynd/onboarding-one.png',
-    'assets/showcase-media/allynd/onboarding-two.png',
-    'assets/showcase-media/allynd/onboarding-three.png',
+    'assets/showcase-media/allynd/login.jpg',
+    'assets/showcase-media/allynd/onboarding-one.jpg',
+    'assets/showcase-media/allynd/onboarding-two.jpg',
+    'assets/showcase-media/allynd/onboarding-three.jpg',
   ];
 }
