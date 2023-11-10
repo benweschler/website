@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:website/style/theme.dart';
-import 'package:website/widgets/app_preview_page.dart';
+import 'package:website/widgets/app_preview_page/app_preview_page.dart';
 import 'package:website/widgets/buttons/outlink_buttons.dart';
 import 'package:website/widgets/tag_chip.dart';
 

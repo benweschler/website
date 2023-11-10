@@ -13,7 +13,6 @@ import 'package:website/screens/sportvue_page.dart';
 import 'package:website/style/theme.dart';
 import 'package:website/theme_config.dart';
 import 'package:website/utils/layout_utils.dart';
-import 'package:website/utils/maintain_state.dart';
 import 'package:website/utils/navigation_utils.dart';
 
 import 'header_messenger.dart';
@@ -92,11 +91,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
                 controller: _pageController,
                 scrollDirection: Axis.vertical,
                 physics: const NeverScrollableScrollPhysics(),
-                children: _appPages.map((page) {
-                  // Add maintain state for now so that expensive pages with lots
-                  // of images aren't rebuilt everytime they are navigated to.
-                  return MaintainState(child: Page(child: page));
-                }).toList(),
+                children: _appPages.map((page) => Page(child: page)).toList(),
               ),
             ),
             Positioned(

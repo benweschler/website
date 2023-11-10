@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:website/widgets/app_preview_page.dart';
+import 'package:website/widgets/app_preview_page/app_preview_page.dart';
 import 'package:website/widgets/tag_chip.dart';
 
 class SportVuePage extends StatelessWidget {

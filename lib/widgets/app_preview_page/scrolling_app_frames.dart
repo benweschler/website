@@ -1,5 +1,80 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:website/utils/layout_utils.dart';
+
+class ScrollingAppFrames extends StatefulWidget {
+  final List<String> lightAssetPaths;
+  final List<String> darkAssetPaths;
+  final double scrollPosition;
+  final List<double> phoneFrameSizeMultipliers;
+  final List<LayoutId> children;
+
+  const ScrollingAppFrames({
+    super.key,
+    required this.lightAssetPaths,
+    required this.darkAssetPaths,
+    required this.scrollPosition,
+    required this.phoneFrameSizeMultipliers,
+    required this.children,
+  }) : assert(
+  lightAssetPaths.length == darkAssetPaths.length &&
+      lightAssetPaths.length == phoneFrameSizeMultipliers.length,
+  'The number of light asset paths, dark asset paths, and size multipliers must be equal',
+  );
+
+  @override
+  State<ScrollingAppFrames> createState() => _ScrollingAppFramesState();
+}
+
+class _ScrollingAppFramesState extends State<ScrollingAppFrames>
+    with SingleTickerProviderStateMixin {
+  late final _controller = AnimationController(vsync: this);
+
+  @override
+  void didUpdateWidget(ScrollingAppFrames oldWidget) {
+    if(oldWidget.scrollPosition != widget.scrollPosition) {
+      _updateScrollPosition();
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _updateScrollPosition() {
+    _controller.animateTo(
+      widget.scrollPosition,
+      curve: Curves.easeOutQuart,
+      // In mobile layout, easing really only takes effect when the user stops
+      // scrolling, since the scroll inertia controller takes care of easing the
+      // rest of the time. Only use a small amount of easing to maintain a
+      // responsive feel.
+      duration: context.isWideLayout() ? 700.ms : 300.ms,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: CustomMultiChildLayout(
+        delegate: StaggeredParallaxViewDelegate(
+          positionAnimation: _controller,
+          length: widget.lightAssetPaths.length,
+          mobileLayout: !context.isWideLayout(),
+          sizeMultipliers: widget.phoneFrameSizeMultipliers,
+        ),
+        // Reverse the list to ensure that children appearing first in the
+        // scrolling list are painted on top of the children appearing later.
+        children: widget.children,
+      ),
+    );
+  }
+}
 
 class StaggeredParallaxViewDelegate extends MultiChildLayoutDelegate {
   final Animation<double> positionAnimation;

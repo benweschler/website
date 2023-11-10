@@ -7,6 +7,8 @@ import 'package:website/utils/color_utils.dart';
 
 import 'pointer_move_notifier.dart';
 
+//TODO: Overhaul gradient animation ticking. Should be independent of refresh rate and animate smoothly between speeds.
+
 class AnimatedGradientBackground extends StatefulWidget {
   const AnimatedGradientBackground({super.key});
 
