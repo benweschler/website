@@ -9,7 +9,7 @@ import 'package:website/utils/color_utils.dart';
 
 import 'pointer_move_notifier.dart';
 
-//TODO: Gradient animation ticking should animate smoothly between speeds.
+//TODO: Gradient animation ticking may possibly still vary by refresh rate even after fix?
 
 class AnimatedGradientBackground extends StatefulWidget {
   const AnimatedGradientBackground({super.key});
