@@ -1,5 +1,7 @@
-import 'package:flutter/scheduler.dart';
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:provider/provider.dart';
 import 'package:website/style/theme.dart';
@@ -7,7 +9,7 @@ import 'package:website/utils/color_utils.dart';
 
 import 'pointer_move_notifier.dart';
 
-//TODO: Overhaul gradient animation ticking. Should be independent of refresh rate and animate smoothly between speeds.
+//TODO: Gradient animation ticking should animate smoothly between speeds.
 
 class AnimatedGradientBackground extends StatefulWidget {
   const AnimatedGradientBackground({super.key});
@@ -17,9 +19,9 @@ class AnimatedGradientBackground extends StatefulWidget {
       _AnimatedGradientBackgroundState();
 }
 
-class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
-    with SingleTickerProviderStateMixin {
-  late final Ticker ticker;
+class _AnimatedGradientBackgroundState
+    extends State<AnimatedGradientBackground> {
+  late final Timer timer;
   double time = 0;
 
   @override
@@ -31,12 +33,16 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
     // interaction time is usually shorter.
     pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.12));
     pointerMoveNotifier.addMouseListener(() => setState(() => time += 0.08));
-    ticker = createTicker((_) => setState(() => time += 0.032))..start();
+
+    timer = Timer.periodic(
+      (1000 / 60).ms,
+      (_) => setState(() => time += 0.016),
+    );
   }
 
   @override
   void dispose() {
-    ticker.dispose();
+    timer.cancel();
     super.dispose();
   }
 
