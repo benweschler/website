@@ -30,7 +30,13 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
   final _headerMessengerKey = GlobalKey<HeaderMessengerState>();
   late final RootPageController _pageController = RootPageController(
     length: _appPages.length,
-  )..addScrollListener(_updateDarkModeLock);
+  )
+    // Lock dark mode before a scroll to ensure dark mode unsupported pages are
+    // not in dark mode while scrolling to them.
+    ..addPreScrollListener(_lockDarkMode)
+    // Unlock dark mode only after a scroll to ensure dark mode unsupported
+    // pages are not in dark mode while scrolling away from them.
+    ..addPostScrollListener(_unlockDarkMode);
   bool _isAnimatingFromScroll = false;
 
   final _appPages = const [
@@ -61,7 +67,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     _isAnimatingFromScroll = false;
   }
 
-  void _updateDarkModeLock(int nextPage) {
+  void _lockDarkMode(int nextPage) {
     if (darkModeUnsupportedPages.containsKey(nextPage)) {
       final themeConfig = context.read<ThemeConfig>();
       if (themeConfig.themeType == ThemeType.dark) {
@@ -71,7 +77,11 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
       }
 
       themeConfig.lockDarkMode();
-    } else {
+    }
+  }
+
+  void _unlockDarkMode(int nextPage) {
+    if (!darkModeUnsupportedPages.containsKey(nextPage)) {
       context.read<ThemeConfig>().unlockDarkMode();
     }
   }

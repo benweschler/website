@@ -28,16 +28,27 @@ class RootPageController extends PageController {
 
   static const _animationDuration = Duration(milliseconds: 1200);
   static const _animationCurve = Curves.easeInOutQuart;
-  final List<ValueChanged<int>> _scrollListeners = [];
 
-  void addScrollListener(ValueChanged<int> listener) =>
-      _scrollListeners.add(listener);
+  /// Listeners that are notified before a scroll is executed.
+  final List<ValueChanged<int>> _preScrollListeners = [];
 
-  void removeScrollListener(ValueChanged<int> listener) =>
-      _scrollListeners.remove(listener);
+  /// Listeners that are notified after a scroll is executed.
+  final List<ValueChanged<int>> _postScrollListeners = [];
 
-  void _notifyScrollListeners(int nextPage) {
-    for (final listener in _scrollListeners) {
+  void addPreScrollListener(ValueChanged<int> listener) =>
+      _preScrollListeners.add(listener);
+
+  void addPostScrollListener(ValueChanged<int> listener) =>
+      _postScrollListeners.add(listener);
+
+  void _notifyPreScrollListeners(int nextPage) {
+    for (final listener in _preScrollListeners) {
+      listener(nextPage);
+    }
+  }
+
+  void _notifyPostScrollListeners(int nextPage) {
+    for (final listener in _postScrollListeners) {
       listener(nextPage);
     }
   }
@@ -46,6 +57,9 @@ class RootPageController extends PageController {
   double get page => super.page ?? 0;
 
   @override
+  // PageView's implementation of nextPage and previousPage internally calls
+  // animateToPage, so the below implementations of nextPage and previousPage
+  // will also notify scroll listeners.
   Future<void> animateToPage(
     int page, {
     Duration duration = _animationDuration,
@@ -53,18 +67,10 @@ class RootPageController extends PageController {
   }) async {
     if (page < 0 || page >= length) return;
 
-    // When animating through multiple pages, notify scroll listeners only after
-    // animating to the final page so that listeners aren't triggered
-    // mid-animation on intervening pages. This is important for listeners that
-    // should only be triggered when cross the boundary of a specific page.
-    if ((page - this.page).abs() > 1) {
-      return super
-          .animateToPage(page, duration: duration, curve: curve)
-          .then((_) => _notifyScrollListeners(page));
-    }
-
-    _notifyScrollListeners(page);
-    return super.animateToPage(page, duration: duration, curve: curve);
+    _notifyPreScrollListeners(page);
+    return super
+        .animateToPage(page, duration: duration, curve: curve)
+        .then((_) => _notifyPostScrollListeners(page));
   }
 
   @override
@@ -81,7 +87,7 @@ class RootPageController extends PageController {
     Duration duration = _animationDuration,
     Curve curve = _animationCurve,
   }) async {
-    if(page == 0) return;
+    if (page == 0) return;
     return super.previousPage(duration: duration, curve: curve);
   }
 }
