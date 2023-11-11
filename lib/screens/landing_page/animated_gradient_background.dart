@@ -21,8 +21,10 @@ class AnimatedGradientBackground extends StatefulWidget {
 
 class _AnimatedGradientBackgroundState
     extends State<AnimatedGradientBackground> {
-  late final Timer timer;
-  double time = 0;
+  late final Timer _timeUpdateTimer;
+  late double _timeIncrement = _idleTimeIncrement;
+  final double _idleTimeIncrement = 0.016;
+  double _time = 0;
 
   @override
   void initState() {
@@ -31,20 +33,24 @@ class _AnimatedGradientBackgroundState
 
     // Trigger a more dramatic effect on a touch interaction since the
     // interaction time is usually shorter.
-    pointerMoveNotifier.addTouchListener(() => setState(() => time += 0.12));
-    pointerMoveNotifier.addMouseListener(() => setState(() => time += 0.08));
+    pointerMoveNotifier.addTouchListener(
+        () => setState(() => _timeIncrement = _idleTimeIncrement + 0.12));
+    pointerMoveNotifier.addMouseListener(
+        () => setState(() => _timeIncrement = _idleTimeIncrement + 0.08));
+    pointerMoveNotifier.addPointerStopListener(
+        () => setState(() => _timeIncrement = _idleTimeIncrement));
 
-    timer = Timer.periodic(
-      (1000 / 60).ms,
-      (_) => setState(() => time += 0.016),
-    );
+    _timeUpdateTimer =
+        Timer.periodic((1000 / 60).ms, (_) => _updateAnimationTime());
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    _timeUpdateTimer.cancel();
     super.dispose();
   }
+
+  void _updateAnimationTime() => setState(() => _time += _timeIncrement);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,7 @@ class _AnimatedGradientBackgroundState
         assetKey: 'assets/shaders/gradient.frag',
         (context, shader, child) => CustomPaint(
           painter: GradientPainter(
-            time: time,
+            time: _time,
             shader: shader,
             gradientColors: AppColors.of(context).gradientColors,
           ),

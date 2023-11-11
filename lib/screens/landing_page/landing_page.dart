@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:website/utils/navigation_utils.dart';
@@ -17,46 +17,30 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage>
-    with TickerProviderStateMixin {
+class _LandingPageState extends State<LandingPage> {
   final _pointerMoveNotifier = PointerMoveNotifier();
-  late final Ticker _mouseUpdateTicker;
-  late final Ticker _touchUpdateTicker;
-  // The number of milliseconds for which the background gradient reacts after a
-  // pointer update. This means that if the user is getting at least 20fps, they
-  // will see at least one reactive frame after a pointer event.
-  final _backgroundReactionDuration = (1000/20).ms;
+  Timer? _pointerStopTimer;
 
-  @override
-  void initState() {
-    super.initState();
-    _mouseUpdateTicker =
-        createTicker((_) => _pointerMoveNotifier.notifyMouseUpdate());
-    _touchUpdateTicker =
-        createTicker((_) => _pointerMoveNotifier.notifyTouchUpdate());
+  void _notifyMouseUpdate() async {
+    _pointerStopTimer?.cancel();
+    _pointerMoveNotifier.notifyMouseUpdate();
+    _resetTimer();
   }
 
-  @override
-  void dispose() {
-    _mouseUpdateTicker.dispose();
-    _touchUpdateTicker.dispose();
-    super.dispose();
+  void _notifyTouchUpdate() async {
+    _pointerStopTimer?.cancel();
+    _pointerMoveNotifier.notifyTouchUpdate();
+    _resetTimer();
   }
 
-  void notifyMouseUpdate() async {
-    if (!_mouseUpdateTicker.isActive) {
-      _mouseUpdateTicker.start();
-      await Future.delayed(_backgroundReactionDuration);
-      _mouseUpdateTicker.stop();
-    }
-  }
-
-  void notifyTouchUpdate() async {
-    if (!_touchUpdateTicker.isActive) {
-      _touchUpdateTicker.start();
-      await Future.delayed((1000/5).ms);
-      _touchUpdateTicker.stop();
-    }
+  void _resetTimer() {
+    _pointerStopTimer = Timer(
+      // The number of milliseconds for which the background gradient reacts after a
+      // pointer update. This means that if the user is getting at least 20fps, they
+      // will see at least one reactive frame after a pointer event.
+      (1000 / 20).ms,
+      _pointerMoveNotifier.notifyPointerStop,
+    );
   }
 
   @override
@@ -65,9 +49,9 @@ class _LandingPageState extends State<LandingPage>
       value: _pointerMoveNotifier,
       child: Listener(
         onPointerMove: (event) => event.kind != PointerDeviceKind.touch
-            ? notifyMouseUpdate()
-            : notifyTouchUpdate(),
-        onPointerHover: (_) => notifyMouseUpdate(),
+            ? _notifyMouseUpdate()
+            : _notifyTouchUpdate(),
+        onPointerHover: (_) => _notifyMouseUpdate(),
         child: Stack(
           children: [
             const Positioned.fill(child: AnimatedGradientBackground()),

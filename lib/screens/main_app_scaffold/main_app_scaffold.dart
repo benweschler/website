@@ -33,12 +33,12 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
   )..addScrollListener(_updateDarkModeLock);
   bool _isAnimatingFromScroll = false;
 
-  final _appPages = [
-    const LandingPage(),
-    const SportVuePage(),
-    const DragonatorPage(),
-    const LayoverPartyPage(),
-    const AllyndPage(),
+  final _appPages = const [
+    LandingPage(),
+    SportVuePage(),
+    DragonatorPage(),
+    LayoverPartyPage(),
+    AllyndPage(),
   ];
 
   void _onScroll(AxisDirection direction) async {
