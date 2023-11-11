@@ -18,10 +18,10 @@ class ScrollingAppFrames extends StatefulWidget {
     required this.phoneFrameSizeMultipliers,
     required this.children,
   }) : assert(
-  lightAssetPaths.length == darkAssetPaths.length &&
-      lightAssetPaths.length == phoneFrameSizeMultipliers.length,
-  'The number of light asset paths, dark asset paths, and size multipliers must be equal',
-  );
+          lightAssetPaths.length == darkAssetPaths.length &&
+              lightAssetPaths.length == phoneFrameSizeMultipliers.length,
+          'The number of light asset paths, dark asset paths, and size multipliers must be equal',
+        );
 
   @override
   State<ScrollingAppFrames> createState() => _ScrollingAppFramesState();
@@ -29,11 +29,14 @@ class ScrollingAppFrames extends StatefulWidget {
 
 class _ScrollingAppFramesState extends State<ScrollingAppFrames>
     with SingleTickerProviderStateMixin {
-  late final _controller = AnimationController(vsync: this);
+  late final _controller = AnimationController(
+    value: widget.scrollPosition,
+    vsync: this,
+  );
 
   @override
   void didUpdateWidget(ScrollingAppFrames oldWidget) {
-    if(oldWidget.scrollPosition != widget.scrollPosition) {
+    if (oldWidget.scrollPosition != widget.scrollPosition) {
       _updateScrollPosition();
     }
 
@@ -95,7 +98,7 @@ class StaggeredParallaxViewDelegate extends MultiChildLayoutDelegate {
 
   @override
   void performLayout(Size size) {
-    if(mobileLayout) return performMobileLayout(size);
+    if (mobileLayout) return performMobileLayout(size);
 
     final position = positionAnimation.value;
 

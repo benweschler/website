@@ -1,16 +1,17 @@
+import 'dart:html' as html;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:provider/provider.dart';
 import 'package:website/utils/iterable_utils.dart';
 import 'package:website/utils/layout_utils.dart';
 import 'package:website/utils/navigation_utils.dart';
 import 'package:website/widgets/app_preview_page/scrolling_app_frames.dart';
-import 'package:website/widgets/scroll_detector.dart';
 import 'package:website/widgets/tag_chip.dart';
 
 import 'app_preview_frame.dart';
-
 
 // Make this a stateful widget to store the current mouse position in a state
 // variable that is persistent between rebuilds, even though the state is never
@@ -177,13 +178,18 @@ class _MobileLayout extends StatefulWidget {
 
 class _MobileLayoutState extends State<_MobileLayout>
     with SingleTickerProviderStateMixin {
-  final _scrollPositionNotifier = ValueNotifier(0.0);
-  late final _inertiaController =
-      AnimationController.unbounded(value: 0, vsync: this);
+  late final ValueNotifier<double> _scrollPositionNotifier;
+  late final AnimationController _inertiaController;
 
   @override
   void initState() {
     super.initState();
+
+    final pageController = context.read<RootPageController>();
+    _scrollPositionNotifier = ValueNotifier(
+        pageController.page > pageController.lastPage ? 0.0 : 1.0);
+
+    _inertiaController = AnimationController.unbounded(vsync: this);
     _inertiaController.addListener(_updateScrollInertia);
   }
 
@@ -209,7 +215,7 @@ class _MobileLayoutState extends State<_MobileLayout>
       context.goNext();
     }
 
-    // Cancel scroll inertia to start a new scroll
+    // Cancel scroll inertia to start a new scroll.
     _inertiaController.stop();
 
     final scrollPortion = _scrollPositionToRelative(delta);
@@ -254,7 +260,7 @@ class _MobileLayoutState extends State<_MobileLayout>
         ),
     ];
 
-    return ScrollDetector(
+    return _ScrollDetector(
       stopScrollInertia: _inertiaController.stop,
       onScroll: _onScroll,
       onDragEnd: _onDragEnd,
@@ -348,6 +354,57 @@ class _PageTextContent extends StatelessWidget {
           const SizedBox(height: 50),
           bottomContent,
         ],
+      ),
+    );
+  }
+}
+
+/// Detects conventional scrolling on desktop and vertical drag-based scrolling
+/// on mobile.
+class _ScrollDetector extends StatelessWidget {
+  final ValueChanged<double> onScroll;
+  final ValueChanged<double> onDragEnd;
+  final VoidCallback stopScrollInertia;
+  final Widget child;
+
+  const _ScrollDetector({
+    required this.onScroll,
+    required this.onDragEnd,
+    required this.stopScrollInertia,
+    required this.child,
+  });
+
+  bool _isMobileBrowser() {
+    final userAgent = html.window.navigator.userAgent;
+    return userAgent.contains('Mobile') ||
+        userAgent.contains('Tablet') ||
+        userAgent.contains('Android') ||
+        userAgent.contains('iOS');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTapDown: (_) => stopScrollInertia(),
+      onVerticalDragEnd: (details) {
+        if (!_isMobileBrowser()) return;
+        onDragEnd(details.velocity.pixelsPerSecond.dy / 60);
+      },
+      onVerticalDragUpdate: (details) {
+        if (!_isMobileBrowser()) return;
+        // Mobile scrolling has opposite delta as trackpad scrolling for a given
+        // direction.
+        onScroll(-1 * details.delta.dy);
+      },
+      child: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerSignal: (PointerSignalEvent signalEvent) {
+          if (signalEvent is! PointerScrollEvent) return;
+
+          onScroll(signalEvent.scrollDelta.dy);
+        },
+        child: child,
       ),
     );
   }

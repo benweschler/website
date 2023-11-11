@@ -56,6 +56,8 @@ class RootPageController extends PageController {
   @override
   double get page => super.page ?? 0;
 
+  double lastPage = 0;
+
   @override
   // PageView's implementation of nextPage and previousPage internally calls
   // animateToPage, so the below implementations of nextPage and previousPage
@@ -65,7 +67,9 @@ class RootPageController extends PageController {
     Duration duration = _animationDuration,
     Curve curve = _animationCurve,
   }) async {
-    if (page < 0 || page >= length) return;
+    if (page < 0 || page >= length || page == this.page) return;
+
+    lastPage = this.page;
 
     _notifyPreScrollListeners(page);
     return super
