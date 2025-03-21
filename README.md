@@ -30,4 +30,4 @@ Flutter's CanvasKit web renderer must be used since the HTML renderer does not
 support Flutter's Fragment Program API, which is required to run GLSL fragment
 shaders on Flutter web.
 
-Build artifacts are created in under `/build/web/` by default.
+Build artifacts are created in `/build/web/` by default.
