@@ -33,8 +33,11 @@ flutter:
 
   assets:
     - 'assets/resume.pdf'
+
+    # Website logos
     - 'assets/github-invertocat-logo.png'
     - 'assets/devpost-logo.png'
+    - 'assets/stack-overflow-logo.png'
     - 'assets/shadertoy-logo.png'
 
     # SportVue light

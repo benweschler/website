@@ -57,6 +57,10 @@ class AboutPopup extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 36),
+                child: _buildStackOverflowButton(contentColor, largeFontSize),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 36),
                 child: _buildDevpostButton(contentColor, largeFontSize),
               ),
               Padding(
@@ -176,6 +180,26 @@ class AboutPopup extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           const Text('GitHub'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStackOverflowButton(Color color, double size) {
+    return ResponsiveButton(
+      onClicked: () => launchUrl(
+        Uri.parse('https://stackoverflow.com/users/19048487/ben-weschler'),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/stack-overflow-logo.png',
+            color: color,
+            height: size,
+          ),
+          const SizedBox(width: 20),
+          const Text('Stack Overflow'),
         ],
       ),
     );

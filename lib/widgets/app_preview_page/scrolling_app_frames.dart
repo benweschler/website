@@ -43,6 +43,12 @@ class _ScrollingAppFramesState extends State<ScrollingAppFrames>
     super.didUpdateWidget(oldWidget);
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void _updateScrollPosition() {
     _controller.animateTo(
       widget.scrollPosition,
@@ -53,12 +59,6 @@ class _ScrollingAppFramesState extends State<ScrollingAppFrames>
       // responsive feel.
       duration: context.isWideLayout() ? 700.ms : 300.ms,
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
