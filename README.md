@@ -12,22 +12,19 @@ flutter pub get
 To run locally:
 
 ```shell
-flutter run --release --web-renderer canvaskit
+flutter run --release
 ```
 
 To run on a local web server (using recommended settings):
 
 ```shell
-flutter run -d web-server --release --web-port 8080 --web-hostname 0.0.0.0 --web-renderer canvaskit
+flutter run -d web-server --release --web-port 8080 --web-hostname 0.0.0.0
 ```
 
 To build a compiled webpack:
 
 ```shell
-flutter build --release --web-renderer canvaskit
+flutter build --release
 ```
-Flutter's CanvasKit web renderer must be used since the HTML renderer does not
-support Flutter's Fragment Program API, which is required to run GLSL fragment
-shaders on Flutter web.
 
-Build artifacts are created in `/build/web/` by default.
+Build artifacts are created under `/build/web/` by default.
