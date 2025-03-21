@@ -24,7 +24,7 @@ flutter run -d web-server --release --web-port 8080 --web-hostname 0.0.0.0
 To build a compiled webpack:
 
 ```shell
-flutter build --release
+flutter build web --release
 ```
 
 Build artifacts are created under `/build/web/` by default.
